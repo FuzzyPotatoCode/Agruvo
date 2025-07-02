@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Meeting Agenda</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82c4 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .agenda-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.1);
+            padding: 20px 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .timer-section {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .main-timer {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: 0 4px 15px rgba(231,76,60,0.3);
+        }
+
+        .item-timer {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: 0 4px 15px rgba(52,152,219,0.3);
+        }
+
+        .timer-display {
+            font-size: 1.8rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            color: white;
+        }
+
+        .timer-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            color: white;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .btn-pause {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .btn-add-time {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .agenda-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        .agenda-main {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .agenda-sidebar {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section-header {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* AGENDA ITEMS */
+        .agenda-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .emergency-section .section-title {
+            background: linear-gradient(135deg, rgba(231,76,60,0.1), rgba(192,57,43,0.05));
+            border-left: 4px solid #e74c3c;
+        }
+
+        .low-scores-section .section-title {
+            background: linear-gradient(135deg, rgba(243,156,18,0.1), rgba(230,126,34,0.05));
+            border-left: 4px solid #f39c12;
+        }
+
+        .grouped-section .section-title {
+            background: linear-gradient(135deg, rgba(52,152,219,0.1), rgba(41,128,185,0.05));
+            border-left: 4px solid #3498db;
+        }
+
+        .agenda-item {
+            background: rgba(255,255,255,0.8);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .agenda-item:hover {
+            border-color: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .agenda-item.current {
+            border-color: #2ecc71;
+            background: linear-gradient(135deg, rgba(46,213,115,0.1), rgba(39,174,96,0.05));
+            box-shadow: 0 0 20px rgba(46,213,115,0.3);
+        }
+
+        .agenda-item.completed {
+            border-color: #95a5a6;
+            background: rgba(149,165,166,0.1);
+            opacity: 0.7;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .item-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #333;
+            flex: 1;
+        }
+
+        .item-meta {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .time-badge {
+            background: #3498db;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .priority-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .emergency-badge {
+            background: #e74c3c;
+            animation: pulse 2s infinite;
+        }
+
+        .low-score-badge {
+            background: #f39c12;
+        }
+
+        .item-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-item {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-start-item {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .btn-complete {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-skip {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-item:hover {
+            transform: translateY(-1px);
+        }
+
+        /* NOTES SECTION */
+        .notes-section {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .agenda-item.current .notes-section {
+            display: block;
+        }
+
+        .notes-input {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .notes-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+        }
+
+        /* SIDEBAR */
+        .progress-overview {
+            margin-bottom: 25px;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .upcoming-items {
+            margin-top: 20px;
+        }
+
+        .upcoming-item {
+            background: rgba(52,152,219,0.1);
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border-left: 3px solid #3498db;
+        }
+
+        .upcoming-title {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .upcoming-time {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* MEETING SUMMARY */
+        .meeting-summary {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 90%;
+            display: none;
+            z-index: 1000;
+        }
+
+        .summary-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div class="agenda-container">
+        <div class="header">
+            <h1>📋 Live Meeting Agenda</h1>
+            <div class="timer-section">
+                <div class="main-timer">
+                    <div class="timer-display" id="mainTimer">60:00</div>
+                    <div class="timer-label">Total Meeting</div>
+                </div>
+                <div class="item-timer">
+                    <div class="timer-display" id="itemTimer">--:--</div>
+                    <div class="timer-label">Current Item</div>
+                </div>
+                <div class="controls">
+                    <button class="control-btn btn-start" onclick="startMeeting()">▶ Start</button>
+                    <button class="control-btn btn-pause" onclick="pauseTimers()">⏸ Pause</button>
+                    <button class="control-btn btn-add-time" onclick="addTime(30)">+30s</button>
+                    <button class="control-btn btn-add-time" onclick="addTime(60)">+1m</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="agenda-grid">
+            <div class="agenda-main">
+                <div class="section-header">📝 Meeting Agenda</div>
+
+                <!-- EMERGENCY ITEMS -->
+                <div class="agenda-section emergency-section">
+                    <div class="section-title">🚨 Emergency Items (4 items)</div>
+                    
+                    <div class="agenda-item" data-time="10" data-item="emergency-1">
+                        <div class="item-header">
+                            <div class="item-title">Critical server outage affecting data pipeline</div>
+                            <div class="item-meta">
+                                <div class="time-badge">10 min</div>
+                                <div class="priority-badge emergency-badge">URGENT</div>
+                            </div>
+                        </div>
+                        <div class="item-description">
+                            Data processing systems are down. Need immediate action plan and resource allocation.
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                            <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                            <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        </div>
+                        <div class="notes-section">
+                            <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="agenda-item" data-time="5" data-item="emergency-2">
+                        <div class="item-header">
+                            <div class="item-title">Safety incident requiring immediate protocol review</div>
+                            <div class="item-meta">
+                                <div class="time-badge">5 min</div>
+                                <div class="priority-badge emergency-badge">URGENT</div>
+                            </div>
+                        </div>
+                        <div class="item-description">
+                            Recent safety incident needs protocol updates and training plan.
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                            <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                            <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        </div>
+                        <div class="notes-section">
+                            <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LOW SCORING ITEMS -->
+                <div class="agenda-section low-scores-section">
+                    <div class="section-title">⚠️ Low Scoring Items (Score ≤ 4)</div>
+                    
+                    <div class="agenda-item" data-time="15" data-item="low-score-1">
+                        <div class="item-header">
+                            <div class="item-title">Stock Assessment Project (Score: 3.1)</div>
+                            <div class="item-meta">
+                                <div class="time-badge">15 min</div>
+                                <div class="priority-badge low-score-badge">NEEDS ATTENTION</div>
+                            </div>
+                        </div>
+                        <div class="item-description">
+                            Multiple delays in data processing. Team consensus: significant blockers need resolution.
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                            <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                            <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        </div>
+                        <div class="notes-section">
+                            <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="agenda-item" data-time="12" data-item="low-score-2">
+                        <div class="item-header">
+                            <div class="item-title">Data Quality Control (Score: 4.2)</div>
+                            <div class="item-meta">
+                                <div class="time-badge">12 min</div>
+                                <div class="priority-badge low-score-badge">NEEDS ATTENTION</div>
+                            </div>
+                        </div>
+                        <div class="item-description">
+                            Quality issues with recent samples. Process improvements needed.
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                            <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                            <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        </div>
+                        <div class="notes-section">
+                            <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GROUPED DISCUSSION TOPICS -->
+                <div class="agenda-section grouped-section">
+                    <div class="section-title">💬 Grouped Discussion Topics</div>
+                    
+                    <div class="agenda-item" data-time="18" data-item="group-1">
+                        <div class="item-header">
+                            <div class="item-title">💰 Budget & Equipment Planning (3 topics)</div>
+                            <div class="item-meta">
+                                <div class="time-badge">18 min</div>
+                            </div>
+                        </div>
+                        <div class="item-description">
+                            Q2 budget allocation, equipment procurement, and new sonar equipment approval.
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                            <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                            <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        </div>
+                        <div class="notes-section">
+                            <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="agenda-item" data-time="10" data-item="group-2">
+                        <div class="item-header">
+                            <div class="item-title">🚢 Survey Planning (4 topics)</div>
+                            <div class="item-meta">
+                                <div class="time-badge">10 min</div>
+                            </div>
+                        </div>
+                        <div class="item-description">
+                            Summer vessel scheduling, route optimization, equipment prep, and weather contingencies.
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                            <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                            <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        </div>
+                        <div class="notes-section">
+                            <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="agenda-sidebar">
+                <div class="section-header">📊 Meeting Progress</div>
+                
+                <div class="progress-overview">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%">0%</div>
+                    </div>
+                    <div style="text-align: center; color: #666; font-size: 0.9rem;">
+                        <span id="completedItems">0</span> of <span id="totalItems">8</span> items completed
+                    </div>
+                </div>
+
+                <div class="quick-stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="timeRemaining">60</div>
+                        <div class="stat-label">Minutes Left</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="currentItemTime">--</div>
+                        <div class="stat-label">Item Time</div>
+                    </div>
+                </div>
+
+                <div class="upcoming-items">
+                    <h3 style="margin-bottom: 15px; color: #333;">🔜 Up Next</h3>
+                    <div class="upcoming-item">
+                        <div class="upcoming-title">Critical server outage</div>
+                        <div class="upcoming-time">10 minutes allocated</div>
+                    </div>
+                    <div class="upcoming-item">
+                        <div class="upcoming-title">Safety protocol review</div>
+                        <div class="upcoming-time">5 minutes allocated</div>
+                    </div>
+                    <div class="upcoming-item">
+                        <div class="upcoming-title">Stock Assessment discussion</div>
+                        <div class="upcoming-time">15 minutes allocated</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <button class="control-btn btn-start" style="width: 100%; margin-bottom: 10px;" onclick="generateSummary()">
+                        📧 Generate Meeting Summary
+                    </button>
+                    <button class="control-btn btn-pause" style="width: 100%;" onclick="endMeeting()">
+                        🛑 End Meeting
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meeting Summary Modal -->
+    <div class="summary-overlay" id="summaryOverlay"></div>
+    <div class="meeting-summary" id="meetingSummary">
+        <h2 style="margin-bottom: 20px;">📧 Meeting Summary</h2>
+        <p>Meeting summary would be generated here with all notes, decisions, and action items...</p>
+        <div style="margin-top: 20px; text-align: center;">
+            <button class="control-btn btn-start" onclick="closeSummary()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        let meetingData = {
+            totalTimeMinutes: 60,
+            timeRemaining: 60 * 60, // in seconds
+            currentItemTime: 0,
+            isPaused: false,
+            isRunning: false,
+            currentItem: null,
+            completedItems: 0,
+            totalItems: 8
+        };
+
+        let timers = {
+            main: null,
+            item: null
+        };
+
+        // Timer functions
+        function startMeeting() {
+            meetingData.isRunning = true;
+            meetingData.isPaused = false;
+            
+            // Start main timer
+            timers.main = setInterval(() => {
+                if (!meetingData.isPaused && meetingData.timeRemaining > 0) {
+                    meetingData.timeRemaining--;
+                    updateTimerDisplay('mainTimer', meetingData.timeRemaining);
+                    updateTimeRemaining();
+                }
+            }, 1000);
+
+            // Update button
+            event.target.textContent = '✓ Started';
+            event.target.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+        }
+
+        function pauseTimers() {
+            meetingData.isPaused = !meetingData.isPaused;
+            const button = event.target;
+            
+            if (meetingData.isPaused) {
+                button.textContent = '▶ Resume';
+            } else {
+                button.textContent = '⏸ Pause';
+            }
+        }
+
+        function addTime(seconds) {
+            meetingData.currentItemTime += seconds;
+            updateTimerDisplay('itemTimer', meetingData.currentItemTime);
+            
+            // Show feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = `+${seconds}s`;
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 1000);
+        }
+
+        function updateTimerDisplay(elementId, timeInSeconds) {
+            const minutes = Math.floor(timeInSeconds / 60);
+            const seconds = timeInSeconds % 60;
+            const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById(elementId).textContent = display;
+        }
+
+        function updateTimeRemaining() {
+            const minutesLeft = Math.floor(meetingData.timeRemaining / 60);
+            document.getElementById('timeRemaining').textContent = minutesLeft;
+        }
+
+        // Item management
+        function startItem(button) {
+            // Clear current item
+            document.querySelectorAll('.agenda-item').forEach(item => {
+                item.classList.remove('current');
+            });
+
+            // Set new current item
+            const item = button.closest('.agenda-item');
+            item.classList.add('current');
+            meetingData.currentItem = item;
+
+            // Start item timer
+            const timeAllocated = parseInt(item.dataset.time) * 60; // Convert to seconds
+            meetingData.currentItemTime = timeAllocated;
+            
+            // Start item countdown
+            if (timers.item) clearInterval(timers.item);
+            timers.item = setInterval(() => {
+                if (!meetingData.isPaused && meetingData.currentItemTime > 0) {
+                    meetingData.currentItemTime--;
+                    updateTimerDisplay('itemTimer', meetingData.currentItemTime);
+                    document.getElementById('currentItemTime').textContent = Math.ceil(meetingData.currentItemTime / 60);
+                    
+                    // Alert when time is up
+                    if (meetingData.currentItemTime <= 0) {
+                        clearInterval(timers.item);
+                        document.getElementById('itemTimer').style.color = '#e74c3c';
+                        setTimeout(() => {
+                            document.getElementById('itemTimer').style.color = '';
+                        }, 3000);
+                    }
+                }
+            }, 1000);
+
+            // Update button
+            button.textContent = '⏳ In Progress';
+            button.style.background = '#f39c12';
+        }
+
+        function completeItem(button) {
+            const item = button.closest('.agenda-item');
+            item.classList.add('completed');
+            item.classList.remove('current');
+            
+            meetingData.completedItems++;
+            updateProgress();
+            
+            // Clear item timer
+            if (timers.item) clearInterval(timers.item);
+            document.getElementById('itemTimer').textContent = '--:--';
+            
+            // Save notes
+            const notes = item.querySelector('.notes-input').value;
+            if (notes) {
+                console.log(`Notes for ${item.dataset.item}:`, notes);
+            }
+            
+            button.textContent = '✓ Completed';
+            button.style.background = '#27ae60';
+            button.disabled = true;
+        }
+
+        function skipItem(button) {
+            const item = button.closest('.agenda-item');
+            item.style.opacity = '0.5';
+            
+            meetingData.completedItems++;
+            updateProgress();
+            
+            button.textContent = '⏭ Skipped';
+            button.style.background = '#95a5a6';
+            button.disabled = true;
+        }
+
+        function updateProgress() {
+            const percentage = (meetingData.completedItems / meetingData.totalItems) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressFill').textContent = Math.round(percentage) + '%';
+            document.getElementById('completedItems').textContent = meetingData.completedItems;
+        }
+
+        function generateSummary() {
+            // Collect all notes
+            const notes = [];
+            document.querySelectorAll('.agenda-item').forEach(item => {
+                const noteText = item.querySelector('.notes-input').value;
+                if (noteText) {
+                    const title = item.querySelector('.item-title').textContent;
+                    notes.push({ title, notes: noteText });
+                }
+            });
+
+            // Show summary modal
+            document.getElementById('summaryOverlay').style.display = 'block';
+            document.getElementById('meetingSummary').style.display = 'block';
+            
+            // Would generate actual email summary here
+            console.log('Meeting notes collected:', notes);
+        }
+
+        function closeSummary() {
+            document.getElementById('summaryOverlay').style.display = 'none';
+            document.getElementById('meetingSummary').style.display = 'none';
+        }
+
+        function endMeeting() {
+            if (confirm('End the meeting and generate final summary?')) {
+                clearInterval(timers.main);
+                clearInterval(timers.item);
+                generateSummary();
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case ' ':
+                    e.preventDefault();
+                    if (meetingData.isRunning) {
+                        pauseTimers();
+                    } else {
+                        startMeeting();
+                    }
+                    break;
+                case 'ArrowRight':
+                    // Next item
+                    break;
+                case 'Escape':
+                    pauseTimers();
+                    break;
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTimerDisplay('mainTimer', meetingData.timeRemaining);
+            document.getElementById('totalItems').textContent = meetingData.totalItems;
+            document.getElementById('currentItemTime').textContent = '--';
+        });
+    </script>
+</body>
+</html>

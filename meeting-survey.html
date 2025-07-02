@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fisheries Research Team Check-in</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c5aa0 0%, #3b82c4 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .mission-statement {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* PYRAMID OVERVIEW */
+        .pyramid-overview {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .pyramid-visual {
+            grid-column: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pyramid-row {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .pyramid-item {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pyramid-item:hover {
+            transform: scale(1.1);
+        }
+
+        .pyramid-item.completed::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            width: 12px;
+            height: 12px;
+            background: #27ae60;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .pyramid-item.pending::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            width: 12px;
+            height: 12px;
+            background: #e74c3c;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .pyramid-critical {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            width: 60px;
+        }
+
+        .pyramid-important {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            width: 50px;
+        }
+
+        .pyramid-foundational {
+            background: linear-gradient(135deg, #93c5fd, #60a5fa);
+            width: 35px;
+        }
+
+        .pyramid-legend {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        /* PYRAMID LEVELS */
+        .pyramid-level {
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 6px solid;
+        }
+
+        .level-critical {
+            background: linear-gradient(135deg, rgba(30,58,138,0.1), rgba(30,64,175,0.05));
+            border-left-color: #1e3a8a;
+        }
+
+        .level-important {
+            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(37,99,235,0.05));
+            border-left-color: #3b82f6;
+        }
+
+        .level-foundational {
+            background: linear-gradient(135deg, rgba(147,197,253,0.1), rgba(96,165,250,0.05));
+            border-left-color: #93c5fd;
+        }
+
+        .level-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .level-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .level-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .goal-item {
+            background: rgba(255,255,255,0.7);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .goal-item:hover {
+            background: rgba(255,255,255,0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .goal-item.selected {
+            border-color: #3498db;
+            background: rgba(52,152,219,0.1);
+        }
+
+        .goal-item.has-rating::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 12px;
+            height: 12px;
+            background: #27ae60;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .goal-item:not(.has-rating)::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 12px;
+            height: 12px;
+            background: #95a5a6;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .goal-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .goal-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+
+        .rating-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .goal-item.selected .rating-section {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        .rating-option {
+            margin-bottom: 20px;
+        }
+
+        .dont-know-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(243,156,18,0.1);
+            border-radius: 8px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dont-know-checkbox:hover {
+            background: rgba(243,156,18,0.15);
+            border-color: rgba(243,156,18,0.3);
+        }
+
+        .dont-know-checkbox.active {
+            background: rgba(243,156,18,0.2);
+            border-color: #f39c12;
+        }
+
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .slider-section {
+            transition: all 0.3s ease;
+        }
+
+        .slider-section.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .goal-item.dont-know::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 12px;
+            height: 12px;
+            background: #f39c12;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .rating-label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .slider {
+            flex: 1;
+            height: 8px;
+            border-radius: 4px;
+            background: #e0e0e0;
+            outline: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .rating-value {
+            background: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: bold;
+            min-width: 50px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .rating-indicators {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 15px;
+            padding: 0 10px;
+        }
+
+        .notes-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 60px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .notes-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+        }
+
+        /* SHOUTOUTS SECTION */
+        .shoutout-form {
+            margin-bottom: 20px;
+        }
+
+        .shoutout-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+            margin-bottom: 10px;
+        }
+
+        .shoutout-input:focus {
+            outline: none;
+            border-color: #2ecc71;
+            box-shadow: 0 0 0 3px rgba(46,204,113,0.1);
+        }
+
+        .btn-shoutout {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-shoutout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(46,204,113,0.3);
+        }
+
+        .shoutouts-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .shoutout-item {
+            background: linear-gradient(135deg, rgba(46,204,113,0.1), rgba(39,174,96,0.05));
+            border-left: 4px solid #2ecc71;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        /* MEETING TOPICS SECTION */
+        .topic-form {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .topic-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .topic-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+        }
+
+        .time-estimate {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .time-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .time-btn.active {
+            border-color: #3498db;
+            background: #3498db;
+            color: white;
+        }
+
+        .time-btn:hover {
+            border-color: #3498db;
+        }
+
+        .emergency-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 40px;
+            height: 20px;
+            background: #ccc;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #e74c3c;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(20px);
+        }
+
+        .btn-topic {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-topic:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52,152,219,0.3);
+        }
+
+        .topics-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .topic-item {
+            background: rgba(52,152,219,0.1);
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .topic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .topic-title {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .topic-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 0.85rem;
+        }
+
+        .time-badge {
+            background: rgba(52,152,219,0.2);
+            padding: 2px 8px;
+            border-radius: 8px;
+            color: #3498db;
+            font-weight: 500;
+        }
+
+        .emergency-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .submit-all {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .submit-all:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52,152,219,0.3);
+        }
+
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            background: #2ecc71;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="connection-status">Connected</div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Fisheries Research Team Check-in</h1>
+            <div class="mission-statement">Scientific research and stewardship of Anthropic fisheries</div>
+            <div class="status-indicator">
+                Submit your updates and priorities
+            </div>
+        </div>
+
+        <!-- PYRAMID OVERVIEW -->
+        <div class="card">
+            <h2>📊 Priority Pyramid Overview</h2>
+            <div class="pyramid-overview">
+                <div></div>
+                <div class="pyramid-visual">
+                    <div class="pyramid-row">
+                        <div class="pyramid-item pyramid-critical" title="Research Vessel Deployment">RV</div>
+                        <div class="pyramid-item pyramid-critical" title="Stock Assessment">SA</div>
+                    </div>
+                    <div class="pyramid-row">
+                        <div class="pyramid-item pyramid-important" title="Q2 Survey">Q2</div>
+                        <div class="pyramid-item pyramid-important" title="Data Analysis">DA</div>
+                        <div class="pyramid-item pyramid-important" title="Publication">PU</div>
+                    </div>
+                    <div class="pyramid-row">
+                        <div class="pyramid-item pyramid-foundational" title="Equipment Maintenance">EM</div>
+                        <div class="pyramid-item pyramid-foundational" title="Data QC">QC</div>
+                        <div class="pyramid-item pyramid-foundational" title="Procurement">PR</div>
+                        <div class="pyramid-item pyramid-foundational" title="Training">TR</div>
+                        <div class="pyramid-item pyramid-foundational" title="Safety">SF</div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+            <div class="pyramid-legend">
+                Dark Blue = Critical Projects &nbsp;&nbsp; Medium Blue = Important Milestones &nbsp;&nbsp; Light Blue = Foundational Operations
+                <br><span style="font-size: 0.8rem;">Green dot = Rated | Orange dot = Don't Know Enough | Gray dot = Not yet rated</span>
+            </div>
+        </div>
+
+        <!-- PYRAMID GOALS PROGRESS -->
+        <div class="card">
+            <h2>📋 Strategic Objectives Progress</h2>
+            
+            <!-- CRITICAL LEVEL -->
+            <div class="pyramid-level level-critical">
+                <div class="level-header">
+                    <div class="level-title">🔵 CRITICAL - Major Projects & Events</div>
+                    <div class="level-description">Large-scale research projects and critical events that define our research impact</div>
+                </div>
+                
+                <div class="goal-item" data-goal="vessel-deployment">
+                    <div class="goal-title">🚢 Research Vessel Deployment</div>
+                    <div class="goal-description">Execute major oceanographic survey mission for fisheries assessment in the Southern Ocean region</div>
+                    <div class="rating-section">
+                        <div class="rating-label">Project Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
+                        <div class="slider-container">
+                            <input type="range" class="slider" min="0" max="10" value="" data-goal="vessel-deployment">
+                            <div class="rating-value">-</div>
+                        </div>
+                        <div class="rating-indicators">
+                            <span>🔴 Disaster</span>
+                            <span>🟡 Struggling</span>
+                            <span>🟢 On Track</span>
+                        </div>
+                        <textarea class="notes-input" placeholder="Add project notes, blockers, or tasks..." data-goal="vessel-deployment"></textarea>
+                    </div>
+                </div>
+
+                <div class="goal-item" data-goal="stock-assessment">
+                    <div class="goal-title">📊 Annual Stock Assessment</div>
+                    <div class="goal-description">Complete comprehensive fisheries stock assessment for key commercial species</div>
+                    <div class="rating-section">
+                        <div class="rating-label">Project Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
+                        
+                        <div class="dont-know-checkbox" data-goal="stock-assessment">
+                            <input type="checkbox" class="checkbox-input" id="dontknow-stock-assessment">
+                            <label class="checkbox-label" for="dontknow-stock-assessment">
+                                ❓ I don't know enough about this to give a rating
+                            </label>
+                        </div>
+                        
+                        <div class="slider-section">
+                            <div class="slider-container">
+                                <input type="range" class="slider" min="0" max="10" value="" data-goal="stock-assessment">
+                                <div class="rating-value">-</div>
+                            </div>
+                            <div class="rating-indicators">
+                                <span>🔴 Disaster</span>
+                                <span>🟡 Struggling</span>
+                                <span>🟢 On Track</span>
+                            </div>
+                        </div>
+                        
+                        <textarea class="notes-input" placeholder="Add project notes, blockers, or tasks..." data-goal="stock-assessment"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IMPORTANT LEVEL -->
+            <div class="pyramid-level level-important">
+                <div class="level-header">
+                    <div class="level-title">🔵 IMPORTANT - Key Milestones</div>
+                    <div class="level-description">Important deliverables and milestones that support our critical projects</div>
+                </div>
+                
+                <div class="goal-item" data-goal="q2-survey">
+                    <div class="goal-title">🗓️ Q2 Field Survey</div>
+                    <div class="goal-description">Complete quarterly field data collection and sampling protocols</div>
+                    <div class="rating-section">
+                        <div class="rating-label">Milestone Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
+                        <div class="slider-container">
+                            <input type="range" class="slider" min="0" max="10" value="" data-goal="q2-survey">
+                            <div class="rating-value">-</div>
+                        </div>
+                        <div class="rating-indicators">
+                            <span>🔴 Disaster</span>
+                            <span>🟡 Struggling</span>
+                            <span>🟢 On Track</span>
+                        </div>
+                        <textarea class="notes-input" placeholder="Add milestone notes, blockers, or tasks..." data-goal="q2-survey"></textarea>
+                    </div>
+                </div>
+
+                <div class="goal-item" data-goal="data-analysis">
+                    <div class="goal-title">📈 Statistical Analysis Completion</div>
+                    <div class="goal-description">Finalize statistical models and analysis for population dynamics study</div>
+                    <div class="rating-section">
+                        <div class="rating-label">Milestone Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
+                        <div class="slider-container">
+                            <input type="range" class="slider" min="0" max="10" value="" data-goal="data-analysis">
+                            <div class="rating-value">-</div>
+                        </div>
+                        <div class="rating-indicators">
+                            <span>🔴 Disaster</span>
+                            <span>🟡 Struggling</span>
+                            <span>🟢 On Track</span>
+                        </div>
+                        <textarea class="notes-input" placeholder="Add milestone notes, blockers, or tasks..." data-goal="data-analysis"></textarea>
+                    </div>
+                </div>
+
+                <div class="goal-item" data-goal="publication">
+                    <div class="goal-title">📄 Research Publication</div>
+                    <div class="goal-description">Submit peer-reviewed manuscript to Journal of Marine Science</div>
+                    <div class="rating-section">
+                        <div class="rating-label">Milestone Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
+                        <div class="slider-container">
+                            <input type="range" class="slider" min="0" max="10" value="" data-goal="publication">
+                            <div class="rating-value">-</div>
+                        </div>
+                        <div class="rating-indicators">
+                            <span>🔴 Disaster</span>
+                            <span>🟡 Struggling</span>
+                            <span>🟢 On Track</span>
+                        </div>
+                        <textarea class="notes-input" placeholder="Add milestone notes, blockers, or tasks..." data-goal="publication"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOUNDATIONAL LEVEL -->
+            <div class="pyramid-level level-foundational">
+                <div class="level-header">
+                    <div class="level-title">🔵 FOUNDATIONAL - Operations & Support</div>
+                    <div class="level-description">Essential daily operations, procurement, QC, and support systems that enable all research</div>
+                </div>
+                
+                <div class="goal-item" data-goal="equipment-maintenance">
+                    <div class="goal-title">🔧 Equipment Maintenance</div>
+                    <div class="goal-description">Regular calibration and maintenance of research instruments and laboratory equipment</div>
+                    <div class="rating-section">
+                        <div class="rating-label">Operations Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
+                        <div class="slider-container">
+                            <input type="range" class="slider" min="0" max="10" value="" data-goal="equipment-maintenance">
+                            <div class="rating-value">-</div>
+                        </div>
+                        <div class="rating-indicators">
+                            <span>🔴 Disaster</span>
+                            <span>🟡 Struggling</span>
+                            <span>🟢 On Track</span>
+                        </div>
+                        <textarea class="notes-input" placeholder="Add operational notes, issues, or tasks..." data-goal="equipment-maintenance"></textarea>
+                    </div>
+                </div>
+
+                <div class="goal-item" data-goal="data-qc">
+                    <div class="goal-title">✅ Data Quality Control</div>
+                    <div class="goal-description">Ongoing data validation, cleaning, and quality assurance processes</div>
+                    <div class="rating-section">
+                        <div class="rating-label">Operations Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
+                        <div class="slider-container">
+                            <input type="range" class="slider" min="0" max="10" value="" data-goal="data-qc">
+                            <div class="rating-value">-</div>
+                        </div>
+                        <div class="rating-indicators">
+                            <span>🔴 Disaster</span>
+                            <span>🟡 Struggling</span>
+                            <span>🟢 On Track</span>
+                        </div>
+                        <textarea class="notes-input" placeholder="Add operational notes, issues, or tasks..." data-goal="data-qc"></textarea>
+                    </div>
+                </div>
+
+                <div class="goal-item" data-goal="procurement">
+                    <div class="goal-title">📦 Procurement & Supplies</div>
+                    <div class="goal-description">Equipment procurement, supply chain management, and vendor relationships</div>
+                    <div class="rating-section">
+                        <div class="rating-label">Operations Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
+                        <div class="slider-container">
+                            <input type="range" class="slider" min="0" max="10" value="" data-goal="procurement">
+                            <div class="rating-value">-</div>
+                        </div>
+                        <div class="rating-indicators">
+                            <span>🔴 Disaster</span>
+                            <span>🟡 Struggling</span>
+                            <span>🟢 On Track</span>
+                        </div>
+                        <textarea class="notes-input" placeholder="Add operational notes, issues, or tasks..." data-goal="procurement"></textarea>
+                    </div>
+                </div>
+
+                <div class="goal-item" data-goal="training">
+                    <div class="goal-title">🎓 Team Training & Development</div>
+                    <div class="goal-description">Staff training, safety certifications, and professional development</div>
+                    <div class="rating-section">
+                        <div class="rating-label">Operations Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
+                        <div class="slider-container">
+                            <input type="range" class="slider" min="0" max="10" value="" data-goal="training">
+                            <div class="rating-value">-</div>
+                        </div>
+                        <div class="rating-indicators">
+                            <span>🔴 Disaster</span>
+                            <span>🟡 Struggling</span>
+                            <span>🟢 On Track</span>
+                        </div>
+                        <textarea class="notes-input" placeholder="Add operational notes, issues, or tasks..." data-goal="training"></textarea>
+                    </div>
+                </div>
+
+                <div class="goal-item" data-goal="safety">
+                    <div class="goal-title">⛑️ Safety & Compliance</div>
+                    <div class="goal-description">Safety protocols, regulatory compliance, and risk management</div>
+                    <div class="rating-section">
+                        <div class="rating-label">Operations Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
+                        <div class="slider-container">
+                            <input type="range" class="slider" min="0" max="10" value="" data-goal="safety">
+                            <div class="rating-value">-</div>
+                        </div>
+                        <div class="rating-indicators">
+                            <span>🔴 Disaster</span>
+                            <span>🟡 Struggling</span>
+                            <span>🟢 On Track</span>
+                        </div>
+                        <textarea class="notes-input" placeholder="Add operational notes, issues, or tasks..." data-goal="safety"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SHOUTOUTS & HIGHLIGHTS -->
+        <div class="card">
+            <h2>🎉 Team Shoutouts & Research Highlights</h2>
+            <div class="shoutout-form">
+                <input type="text" class="shoutout-input" id="shoutoutInput" placeholder="Recognize a colleague or share a research breakthrough...">
+                <button class="btn-shoutout" onclick="addShoutout()">Add Shoutout</button>
+            </div>
+            <div class="shoutouts-list" id="shoutoutsList">
+                <div class="empty-state">No shoutouts yet - celebrate your team's achievements!</div>
+            </div>
+        </div>
+
+        <!-- MEETING TOPICS -->
+        <div class="card">
+            <h2>💬 Discussion Topics</h2>
+            <p style="color: #666; margin-bottom: 20px;">Topics that need discussion but aren't directly tied to our strategic objectives</p>
+            
+            <div class="topic-form">
+                <div class="form-group">
+                    <label for="topicInput">Discussion Topic</label>
+                    <input type="text" class="topic-input" id="topicInput" placeholder="What needs to be discussed?">
+                </div>
+
+                <div class="form-group">
+                    <label>Estimated Discussion Time</label>
+                    <div class="time-estimate">
+                        <div class="time-btn active" data-minutes="2">2 min</div>
+                        <div class="time-btn" data-minutes="5">5 min</div>
+                        <div class="time-btn" data-minutes="10">10 min</div>
+                        <div class="time-btn" data-minutes="15">15 min</div>
+                        <div class="time-btn" data-minutes="30">30+ min</div>
+                    </div>
+                </div>
+
+                <div class="emergency-toggle">
+                    <div class="toggle-switch" id="emergencyToggle">
+                        <div class="toggle-slider"></div>
+                    </div>
+                    <label>🚨 Urgent Topic - Needs Immediate Attention</label>
+                </div>
+
+                <button class="btn-topic" onclick="addTopic()">Add Topic</button>
+            </div>
+            
+            <div class="topics-list" id="topicsList">
+                <div class="empty-state">No discussion topics yet</div>
+            </div>
+        </div>
+
+        <button class="submit-all" onclick="submitAll()">
+            📤 Submit All Updates
+        </button>
+    </div>
+
+    <script>
+        // Global variables
+        let goalRatings = {};
+        let shoutouts = [];
+        let topics = [];
+        let selectedMinutes = 2;
+        let isEmergency = false;
+
+        // Initialize sliders with no initial values
+        function initializeSliders() {
+            const sliders = document.querySelectorAll('.slider[data-goal]');
+            
+            sliders.forEach(slider => {
+                const goalId = slider.dataset.goal;
+                const valueDisplay = slider.parentElement.querySelector('.rating-value');
+                
+                // Start with no rating
+                goalRatings[goalId] = {
+                    rating: null,
+                    notes: '',
+                    hasBeenRated: false,
+                    dontKnow: false
+                };
+                
+                // Update goal item status indicator
+                updateGoalStatus(goalId);
+                
+                // Add event listener for slider changes
+                slider.addEventListener('input', function() {
+                    const value = parseInt(this.value);
+                    valueDisplay.textContent = value;
+                    updateSliderColor(valueDisplay, value);
+                    
+                    // Update goal rating
+                    goalRatings[goalId].rating = value;
+                    goalRatings[goalId].hasBeenRated = true;
+                    goalRatings[goalId].dontKnow = false; // Clear don't know if they provide rating
+                    
+                    // Uncheck don't know checkbox if they provide a rating
+                    const dontKnowCheckbox = document.getElementById(`dontknow-${goalId}`);
+                    if (dontKnowCheckbox) {
+                        dontKnowCheckbox.checked = false;
+                        dontKnowCheckbox.closest('.dont-know-checkbox').classList.remove('active');
+                    }
+                    
+                    updateGoalStatus(goalId);
+                    updatePyramidOverview(goalId);
+                });
+            });
+        }
+
+        // Initialize don't know checkboxes
+        function initializeDontKnowCheckboxes() {
+            const checkboxes = document.querySelectorAll('.dont-know-checkbox');
+            
+            checkboxes.forEach(checkboxContainer => {
+                const goalId = checkboxContainer.dataset.goal;
+                const checkbox = checkboxContainer.querySelector('.checkbox-input');
+                const sliderSection = checkboxContainer.parentElement.querySelector('.slider-section');
+                
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        // Don't know is checked
+                        checkboxContainer.classList.add('active');
+                        sliderSection.classList.add('disabled');
+                        
+                        // Clear any existing rating
+                        const slider = sliderSection.querySelector('.slider');
+                        const valueDisplay = sliderSection.querySelector('.rating-value');
+                        slider.value = '';
+                        valueDisplay.textContent = '-';
+                        valueDisplay.style.background = '#3498db'; // Reset to default color
+                        
+                        // Update goal rating
+                        goalRatings[goalId].rating = null;
+                        goalRatings[goalId].dontKnow = true;
+                        goalRatings[goalId].hasBeenRated = true; // They provided input (don't know)
+                        
+                    } else {
+                        // Don't know is unchecked
+                        checkboxContainer.classList.remove('active');
+                        sliderSection.classList.remove('disabled');
+                        
+                        goalRatings[goalId].dontKnow = false;
+                        // Keep hasBeenRated true if they have notes
+                        if (!goalRatings[goalId].notes.trim()) {
+                            goalRatings[goalId].hasBeenRated = false;
+                        }
+                    }
+                    
+                    updateGoalStatus(goalId);
+                    updatePyramidOverview(goalId);
+                });
+                
+                // Also make the container clickable
+                checkboxContainer.addEventListener('click', function(e) {
+                    if (e.target === this || e.target.classList.contains('checkbox-label')) {
+                        checkbox.checked = !checkbox.checked;
+                        checkbox.dispatchEvent(new Event('change'));
+                    }
+                });
+            });
+        }
+
+        // Color coding for slider values (0-10 scale, inverted logic)
+        function updateSliderColor(element, value) {
+            if (value <= 3) {
+                element.style.background = '#e74c3c'; // Red - disaster/crisis
+            } else if (value <= 6) {
+                element.style.background = '#f39c12'; // Orange - struggling
+            } else {
+                element.style.background = '#27ae60'; // Green - on track
+            }
+        }
+
+        // Update goal status indicator (green/gray/orange dot)
+        function updateGoalStatus(goalId) {
+            const goalItem = document.querySelector(`[data-goal="${goalId}"]`);
+            const hasRating = goalRatings[goalId] && goalRatings[goalId].hasBeenRated;
+            const dontKnow = goalRatings[goalId] && goalRatings[goalId].dontKnow;
+            
+            goalItem.classList.remove('has-rating', 'dont-know');
+            
+            if (dontKnow) {
+                goalItem.classList.add('dont-know');
+            } else if (hasRating) {
+                goalItem.classList.add('has-rating');
+            }
+        }
+
+        // Update pyramid overview visual
+        function updatePyramidOverview(goalId) {
+            // Map goal IDs to pyramid items
+            const goalToPyramidMap = {
+                'vessel-deployment': 'RV',
+                'stock-assessment': 'SA',
+                'q2-survey': 'Q2',
+                'data-analysis': 'DA',
+                'publication': 'PU',
+                'equipment-maintenance': 'EM',
+                'data-qc': 'QC',
+                'procurement': 'PR',
+                'training': 'TR',
+                'safety': 'SF'
+            };
+            
+            const pyramidCode = goalToPyramidMap[goalId];
+            if (pyramidCode) {
+                const pyramidItem = Array.from(document.querySelectorAll('.pyramid-item')).find(item => 
+                    item.textContent.trim() === pyramidCode
+                );
+                
+                if (pyramidItem) {
+                    const hasRating = goalRatings[goalId] && goalRatings[goalId].hasBeenRated;
+                    const dontKnow = goalRatings[goalId] && goalRatings[goalId].dontKnow;
+                    
+                    pyramidItem.classList.remove('completed', 'pending');
+                    
+                    if (dontKnow) {
+                        pyramidItem.classList.add('pending'); // Could add a special 'dont-know' class later
+                    } else if (hasRating) {
+                        pyramidItem.classList.add('completed');
+                    } else {
+                        pyramidItem.classList.add('pending');
+                    }
+                }
+            }
+        }
+
+        // Goal item click handlers
+        function initializeGoalItems() {
+            const goalItems = document.querySelectorAll('.goal-item');
+            
+            goalItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                });
+            });
+        }
+
+        // Notes tracking
+        function initializeNotesTracking() {
+            const notesInputs = document.querySelectorAll('.notes-input[data-goal]');
+            
+            notesInputs.forEach(input => {
+                const goalId = input.dataset.goal;
+                
+                input.addEventListener('input', function() {
+                    if (!goalRatings[goalId]) {
+                        goalRatings[goalId] = { rating: null, notes: '', hasBeenRated: false, dontKnow: false };
+                    }
+                    goalRatings[goalId].notes = this.value;
+                    
+                    // If notes are added, consider it as having interaction (unless they've checked don't know)
+                    if (this.value.trim() !== '' && !goalRatings[goalId].dontKnow) {
+                        goalRatings[goalId].hasBeenRated = true;
+                    } else if (this.value.trim() === '' && !goalRatings[goalId].rating && !goalRatings[goalId].dontKnow) {
+                        goalRatings[goalId].hasBeenRated = false;
+                    }
+                    
+                    updateGoalStatus(goalId);
+                    updatePyramidOverview(goalId);
+                });
+            });
+        }
+
+        // Time button handlers
+        function initializeTimeButtons() {
+            const timeButtons = document.querySelectorAll('.time-btn');
+            
+            timeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    timeButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedMinutes = parseInt(this.dataset.minutes);
+                });
+            });
+        }
+
+        // Emergency toggle
+        function initializeEmergencyToggle() {
+            const toggle = document.getElementById('emergencyToggle');
+            
+            toggle.addEventListener('click', function() {
+                isEmergency = !isEmergency;
+                this.classList.toggle('active');
+            });
+        }
+
+        // Add shoutout
+        function addShoutout() {
+            const input = document.getElementById('shoutoutInput');
+            const text = input.value.trim();
+            
+            if (text) {
+                shoutouts.push({
+                    text: text,
+                    author: 'You',
+                    timestamp: new Date()
+                });
+                
+                input.value = '';
+                renderShoutouts();
+            }
+        }
+
+        // Render shoutouts
+        function renderShoutouts() {
+            const container = document.getElementById('shoutoutsList');
+            
+            if (shoutouts.length === 0) {
+                container.innerHTML = '<div class="empty-state">No shoutouts yet - celebrate your team\'s achievements!</div>';
+                return;
+            }
+            
+            container.innerHTML = shoutouts.map(shoutout => `
+                <div class="shoutout-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>${shoutout.text}</span>
+                        <small style="color: #666;">${shoutout.timestamp.toLocaleTimeString()}</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add topic
+        function addTopic() {
+            const input = document.getElementById('topicInput');
+            const text = input.value.trim();
+            
+            if (text) {
+                topics.push({
+                    title: text,
+                    estimatedMinutes: selectedMinutes,
+                    isEmergency: isEmergency,
+                    author: 'You',
+                    timestamp: new Date()
+                });
+                
+                input.value = '';
+                resetTopicForm();
+                renderTopics();
+            }
+        }
+
+        // Reset topic form
+        function resetTopicForm() {
+            isEmergency = false;
+            document.getElementById('emergencyToggle').classList.remove('active');
+            
+            document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.time-btn[data-minutes="2"]').classList.add('active');
+            selectedMinutes = 2;
+        }
+
+        // Render topics
+        function renderTopics() {
+            const container = document.getElementById('topicsList');
+            
+            if (topics.length === 0) {
+                container.innerHTML = '<div class="empty-state">No discussion topics yet</div>';
+                return;
+            }
+            
+            const sortedTopics = [...topics].sort((a, b) => {
+                if (a.isEmergency && !b.isEmergency) return -1;
+                if (!a.isEmergency && b.isEmergency) return 1;
+                return a.estimatedMinutes - b.estimatedMinutes;
+            });
+            
+            container.innerHTML = sortedTopics.map(topic => `
+                <div class="topic-item">
+                    <div class="topic-header">
+                        <div class="topic-title">${topic.title}</div>
+                        <div class="topic-meta">
+                            <div class="time-badge">${topic.estimatedMinutes}min</div>
+                            ${topic.isEmergency ? '<div class="emergency-badge">🚨 URGENT</div>' : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Submit all data
+        function submitAll() {
+            const data = {
+                goalRatings: goalRatings,
+                shoutouts: shoutouts,
+                topics: topics,
+                timestamp: new Date()
+            };
+            
+            console.log('Submitting fisheries research data:', data);
+            
+            const submitBtn = document.querySelector('.submit-all');
+            const originalText = submitBtn.textContent;
+            const originalBg = submitBtn.style.background;
+            
+            submitBtn.textContent = '✓ Research Data Submitted!';
+            submitBtn.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+            
+            setTimeout(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.style.background = originalBg;
+            }, 3000);
+        }
+
+        // Keyboard event handlers
+        function initializeKeyboardHandlers() {
+            document.getElementById('shoutoutInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addShoutout();
+                }
+            });
+
+            document.getElementById('topicInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addTopic();
+                }
+            });
+        }
+
+        // Initialize everything when DOM loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSliders();
+            initializeDontKnowCheckboxes();
+            initializeGoalItems();
+            initializeNotesTracking();
+            initializeTimeButtons();
+            initializeEmergencyToggle();
+            initializeKeyboardHandlers();
+            renderShoutouts();
+            renderTopics();
+            
+            // Initialize all goal status indicators
+            Object.keys(goalRatings).forEach(goalId => {
+                updateGoalStatus(goalId);
+            });
+        });
+    </script>
+</body>
+</html>
