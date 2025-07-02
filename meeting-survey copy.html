@@ -762,23 +762,6 @@
             box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
         }
 
-        /* BULLET POINT HELPER */
-        .bullet-helper {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 10px;
-            background: rgba(255,255,255,0.7);
-            padding: 10px;
-            border-radius: 8px;
-            border-left: 3px solid #3498db;
-        }
-
-        .bullet-examples {
-            margin-top: 5px;
-            font-size: 0.8rem;
-            color: #888;
-        }
-
         @media (max-width: 768px) {
             .achievements-grid {
                 grid-template-columns: 1fr;
@@ -1160,20 +1143,12 @@
             <div class="achievements-grid">
                 <div class="achievement-column">
                     <h3>✅ What I Achieved This Period</h3>
-                    <div class="bullet-helper">
-                        💡 <strong>Tip:</strong> Use bullet points for clarity - each line becomes a bullet
-                        <div class="bullet-examples">Start each line with • or - or just make new lines for each item</div>
-                    </div>
-                    <textarea class="achievement-input" id="achievementsInput" placeholder="• Completed fish population analysis ahead of schedule&#10;• Successfully deployed 12 monitoring stations&#10;• Trained 3 new team members on sampling protocols&#10;• Published preliminary findings in quarterly report"></textarea>
+                    <textarea class="achievement-input" id="achievementsInput" placeholder="Share your key accomplishments, completed tasks, milestones reached, or goals achieved since the last check-in..."></textarea>
                 </div>
                 
                 <div class="planning-column">
                     <h3>🎯 What I Plan to Achieve Next Period</h3>
-                    <div class="bullet-helper">
-                        💡 <strong>Tip:</strong> Use bullet points for clarity - each line becomes a bullet
-                        <div class="bullet-examples">Start each line with • or - or just make new lines for each item</div>
-                    </div>
-                    <textarea class="planning-input" id="planningInput" placeholder="• Begin deep-water survey mission in southern region&#10;• Complete statistical analysis for annual stock assessment&#10;• Present findings at Marine Science Conference&#10;• Implement new quality control procedures"></textarea>
+                    <textarea class="planning-input" id="planningInput" placeholder="Outline your goals, planned tasks, upcoming milestones, or objectives for the next period..."></textarea>
                 </div>
             </div>
         </div>
@@ -1475,7 +1450,7 @@
             `).join('');
         }
 
-        // Add topic - FIXED FUNCTION
+        // Add topic
         function addTopic() {
             const input = document.getElementById('topicInput');
             const text = input.value.trim();
@@ -1536,35 +1511,14 @@
             `).join('');
         }
 
-        // Format text with bullet points
-        function formatBulletPoints(text) {
-            if (!text.trim()) return '';
-            
-            return text.trim().split('\n')
-                .filter(line => line.trim())
-                .map(line => {
-                    const trimmed = line.trim();
-                    // If line doesn't start with bullet, add one
-                    if (!trimmed.startsWith('•') && !trimmed.startsWith('-') && !trimmed.startsWith('*')) {
-                        return '• ' + trimmed;
-                    }
-                    return trimmed;
-                })
-                .join('\n');
-        }
-
         // Submit all data
         function submitAll() {
-            // Format achievements and planning with bullet points
-            const formattedAchievements = formatBulletPoints(achievements);
-            const formattedPlanning = formatBulletPoints(planning);
-            
             const data = {
                 goalRatings: goalRatings,
                 shoutouts: shoutouts,
                 topics: topics,
-                achievements: formattedAchievements,
-                planning: formattedPlanning,
+                achievements: achievements,
+                planning: planning,
                 timestamp: new Date()
             };
             
@@ -1595,10 +1549,7 @@
             planningInput.addEventListener('input', function() {
                 planning = this.value;
             });
-        }
-
-        // Initialize keyboard handlers
-        function initializeKeyboardHandlers() {
+        
             document.getElementById('shoutoutInput').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     addShoutout();
@@ -1633,3 +1584,4 @@
     </script>
 </body>
 </html>
+
