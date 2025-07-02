@@ -211,6 +211,158 @@
             border: 2px solid #93c5fd;
         }
 
+        /* PYRAMID DETAIL BREAKDOWN */
+        .pyramid-detail-section {
+            margin-bottom: 30px;
+        }
+
+        .pyramid-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .pyramid-detail-item {
+            background: rgba(255,255,255,0.8);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .pyramid-detail-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .pyramid-detail-item.alert-item {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, rgba(231,76,60,0.05), rgba(192,57,43,0.02));
+        }
+
+        .pyramid-detail-item.dont-know-item {
+            border-color: #f39c12;
+            background: linear-gradient(135deg, rgba(243,156,18,0.05), rgba(230,126,34,0.02));
+        }
+
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .detail-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .score-badge-large {
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            min-width: 45px;
+            text-align: center;
+        }
+
+        .dont-know-badge {
+            background: #f39c12;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .detail-stats {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .detail-notes {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* ACHIEVEMENTS & PLANNING SUMMARY */
+        .achievements-planning-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .person-summary {
+            background: linear-gradient(135deg, rgba(52,152,219,0.05), rgba(41,128,185,0.02));
+            border: 2px solid rgba(52,152,219,0.2);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .person-summary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(52,152,219,0.1);
+            border-color: rgba(52,152,219,0.4);
+        }
+
+        .person-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(52,152,219,0.1);
+        }
+
+        .person-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .person-role {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .achievement-section,
+        .planning-section {
+            margin-bottom: 15px;
+        }
+
+        .achievement-section h4 {
+            color: #27ae60;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .planning-section h4 {
+            color: #3498db;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .achievement-section p,
+        .planning-section p {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 0;
+        }
+
         /* TOPICS MANAGEMENT */
         .topics-section {
             display: grid;
@@ -372,24 +524,6 @@
             border-radius: 8px;
         }
 
-        .low-scores {
-            background: linear-gradient(135deg, rgba(231,76,60,0.1), rgba(192,57,43,0.05));
-            border: 2px solid #e74c3c;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-
-        .low-score-item {
-            padding: 10px;
-            margin-bottom: 8px;
-            background: rgba(255,255,255,0.7);
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
         .score-badge {
             background: #e74c3c;
             color: white;
@@ -530,17 +664,177 @@
                     <div>75% participation</div>
                 </div>
             </div>
+        </div>
 
-            <!-- LOW SCORES ALERT -->
-            <div class="low-scores">
-                <h3 style="color: #c0392b; margin-bottom: 15px;">🚨 Items Needing Attention (Score ≤ 4)</h3>
-                <div class="low-score-item">
-                    <span><strong>Stock Assessment</strong> - Multiple delays in data processing</span>
-                    <div class="score-badge">3.1</div>
+        <!-- DETAILED PYRAMID BREAKDOWN -->
+        <div class="card">
+            <h2>🔍 Detailed Priority Pyramid Breakdown</h2>
+            
+            <!-- CRITICAL LEVEL DETAILS -->
+            <div class="pyramid-detail-section">
+                <h3 style="color: #1e3a8a; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    🔵 CRITICAL - Major Projects & Events
+                </h3>
+                
+                <div class="pyramid-detail-grid">
+                    <div class="pyramid-detail-item">
+                        <div class="detail-header">
+                            <span class="detail-title">🚢 Research Vessel Deployment</span>
+                            <span class="score-badge-large" style="background: #27ae60;">7.2</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>8/8 participants</span> • <span>Progress: On Track</span>
+                        </div>
+                        <div class="detail-notes">Execute major oceanographic survey mission for fisheries assessment in the Southern Ocean region</div>
+                    </div>
+                    
+                    <div class="pyramid-detail-item alert-item">
+                        <div class="detail-header">
+                            <span class="detail-title">📊 Annual Stock Assessment</span>
+                            <span class="score-badge-large" style="background: #e74c3c;">3.1</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>8/8 participants</span> • <span style="color: #e74c3c;">Needs Attention</span>
+                        </div>
+                        <div class="detail-notes">Complete comprehensive fisheries stock assessment for key commercial species - <strong>Multiple delays reported</strong></div>
+                    </div>
                 </div>
-                <div class="low-score-item">
-                    <span><strong>Data QC</strong> - Quality issues with recent samples</span>
-                    <div class="score-badge">4.2</div>
+            </div>
+
+            <!-- IMPORTANT LEVEL DETAILS -->
+            <div class="pyramid-detail-section">
+                <h3 style="color: #3b82f6; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    🔵 IMPORTANT - Key Milestones
+                </h3>
+                
+                <div class="pyramid-detail-grid">
+                    <div class="pyramid-detail-item">
+                        <div class="detail-header">
+                            <span class="detail-title">🗓️ Q2 Field Survey</span>
+                            <span class="score-badge-large" style="background: #f39c12;">5.8</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>7/8 participants</span> • <span>Progress: Moderate</span>
+                        </div>
+                        <div class="detail-notes">Complete quarterly field data collection and sampling protocols</div>
+                    </div>
+                    
+                    <div class="pyramid-detail-item">
+                        <div class="detail-header">
+                            <span class="detail-title">📈 Statistical Analysis</span>
+                            <span class="score-badge-large" style="background: #27ae60;">8.1</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>6/8 participants</span> • <span>Progress: Excellent</span>
+                        </div>
+                        <div class="detail-notes">Finalize statistical models and analysis for population dynamics study</div>
+                    </div>
+                    
+                    <div class="pyramid-detail-item dont-know-item">
+                        <div class="detail-header">
+                            <span class="detail-title">📄 Research Publication</span>
+                            <span class="dont-know-badge">3 Don't Know</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>5/8 participants</span> • <span style="color: #f39c12;">Knowledge Gap</span>
+                        </div>
+                        <div class="detail-notes">Submit peer-reviewed manuscript to Journal of Marine Science - <strong>Training needed</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOUNDATIONAL LEVEL DETAILS -->
+            <div class="pyramid-detail-section">
+                <h3 style="color: #93c5fd; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    🔵 FOUNDATIONAL - Operations & Support
+                </h3>
+                
+                <div class="pyramid-detail-grid">
+                    <div class="pyramid-detail-item">
+                        <div class="detail-header">
+                            <span class="detail-title">🔧 Equipment Maintenance</span>
+                            <span class="score-badge-large" style="background: #27ae60;">7.9</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>6/8 participants</span> • <span>Progress: Good</span>
+                        </div>
+                        <div class="detail-notes">Regular calibration and maintenance of research instruments</div>
+                    </div>
+                    
+                    <div class="pyramid-detail-item alert-item">
+                        <div class="detail-header">
+                            <span class="detail-title">✅ Data Quality Control</span>
+                            <span class="score-badge-large" style="background: #e74c3c;">4.2</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>7/8 participants</span> • <span style="color: #e74c3c;">Needs Attention</span>
+                        </div>
+                        <div class="detail-notes">Ongoing data validation and quality assurance - <strong>Quality issues reported</strong></div>
+                    </div>
+                    
+                    <div class="pyramid-detail-item">
+                        <div class="detail-header">
+                            <span class="detail-title">📦 Procurement & Supplies</span>
+                            <span class="score-badge-large" style="background: #f39c12;">6.1</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>5/8 participants</span> • <span>Progress: Fair</span>
+                        </div>
+                        <div class="detail-notes">Equipment procurement and vendor relationships</div>
+                    </div>
+                    
+                    <div class="pyramid-detail-item dont-know-item">
+                        <div class="detail-header">
+                            <span class="detail-title">🎓 Team Training</span>
+                            <span class="dont-know-badge">4 Don't Know</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>4/8 participants</span> • <span style="color: #f39c12;">Knowledge Gap</span>
+                        </div>
+                        <div class="detail-notes">Staff training and professional development - <strong>Coordination needed</strong></div>
+                    </div>
+                    
+                    <div class="pyramid-detail-item">
+                        <div class="detail-header">
+                            <span class="detail-title">⛑️ Safety & Compliance</span>
+                            <span class="score-badge-large" style="background: #27ae60;">9.2</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>8/8 participants</span> • <span>Progress: Excellent</span>
+                        </div>
+                        <div class="detail-notes">Safety protocols and regulatory compliance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEAM SHOUTOUTS SUMMARY -->
+        <div class="card">
+            <h2>🎉 Team Shoutouts Summary</h2>
+            <div class="shoutouts-display">
+                <div class="shoutout-item">
+                    <strong>Sarah crushed the data analysis presentation!</strong> - Really impressed the stakeholders with clear visualizations and compelling insights
+                </div>
+                <div class="shoutout-item">
+                    <strong>Huge props to the field team</strong> - Collected samples ahead of schedule despite rough weather conditions
+                </div>
+                <div class="shoutout-item">
+                    <strong>Alex solved the server issue in record time</strong> - Prevented major data loss with quick thinking and 24/7 dedication
+                </div>
+                <div class="shoutout-item">
+                    <strong>Equipment maintenance team excellence</strong> - All instruments calibrated and ready for deployment, zero downtime
+                </div>
+                <div class="shoutout-item">
+                    <strong>Lisa's coordination skills</strong> - Seamlessly managed vessel logistics for 3 concurrent surveys
+                </div>
+                <div class="shoutout-item">
+                    <strong>Jennifer's quality focus is paying off</strong> - Caught critical data inconsistencies that could have affected results
+                </div>
+                <div class="shoutout-item">
+                    <strong>David's procurement efficiency</strong> - Got us the best equipment deals and saved 15% on Q1 budget
+                </div>
+                <div class="shoutout-item">
+                    <strong>Mark's innovative survey routes</strong> - New optimization reduced vessel time by 20% while improving data coverage
                 </div>
             </div>
         </div>
@@ -668,24 +962,99 @@
             </div>
         </div>
 
-        <!-- SHOUTOUTS SUMMARY -->
+               <!-- INDIVIDUAL ACHIEVEMENTS & PLANNING SUMMARY -->
         <div class="card">
-            <h2>🎉 Team Shoutouts Summary</h2>
-            <div class="shoutouts-display">
-                <div class="shoutout-item">
-                    <strong>Sarah crushed the data analysis presentation!</strong> - Really impressed the stakeholders with clear visualizations
+            <h2>🎯 Individual Achievements & Planning Summary</h2>
+            
+            <div class="achievements-planning-grid">
+                <div class="person-summary">
+                    <div class="person-header">
+                        <span class="person-name">Dr. Sarah Chen</span>
+                        <span class="person-role">Lead Marine Biologist</span>
+                    </div>
+                    <div class="achievement-section">
+                        <h4>✅ Last Period Achievements</h4>
+                        <p>Completed statistical analysis for population dynamics study, successfully calibrated new sonar equipment, and presented findings to stakeholder committee with excellent feedback.</p>
+                    </div>
+                    <div class="planning-section">
+                        <h4>🎯 This Period Goals</h4>
+                        <p>Focus on manuscript preparation for Journal of Marine Science, coordinate vessel deployment logistics, and mentor junior researchers on data analysis techniques.</p>
+                    </div>
                 </div>
-                <div class="shoutout-item">
-                    <strong>Huge props to the field team</strong> - Collected samples ahead of schedule despite rough weather
+
+                <div class="person-summary">
+                    <div class="person-header">
+                        <span class="person-name">Alex Rodriguez</span>
+                        <span class="person-role">Data Systems Manager</span>
+                    </div>
+                    <div class="achievement-section">
+                        <h4>✅ Last Period Achievements</h4>
+                        <p>Resolved critical server outage in record time, implemented new data backup protocols, and upgraded processing pipeline efficiency by 40%.</p>
+                    </div>
+                    <div class="planning-section">
+                        <h4>🎯 This Period Goals</h4>
+                        <p>Complete data quality control system overhaul, implement automated validation checks, and provide training on new QC procedures to field teams.</p>
+                    </div>
                 </div>
-                <div class="shoutout-item">
-                    <strong>Alex solved the server issue in record time</strong> - Prevented major data loss with quick thinking
+
+                <div class="person-summary">
+                    <div class="person-header">
+                        <span class="person-name">Dr. Michael Torres</span>
+                        <span class="person-role">Field Operations Coordinator</span>
+                    </div>
+                    <div class="achievement-section">
+                        <h4>✅ Last Period Achievements</h4>
+                        <p>Led successful field survey despite challenging weather conditions, collected 120% of target samples, and maintained perfect safety record across all deployments.</p>
+                    </div>
+                    <div class="planning-section">
+                        <h4>🎯 This Period Goals</h4>
+                        <p>Coordinate summer vessel scheduling, develop weather contingency protocols, and optimize survey route efficiency for Q2 operations.</p>
+                    </div>
                 </div>
-                <div class="shoutout-item">
-                    <strong>Equipment maintenance team excellence</strong> - All instruments calibrated and ready for deployment
+
+                <div class="person-summary">
+                    <div class="person-header">
+                        <span class="person-name">Lisa Park</span>
+                        <span class="person-role">Research Vessel Captain</span>
+                    </div>
+                    <div class="achievement-section">
+                        <h4>✅ Last Period Achievements</h4>
+                        <p>Successfully managed three concurrent vessel deployments, achieved 98% equipment uptime, and completed advanced navigation certification program.</p>
+                    </div>
+                    <div class="planning-section">
+                        <h4>🎯 This Period Goals</h4>
+                        <p>Lead research vessel deployment preparation, coordinate with international maritime authorities, and implement new positioning system upgrades.</p>
+                    </div>
                 </div>
-                <div class="shoutout-item">
-                    <strong>Lisa's coordination skills</strong> - Seamlessly managed vessel logistics for 3 concurrent surveys
+
+                <div class="person-summary">
+                    <div class="person-header">
+                        <span class="person-name">Dr. Jennifer Walsh</span>
+                        <span class="person-role">Quality Assurance Specialist</span>
+                    </div>
+                    <div class="achievement-section">
+                        <h4>✅ Last Period Achievements</h4>
+                        <p>Identified and resolved data inconsistencies in historical datasets, developed new validation protocols, and trained laboratory staff on quality standards.</p>
+                    </div>
+                    <div class="planning-section">
+                        <h4>🎯 This Period Goals</h4>
+                        <p>Address ongoing quality control issues, implement automated error detection systems, and establish cross-validation procedures with partner institutions.</p>
+                    </div>
+                </div>
+
+                <div class="person-summary">
+                    <div class="person-header">
+                        <span class="person-name">David Kim</span>
+                        <span class="person-role">Logistics & Procurement Manager</span>
+                    </div>
+                    <div class="achievement-section">
+                        <h4>✅ Last Period Achievements</h4>
+                        <p>Secured funding approval for new sonar equipment, negotiated favorable contracts with three key vendors, and streamlined procurement workflows by 25%.</p>
+                    </div>
+                    <div class="planning-section">
+                        <h4>🎯 This Period Goals</h4>
+                        <p>Finalize Q2 budget allocations, coordinate equipment deliveries for summer surveys, and establish backup supplier relationships for critical components.</p>
+                    </div>
                 </div>
             </div>
         </div>
