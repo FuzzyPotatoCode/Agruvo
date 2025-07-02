@@ -336,13 +336,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .rating-label {
-            font-weight: 600;
-            color: #555;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
         .slider-container {
             display: flex;
             align-items: center;
@@ -419,6 +412,17 @@
         }
 
         /* SHOUTOUTS SECTION */
+        .section-instructions {
+            background: rgba(52,152,219,0.1);
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #2980b9;
+            font-weight: 500;
+            text-align: center;
+        }
+
         .shoutout-form {
             margin-bottom: 20px;
         }
@@ -501,6 +505,74 @@
             box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
         }
 
+        .importance-section {
+            margin-top: 15px;
+        }
+
+        .importance-label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .importance-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .importance-slider {
+            flex: 1;
+            height: 8px;
+            border-radius: 4px;
+            background: #e0e0e0;
+            outline: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .importance-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .importance-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .importance-value {
+            background: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: bold;
+            min-width: 50px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .importance-indicators {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 15px;
+            padding: 0 10px;
+        }
+
         .time-estimate {
             display: flex;
             gap: 10px;
@@ -527,42 +599,6 @@
 
         .time-btn:hover {
             border-color: #3498db;
-        }
-
-        .emergency-toggle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .toggle-switch {
-            position: relative;
-            width: 40px;
-            height: 20px;
-            background: #ccc;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .toggle-switch.active {
-            background: #e74c3c;
-        }
-
-        .toggle-slider {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 16px;
-            height: 16px;
-            background: white;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .toggle-switch.active .toggle-slider {
-            transform: translateX(20px);
         }
 
         .btn-topic {
@@ -614,7 +650,7 @@
             font-size: 0.85rem;
         }
 
-        .time-badge {
+        .importance-badge {
             background: rgba(52,152,219,0.2);
             padding: 2px 8px;
             border-radius: 8px;
@@ -622,19 +658,12 @@
             font-weight: 500;
         }
 
-        .emergency-badge {
-            background: #e74c3c;
-            color: white;
+        .time-badge {
+            background: rgba(52,152,219,0.2);
             padding: 2px 8px;
             border-radius: 8px;
-            font-weight: bold;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            color: #3498db;
+            font-weight: 500;
         }
 
         .submit-all {
@@ -673,6 +702,71 @@
             color: #666;
             font-style: italic;
             padding: 20px;
+        }
+
+        /* ACHIEVEMENTS & PLANNING SECTION */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .achievement-column,
+        .planning-column {
+            background: rgba(46,204,113,0.05);
+            border: 2px solid #2ecc71;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .planning-column {
+            background: rgba(52,152,219,0.05);
+            border-color: #3498db;
+        }
+
+        .achievement-column h3,
+        .planning-column h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .achievement-input,
+        .planning-input {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+            font-family: inherit;
+            line-height: 1.4;
+        }
+
+        .achievement-input:focus {
+            outline: none;
+            border-color: #2ecc71;
+            box-shadow: 0 0 0 3px rgba(46,204,113,0.1);
+        }
+
+        .planning-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .achievements-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
         }
     </style>
 </head>
@@ -734,7 +828,6 @@
                     <div class="goal-title">🚢 Research Vessel Deployment</div>
                     <div class="goal-description">Execute major oceanographic survey mission for fisheries assessment in the Southern Ocean region</div>
                     <div class="rating-section">
-                        <div class="rating-label">Project Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
                         <div class="slider-container">
                             <input type="range" class="slider" min="0" max="10" value="" data-goal="vessel-deployment">
                             <div class="rating-value">-</div>
@@ -744,6 +837,12 @@
                             <span>🟡 Struggling</span>
                             <span>🟢 On Track</span>
                         </div>
+                        <div class="dont-know-checkbox" data-goal="vessel-deployment">
+                            <input type="checkbox" class="checkbox-input" id="dontknow-vessel-deployment">
+                            <label class="checkbox-label" for="dontknow-vessel-deployment">
+                                ❓ I don't know enough about this to give a rating
+                            </label>
+                        </div>
                         <textarea class="notes-input" placeholder="Add project notes, blockers, or tasks..." data-goal="vessel-deployment"></textarea>
                     </div>
                 </div>
@@ -752,15 +851,6 @@
                     <div class="goal-title">📊 Annual Stock Assessment</div>
                     <div class="goal-description">Complete comprehensive fisheries stock assessment for key commercial species</div>
                     <div class="rating-section">
-                        <div class="rating-label">Project Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
-                        
-                        <div class="dont-know-checkbox" data-goal="stock-assessment">
-                            <input type="checkbox" class="checkbox-input" id="dontknow-stock-assessment">
-                            <label class="checkbox-label" for="dontknow-stock-assessment">
-                                ❓ I don't know enough about this to give a rating
-                            </label>
-                        </div>
-                        
                         <div class="slider-section">
                             <div class="slider-container">
                                 <input type="range" class="slider" min="0" max="10" value="" data-goal="stock-assessment">
@@ -772,7 +862,12 @@
                                 <span>🟢 On Track</span>
                             </div>
                         </div>
-                        
+                        <div class="dont-know-checkbox" data-goal="stock-assessment">
+                            <input type="checkbox" class="checkbox-input" id="dontknow-stock-assessment">
+                            <label class="checkbox-label" for="dontknow-stock-assessment">
+                                ❓ I don't know enough about this to give a rating
+                            </label>
+                        </div>
                         <textarea class="notes-input" placeholder="Add project notes, blockers, or tasks..." data-goal="stock-assessment"></textarea>
                     </div>
                 </div>
@@ -789,7 +884,6 @@
                     <div class="goal-title">🗓️ Q2 Field Survey</div>
                     <div class="goal-description">Complete quarterly field data collection and sampling protocols</div>
                     <div class="rating-section">
-                        <div class="rating-label">Milestone Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
                         <div class="slider-container">
                             <input type="range" class="slider" min="0" max="10" value="" data-goal="q2-survey">
                             <div class="rating-value">-</div>
@@ -799,6 +893,12 @@
                             <span>🟡 Struggling</span>
                             <span>🟢 On Track</span>
                         </div>
+                        <div class="dont-know-checkbox" data-goal="q2-survey">
+                            <input type="checkbox" class="checkbox-input" id="dontknow-q2-survey">
+                            <label class="checkbox-label" for="dontknow-q2-survey">
+                                ❓ I don't know enough about this to give a rating
+                            </label>
+                        </div>
                         <textarea class="notes-input" placeholder="Add milestone notes, blockers, or tasks..." data-goal="q2-survey"></textarea>
                     </div>
                 </div>
@@ -807,7 +907,6 @@
                     <div class="goal-title">📈 Statistical Analysis Completion</div>
                     <div class="goal-description">Finalize statistical models and analysis for population dynamics study</div>
                     <div class="rating-section">
-                        <div class="rating-label">Milestone Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
                         <div class="slider-container">
                             <input type="range" class="slider" min="0" max="10" value="" data-goal="data-analysis">
                             <div class="rating-value">-</div>
@@ -817,6 +916,12 @@
                             <span>🟡 Struggling</span>
                             <span>🟢 On Track</span>
                         </div>
+                        <div class="dont-know-checkbox" data-goal="data-analysis">
+                            <input type="checkbox" class="checkbox-input" id="dontknow-data-analysis">
+                            <label class="checkbox-label" for="dontknow-data-analysis">
+                                ❓ I don't know enough about this to give a rating
+                            </label>
+                        </div>
                         <textarea class="notes-input" placeholder="Add milestone notes, blockers, or tasks..." data-goal="data-analysis"></textarea>
                     </div>
                 </div>
@@ -825,7 +930,6 @@
                     <div class="goal-title">📄 Research Publication</div>
                     <div class="goal-description">Submit peer-reviewed manuscript to Journal of Marine Science</div>
                     <div class="rating-section">
-                        <div class="rating-label">Milestone Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
                         <div class="slider-container">
                             <input type="range" class="slider" min="0" max="10" value="" data-goal="publication">
                             <div class="rating-value">-</div>
@@ -834,6 +938,12 @@
                             <span>🔴 Disaster</span>
                             <span>🟡 Struggling</span>
                             <span>🟢 On Track</span>
+                        </div>
+                        <div class="dont-know-checkbox" data-goal="publication">
+                            <input type="checkbox" class="checkbox-input" id="dontknow-publication">
+                            <label class="checkbox-label" for="dontknow-publication">
+                                ❓ I don't know enough about this to give a rating
+                            </label>
                         </div>
                         <textarea class="notes-input" placeholder="Add milestone notes, blockers, or tasks..." data-goal="publication"></textarea>
                     </div>
@@ -851,7 +961,6 @@
                     <div class="goal-title">🔧 Equipment Maintenance</div>
                     <div class="goal-description">Regular calibration and maintenance of research instruments and laboratory equipment</div>
                     <div class="rating-section">
-                        <div class="rating-label">Operations Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
                         <div class="slider-container">
                             <input type="range" class="slider" min="0" max="10" value="" data-goal="equipment-maintenance">
                             <div class="rating-value">-</div>
@@ -861,6 +970,12 @@
                             <span>🟡 Struggling</span>
                             <span>🟢 On Track</span>
                         </div>
+                        <div class="dont-know-checkbox" data-goal="equipment-maintenance">
+                            <input type="checkbox" class="checkbox-input" id="dontknow-equipment-maintenance">
+                            <label class="checkbox-label" for="dontknow-equipment-maintenance">
+                                ❓ I don't know enough about this to give a rating
+                            </label>
+                        </div>
                         <textarea class="notes-input" placeholder="Add operational notes, issues, or tasks..." data-goal="equipment-maintenance"></textarea>
                     </div>
                 </div>
@@ -869,7 +984,6 @@
                     <div class="goal-title">✅ Data Quality Control</div>
                     <div class="goal-description">Ongoing data validation, cleaning, and quality assurance processes</div>
                     <div class="rating-section">
-                        <div class="rating-label">Operations Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
                         <div class="slider-container">
                             <input type="range" class="slider" min="0" max="10" value="" data-goal="data-qc">
                             <div class="rating-value">-</div>
@@ -879,6 +993,12 @@
                             <span>🟡 Struggling</span>
                             <span>🟢 On Track</span>
                         </div>
+                        <div class="dont-know-checkbox" data-goal="data-qc">
+                            <input type="checkbox" class="checkbox-input" id="dontknow-data-qc">
+                            <label class="checkbox-label" for="dontknow-data-qc">
+                                ❓ I don't know enough about this to give a rating
+                            </label>
+                        </div>
                         <textarea class="notes-input" placeholder="Add operational notes, issues, or tasks..." data-goal="data-qc"></textarea>
                     </div>
                 </div>
@@ -887,7 +1007,6 @@
                     <div class="goal-title">📦 Procurement & Supplies</div>
                     <div class="goal-description">Equipment procurement, supply chain management, and vendor relationships</div>
                     <div class="rating-section">
-                        <div class="rating-label">Operations Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
                         <div class="slider-container">
                             <input type="range" class="slider" min="0" max="10" value="" data-goal="procurement">
                             <div class="rating-value">-</div>
@@ -897,6 +1016,12 @@
                             <span>🟡 Struggling</span>
                             <span>🟢 On Track</span>
                         </div>
+                        <div class="dont-know-checkbox" data-goal="procurement">
+                            <input type="checkbox" class="checkbox-input" id="dontknow-procurement">
+                            <label class="checkbox-label" for="dontknow-procurement">
+                                ❓ I don't know enough about this to give a rating
+                            </label>
+                        </div>
                         <textarea class="notes-input" placeholder="Add operational notes, issues, or tasks..." data-goal="procurement"></textarea>
                     </div>
                 </div>
@@ -905,7 +1030,6 @@
                     <div class="goal-title">🎓 Team Training & Development</div>
                     <div class="goal-description">Staff training, safety certifications, and professional development</div>
                     <div class="rating-section">
-                        <div class="rating-label">Operations Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
                         <div class="slider-container">
                             <input type="range" class="slider" min="0" max="10" value="" data-goal="training">
                             <div class="rating-value">-</div>
@@ -915,6 +1039,12 @@
                             <span>🟡 Struggling</span>
                             <span>🟢 On Track</span>
                         </div>
+                        <div class="dont-know-checkbox" data-goal="training">
+                            <input type="checkbox" class="checkbox-input" id="dontknow-training">
+                            <label class="checkbox-label" for="dontknow-training">
+                                ❓ I don't know enough about this to give a rating
+                            </label>
+                        </div>
                         <textarea class="notes-input" placeholder="Add operational notes, issues, or tasks..." data-goal="training"></textarea>
                     </div>
                 </div>
@@ -923,7 +1053,6 @@
                     <div class="goal-title">⛑️ Safety & Compliance</div>
                     <div class="goal-description">Safety protocols, regulatory compliance, and risk management</div>
                     <div class="rating-section">
-                        <div class="rating-label">Operations Status (0 = Crisis/Disaster, 10 = On Track/Success)</div>
                         <div class="slider-container">
                             <input type="range" class="slider" min="0" max="10" value="" data-goal="safety">
                             <div class="rating-value">-</div>
@@ -932,6 +1061,12 @@
                             <span>🔴 Disaster</span>
                             <span>🟡 Struggling</span>
                             <span>🟢 On Track</span>
+                        </div>
+                        <div class="dont-know-checkbox" data-goal="safety">
+                            <input type="checkbox" class="checkbox-input" id="dontknow-safety">
+                            <label class="checkbox-label" for="dontknow-safety">
+                                ❓ I don't know enough about this to give a rating
+                            </label>
                         </div>
                         <textarea class="notes-input" placeholder="Add operational notes, issues, or tasks..." data-goal="safety"></textarea>
                     </div>
@@ -942,6 +1077,9 @@
         <!-- SHOUTOUTS & HIGHLIGHTS -->
         <div class="card">
             <h2>🎉 Team Shoutouts & Research Highlights</h2>
+            <div class="section-instructions">
+                💬 These will be read aloud by the meeting chair
+            </div>
             <div class="shoutout-form">
                 <input type="text" class="shoutout-input" id="shoutoutInput" placeholder="Recognize a colleague or share a research breakthrough...">
                 <button class="btn-shoutout" onclick="addShoutout()">Add Shoutout</button>
@@ -954,12 +1092,28 @@
         <!-- MEETING TOPICS -->
         <div class="card">
             <h2>💬 Discussion Topics</h2>
-            <p style="color: #666; margin-bottom: 20px;">Topics that need discussion but aren't directly tied to our strategic objectives</p>
+            <p style="color: #666; margin-bottom: 10px;">Topics that need discussion but aren't directly tied to our strategic objectives</p>
+            <div class="section-instructions">
+                🗣️ You may be asked to speak about topics you submit
+            </div>
             
             <div class="topic-form">
                 <div class="form-group">
                     <label for="topicInput">Discussion Topic</label>
                     <input type="text" class="topic-input" id="topicInput" placeholder="What needs to be discussed?">
+                </div>
+
+                <div class="importance-section">
+                    <div class="importance-label">Topic Importance (1-10)</div>
+                    <div class="importance-slider-container">
+                        <input type="range" class="importance-slider" min="1" max="10" value="5" id="importanceSlider">
+                        <div class="importance-value" id="importanceValue">5</div>
+                    </div>
+                    <div class="importance-indicators">
+                        <span>🔵 Low Priority</span>
+                        <span>🟡 Medium Priority</span>
+                        <span>🔴 High Priority</span>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -973,18 +1127,29 @@
                     </div>
                 </div>
 
-                <div class="emergency-toggle">
-                    <div class="toggle-switch" id="emergencyToggle">
-                        <div class="toggle-slider"></div>
-                    </div>
-                    <label>🚨 Urgent Topic - Needs Immediate Attention</label>
-                </div>
-
                 <button class="btn-topic" onclick="addTopic()">Add Topic</button>
             </div>
             
             <div class="topics-list" id="topicsList">
                 <div class="empty-state">No discussion topics yet</div>
+            </div>
+        </div>
+
+        <!-- ACHIEVEMENTS & PLANNING -->
+        <div class="card">
+            <h2>🎯 Achievements & Planning</h2>
+            <p style="color: #666; margin-bottom: 20px;">Share your accomplishments and goals to keep the team aligned</p>
+            
+            <div class="achievements-grid">
+                <div class="achievement-column">
+                    <h3>✅ What I Achieved This Period</h3>
+                    <textarea class="achievement-input" id="achievementsInput" placeholder="Share your key accomplishments, completed tasks, milestones reached, or goals achieved since the last check-in..."></textarea>
+                </div>
+                
+                <div class="planning-column">
+                    <h3>🎯 What I Plan to Achieve Next Period</h3>
+                    <textarea class="planning-input" id="planningInput" placeholder="Outline your goals, planned tasks, upcoming milestones, or objectives for the next period..."></textarea>
+                </div>
             </div>
         </div>
 
@@ -999,7 +1164,9 @@
         let shoutouts = [];
         let topics = [];
         let selectedMinutes = 2;
-        let isEmergency = false;
+        let currentImportance = 5;
+        let achievements = '';
+        let planning = '';
 
         // Initialize sliders with no initial values
         function initializeSliders() {
@@ -1042,6 +1209,33 @@
                     updatePyramidOverview(goalId);
                 });
             });
+        }
+
+        // Initialize importance slider
+        function initializeImportanceSlider() {
+            const slider = document.getElementById('importanceSlider');
+            const valueDisplay = document.getElementById('importanceValue');
+            
+            slider.addEventListener('input', function() {
+                const value = parseInt(this.value);
+                valueDisplay.textContent = value;
+                updateImportanceSliderColor(valueDisplay, value);
+                currentImportance = value;
+            });
+            
+            // Set initial color
+            updateImportanceSliderColor(valueDisplay, 5);
+        }
+
+        // Color coding for importance slider
+        function updateImportanceSliderColor(element, value) {
+            if (value <= 3) {
+                element.style.background = '#3498db'; // Blue - low priority
+            } else if (value <= 7) {
+                element.style.background = '#f39c12'; // Orange - medium priority
+            } else {
+                element.style.background = '#e74c3c'; // Red - high priority
+            }
         }
 
         // Initialize don't know checkboxes
@@ -1167,8 +1361,16 @@
             const goalItems = document.querySelectorAll('.goal-item');
             
             goalItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    this.classList.toggle('selected');
+                item.addEventListener('click', function(e) {
+                    // Don't toggle if clicking on interactive elements
+                    if (e.target.matches('input, textarea, label, .checkbox-input, .checkbox-label, .dont-know-checkbox')) {
+                        return;
+                    }
+                    
+                    // Only toggle if clicking on the main item area
+                    if (e.target === this || e.target.matches('.goal-title, .goal-description')) {
+                        this.classList.toggle('selected');
+                    }
                 });
             });
         }
@@ -1209,16 +1411,6 @@
                     this.classList.add('active');
                     selectedMinutes = parseInt(this.dataset.minutes);
                 });
-            });
-        }
-
-        // Emergency toggle
-        function initializeEmergencyToggle() {
-            const toggle = document.getElementById('emergencyToggle');
-            
-            toggle.addEventListener('click', function() {
-                isEmergency = !isEmergency;
-                this.classList.toggle('active');
             });
         }
 
@@ -1266,8 +1458,8 @@
             if (text) {
                 topics.push({
                     title: text,
+                    importance: currentImportance,
                     estimatedMinutes: selectedMinutes,
-                    isEmergency: isEmergency,
                     author: 'You',
                     timestamp: new Date()
                 });
@@ -1280,12 +1472,17 @@
 
         // Reset topic form
         function resetTopicForm() {
-            isEmergency = false;
-            document.getElementById('emergencyToggle').classList.remove('active');
-            
             document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelector('.time-btn[data-minutes="2"]').classList.add('active');
             selectedMinutes = 2;
+            
+            // Reset importance slider
+            const slider = document.getElementById('importanceSlider');
+            const valueDisplay = document.getElementById('importanceValue');
+            slider.value = 5;
+            valueDisplay.textContent = 5;
+            updateImportanceSliderColor(valueDisplay, 5);
+            currentImportance = 5;
         }
 
         // Render topics
@@ -1298,9 +1495,7 @@
             }
             
             const sortedTopics = [...topics].sort((a, b) => {
-                if (a.isEmergency && !b.isEmergency) return -1;
-                if (!a.isEmergency && b.isEmergency) return 1;
-                return a.estimatedMinutes - b.estimatedMinutes;
+                return b.importance - a.importance; // Sort by importance (high to low)
             });
             
             container.innerHTML = sortedTopics.map(topic => `
@@ -1308,8 +1503,8 @@
                     <div class="topic-header">
                         <div class="topic-title">${topic.title}</div>
                         <div class="topic-meta">
+                            <div class="importance-badge">Priority: ${topic.importance}</div>
                             <div class="time-badge">${topic.estimatedMinutes}min</div>
-                            ${topic.isEmergency ? '<div class="emergency-badge">🚨 URGENT</div>' : ''}
                         </div>
                     </div>
                 </div>
@@ -1322,6 +1517,8 @@
                 goalRatings: goalRatings,
                 shoutouts: shoutouts,
                 topics: topics,
+                achievements: achievements,
+                planning: planning,
                 timestamp: new Date()
             };
             
@@ -1340,8 +1537,19 @@
             }, 3000);
         }
 
-        // Keyboard event handlers
-        function initializeKeyboardHandlers() {
+        // Initialize achievements tracking
+        function initializeAchievementsTracking() {
+            const achievementsInput = document.getElementById('achievementsInput');
+            const planningInput = document.getElementById('planningInput');
+            
+            achievementsInput.addEventListener('input', function() {
+                achievements = this.value;
+            });
+            
+            planningInput.addEventListener('input', function() {
+                planning = this.value;
+            });
+        
             document.getElementById('shoutoutInput').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     addShoutout();
@@ -1358,11 +1566,12 @@
         // Initialize everything when DOM loads
         document.addEventListener('DOMContentLoaded', function() {
             initializeSliders();
+            initializeImportanceSlider();
             initializeDontKnowCheckboxes();
             initializeGoalItems();
             initializeNotesTracking();
             initializeTimeButtons();
-            initializeEmergencyToggle();
+            initializeAchievementsTracking();
             initializeKeyboardHandlers();
             renderShoutouts();
             renderTopics();
@@ -1375,3 +1584,4 @@
     </script>
 </body>
 </html>
+
