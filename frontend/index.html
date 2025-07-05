@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <title>Agrovo - Transform Team Meetings</title>
     <style>
         * {
@@ -155,20 +157,6 @@
 
         .hero-content {
             max-width: 800px;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            color: white;
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-bottom: 30px;
-            animation: fadeInUp 0.6s ease 0.2s both;
         }
 
         .hero-title {
@@ -502,13 +490,15 @@
     <!-- Header -->
     <header class="header">
         <nav class="nav">
-            <a href="#" class="logo">Agrovo</a>
+            <a href="#" class="logo">
+                <img src="logo.png" alt="Agrovo Logo" style="height: 32px; width: auto; margin-right: 10px; vertical-align: middle;">
+                Agrovo
+            </a>
             <div class="nav-links">
                 <a href="#features" class="nav-link">Features</a>
                 <a href="#how-it-works" class="nav-link">How It Works</a>
-                <a href="#pricing" class="nav-link">Pricing</a>
                 <a href="#contact" class="nav-link">Contact</a>
-                <a href="#demo" class="cta-nav">Get Demo</a>
+                <a href="#login" class="nav-link">Login</a>
             </div>
         </nav>
     </header>
@@ -517,23 +507,18 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <div class="hero-badge">
-                    🚀 Transform chaotic check-ins into strategic excellence
-                </div>
                 <h1 class="hero-title">
-                    Strategic Team Meetings, <br>
-                    <span style="background: linear-gradient(135deg, #f093fb, #f5576c); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Intelligently Designed</span>
+                    Purpose. Clarity. <span style="background: linear-gradient(135deg, #f093fb, #f5576c); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Direction.</span>
                 </h1>
+                <div style="font-size: 1.3rem; color: rgba(255, 255, 255, 0.9); font-style: italic; margin-bottom: 25px;">
+                    Modern Meetings, with Agrovo.
+                </div>
                 <p class="hero-subtitle">
-                    A comprehensive meeting management platform that transforms chaotic team check-ins into structured, productive discussions with clear outcomes and unwavering accountability.
+                    Agrovo helps teams gather, align, and move forward — with thoughtful agendas, collaborative input, and progress everyone can see.
                 </p>
                 <div class="hero-buttons">
-                    <a href="#demo" class="btn-primary">
-                        🎯 Start Free Trial
-                        <span>→</span>
-                    </a>
-                    <a href="#how-it-works" class="btn-secondary">
-                        ▶ Watch Demo
+                    <a href="how-it-works.html" class="btn-secondary">
+                        ▶ See How It Works
                     </a>
                 </div>
             </div>
@@ -634,7 +619,7 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="cta-section">
+    <section class="cta-section" id="contact">
         <div class="container">
             <div class="cta-content scroll-reveal">
                 <h2 class="cta-title">Ready to Transform Your Meetings?</h2>
@@ -642,12 +627,9 @@
                     Join innovative teams who value structured communication, data-driven decisions, and inclusive participation.
                 </p>
                 <div class="hero-buttons">
-                    <a href="#demo" class="btn-primary">
-                        🚀 Start Your Free Trial
+                    <a href="#contact" class="btn-primary">
+                        Contact Us
                         <span>→</span>
-                    </a>
-                    <a href="#contact" class="btn-secondary">
-                        💬 Schedule Demo
                     </a>
                 </div>
             </div>
@@ -663,7 +645,7 @@
                     <a href="#" class="footer-link">Terms of Service</a>
                     <a href="#" class="footer-link">Documentation</a>
                     <a href="#" class="footer-link">Support</a>
-                    <a href="#" class="footer-link">Blog</a>
+                    <a href="#" class="footer-link">Contact</a>
                 </div>
                 <p>&copy; 2025 Agrovo. Built for teams who value structured communication and strategic alignment.</p>
             </div>
