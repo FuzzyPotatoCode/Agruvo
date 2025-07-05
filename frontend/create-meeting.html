@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Meeting - Agrovo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            cursor: pointer;
+        }
+
+        .form-help {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        /* Participant Selection */
+        .participant-section {
+            grid-column: 1 / -1;
+        }
+
+        .participant-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            border-color: #3498db;
+            background: #3498db;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Team Groups */
+        .team-groups {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .team-group {
+            background: rgba(52, 152, 219, 0.05);
+            border: 2px solid rgba(52, 152, 219, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .team-group:hover {
+            border-color: rgba(52, 152, 219, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .team-group.selected {
+            border-color: #3498db;
+            background: rgba(52, 152, 219, 0.15);
+        }
+
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .group-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .group-count {
+            background: #3498db;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .group-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .group-members {
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        /* Individual Selection */
+        .participant-search {
+            margin-bottom: 15px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .participant-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+        }
+
+        .participant-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .participant-item:hover {
+            background: #f8f9fa;
+        }
+
+        .participant-item:last-child {
+            border-bottom: none;
+        }
+
+        .participant-checkbox {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .participant-info {
+            flex: 1;
+        }
+
+        .participant-name {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 2px;
+        }
+
+        .participant-role {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .participant-email {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* Selected Participants Summary */
+        .selected-summary {
+            background: rgba(46, 204, 113, 0.05);
+            border: 2px solid rgba(46, 204, 113, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .summary-header {
+            font-weight: 600;
+            color: #27ae60;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .selected-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .selected-participant {
+            background: #27ae60;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .remove-participant {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0;
+            margin-left: 5px;
+        }
+
+        /* Meeting Settings */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .setting-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .setting-card:hover {
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+
+        .setting-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .setting-title {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .setting-icon {
+            font-size: 1.2rem;
+        }
+
+        .duration-presets {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .duration-preset {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .duration-preset.selected {
+            border-color: #3498db;
+            background: #3498db;
+            color: white;
+        }
+
+        .preset-time {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .preset-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* Survey Settings */
+        .survey-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* Notification Settings */
+        .notification-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .notification-label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .time-input {
+            width: 80px;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-draft {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-draft:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-groups {
+                grid-template-columns: 1fr;
+            }
+
+            .duration-presets {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease both;
+        }
+
+        /* Validation */
+        .form-input.error {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        .success-message {
+            color: #27ae60;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header fade-in-up">
+            <div class="header-left">
+                <div class="logo">Agrovo</div>
+                <div class="page-title">Create New Meeting</div>
+            </div>
+            <a href="dashboard.html" class="btn-secondary">
+                ← Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content fade-in-up">
+            <form id="newMeetingForm">
+                <div class="form-grid">
+                    <!-- Meeting Details -->
+                    <div class="form-section">
+                        <div class="section-title">📋 Meeting Details</div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Meeting Title *</label>
+                            <input type="text" class="form-input" id="meetingTitle" placeholder="e.g., Weekly Team Check-in" required>
+                            <div class="form-help">Choose a clear, descriptive title for your meeting</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Date & Time *</label>
+                            <input type="datetime-local" class="form-input" id="meetingDateTime" required>
+                            <div class="form-help">When should this meeting take place?</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Meeting Type</label>
+                            <select class="form-input form-select" id="meetingType">
+                                <option value="regular">Regular Team Meeting</option>
+                                <option value="strategic">Strategic Planning</option>
+                                <option value="emergency">Emergency Meeting</option>
+                                <option value="review">Review Session</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-input form-textarea" id="meetingDescription" placeholder="Meeting objectives, special notes, or agenda preview..."></textarea>
+                            <div class="form-help">Provide context to help participants prepare</div>
+                        </div>
+                    </div>
+
+                    <!-- Meeting Settings -->
+                    <div class="form-section">
+                        <div class="section-title">⚙️ Meeting Settings</div>
+                        
+                        <div class="setting-card">
+                            <div class="setting-header">
+                                <div class="setting-icon">⏱️</div>
+                                <div class="setting-title">Duration</div>
+                            </div>
+                            <div class="duration-presets">
+                                <div class="duration-preset" data-minutes="30">
+                                    <div class="preset-time">30</div>
+                                    <div class="preset-label">min</div>
+                                </div>
+                                <div class="duration-preset selected" data-minutes="60">
+                                    <div class="preset-time">60</div>
+                                    <div class="preset-label">min</div>
+                                </div>
+                                <div class="duration-preset" data-minutes="90">
+                                    <div class="preset-time">90</div>
+                                    <div class="preset-label">min</div>
+                                </div>
+                                <div class="duration-preset" data-minutes="120">
+                                    <div class="preset-time">120</div>
+                                    <div class="preset-label">min</div>
+                                </div>
+                                <div class="duration-preset" data-minutes="custom">
+                                    <div class="preset-time">Custom</div>
+                                </div>
+                            </div>
+                            <input type="number" class="form-input" id="customDuration" placeholder="Custom minutes" style="display: none;">
+                        </div>
+
+                        <div class="setting-card">
+                            <div class="setting-header">
+                                <div class="setting-icon">📧</div>
+                                <div class="setting-title">Survey Settings</div>
+                            </div>
+                            <div class="survey-options">
+                                <div class="option-group">
+                                    <input type="checkbox" class="checkbox-input" id="autoSendSurvey" checked>
+                                    <label class="checkbox-label" for="autoSendSurvey">Auto-send survey after creation</label>
+                                </div>
+                                <div class="option-group">
+                                    <input type="checkbox" class="checkbox-input" id="allowAnonymous">
+                                    <label class="checkbox-label" for="allowAnonymous">Allow anonymous responses</label>
+                                </div>
+                                <div class="option-group">
+                                    <input type="checkbox" class="checkbox-input" id="requireAllResponses" checked>
+                                    <label class="checkbox-label" for="requireAllResponses">Require responses from all participants</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setting-card">
+                            <div class="setting-header">
+                                <div class="setting-icon">🔔</div>
+                                <div class="setting-title">Notifications</div>
+                            </div>
+                            <div class="notification-grid">
+                                <div class="notification-label">Survey reminder</div>
+                                <input type="number" class="time-input" value="24" min="1" max="168"> hours before
+                            </div>
+                            <div class="notification-grid">
+                                <div class="notification-label">Meeting reminder</div>
+                                <input type="number" class="time-input" value="2" min="1" max="24"> hours before
+                            </div>
+                            <div class="option-group">
+                                <input type="checkbox" class="checkbox-input" id="sendFollowUp" checked>
+                                <label class="checkbox-label" for="sendFollowUp">Send follow-up summary</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Participant Selection -->
+                <div class="form-section participant-section">
+                    <div class="section-title">👥 Select Participants</div>
+                    
+                    <div class="participant-tabs">
+                        <button type="button" class="tab-button active" data-tab="groups">Team Groups</button>
+                        <button type="button" class="tab-button" data-tab="individual">Individual Selection</button>
+                        <button type="button" class="tab-button" data-tab="external">External Participants</button>
+                    </div>
+
+                    <!-- Team Groups Tab -->
+                    <div class="tab-content active" id="groups-tab">
+                        <div class="team-groups">
+                            <div class="team-group" data-group="research-team">
+                                <div class="group-header">
+                                    <div class="group-name">Research Team</div>
+                                    <div class="group-count">8</div>
+                                </div>
+                                <div class="group-description">Core research scientists and field operators</div>
+                                <div class="group-members">Dr. Chen, Alex Rodriguez, Dr. Torres, Lisa Park...</div>
+                            </div>
+
+                            <div class="team-group" data-group="leadership">
+                                <div class="group-header">
+                                    <div class="group-name">Leadership Team</div>
+                                    <div class="group-count">5</div>
+                                </div>
+                                <div class="group-description">Department heads and senior management</div>
+                                <div class="group-members">Dr. Johnson, Maria Santos, David Kim...</div>
+                            </div>
+
+                            <div class="team-group" data-group="data-team">
+                                <div class="group-header">
+                                    <div class="group-name">Data & Analytics</div>
+                                    <div class="group-count">6</div>
+                                </div>
+                                <div class="group-description">Data scientists and quality assurance specialists</div>
+                                <div class="group-members">Jennifer Walsh, Mark Stevens, Anna Lee...</div>
+                            </div>
+
+                            <div class="team-group" data-group="operations">
+                                <div class="group-header">
+                                    <div class="group-name">Operations Team</div>
+                                    <div class="group-count">12</div>
+                                </div>
+                                <div class="group-description">Logistics, procurement, and support staff</div>
+                                <div class="group-members">David Kim, Sarah Mitchell, Tom Bradley...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Individual Selection Tab -->
+                    <div class="tab-content" id="individual-tab">
+                        <div class="participant-search">
+                            <input type="text" class="search-input" placeholder="Search by name, role, or email..." id="participantSearch">
+                        </div>
+                        <div class="participant-list" id="participantList">
+                            <div class="participant-item" data-id="user-1">
+                                <input type="checkbox" class="participant-checkbox">
+                                <div class="participant-info">
+                                    <div class="participant-name">Dr. Sarah Chen</div>
+                                    <div class="participant-role">Lead Marine Biologist</div>
+                                    <div class="participant-email">s.chen@research.org</div>
+                                </div>
+                            </div>
+                            <div class="participant-item" data-id="user-2">
+                                <input type="checkbox" class="participant-checkbox">
+                                <div class="participant-info">
+                                    <div class="participant-name">Alex Rodriguez</div>
+                                    <div class="participant-role">Data Systems Manager</div>
+                                    <div class="participant-email">a.rodriguez@research.org</div>
+                                </div>
+                            </div>
+                            <div class="participant-item" data-id="user-3">
+                                <input type="checkbox" class="participant-checkbox">
+                                <div class="participant-info">
+                                    <div class="participant-name">Dr. Michael Torres</div>
+                                    <div class="participant-role">Field Operations Coordinator</div>
+                                    <div class="participant-email">m.torres@research.org</div>
+                                </div>
+                            </div>
+                            <div class="participant-item" data-id="user-4">
+                                <input type="checkbox" class="participant-checkbox">
+                                <div class="participant-info">
+                                    <div class="participant-name">Lisa Park</div>
+                                    <div class="participant-role">Research Vessel Captain</div>
+                                    <div class="participant-email">l.park@research.org</div>
+                                </div>
+                            </div>
+                            <div class="participant-item" data-id="user-5">
+                                <input type="checkbox" class="participant-checkbox">
+                                <div class="participant-info">
+                                    <div class="participant-name">Dr. Jennifer Walsh</div>
+                                    <div class="participant-role">Quality Assurance Specialist</div>
+                                    <div class="participant-email">j.walsh@research.org</div>
+                                </div>
+                            </div>
+                            <div class="participant-item" data-id="user-6">
+                                <input type="checkbox" class="participant-checkbox">
+                                <div class="participant-info">
+                                    <div class="participant-name">David Kim</div>
+                                    <div class="participant-role">Logistics & Procurement Manager</div>
+                                    <div class="participant-email">d.kim@research.org</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- External Participants Tab -->
+                    <div class="tab-content" id="external-tab">
+                        <div class="form-group">
+                            <label class="form-label">External Email Addresses</label>
+                            <textarea class="form-input form-textarea" placeholder="Enter email addresses separated by commas or new lines...&#10;&#10;example@university.edu&#10;consultant@company.com&#10;partner@organization.org"></textarea>
+                            <div class="form-help">Add external participants who aren't part of your regular team</div>
+                        </div>
+                    </div>
+
+                    <!-- Selected Participants Summary -->
+                    <div class="selected-summary" id="selectedSummary" style="display: none;">
+                        <div class="summary-header">
+                            ✅ Selected Participants (<span id="participantCount">0</span>)
+                        </div>
+                        <div class="selected-list" id="selectedList"></div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button type="button" class="btn-draft" onclick="saveDraft()">
+                        💾 Save as Draft
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        🚀 Create Meeting & Send Survey
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let selectedParticipants = new Set();
+        let selectedGroups = new Set();
+        let meetingDuration = 60;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTabs();
+            initializeDurationPresets();
+            initializeParticipantSelection();
+            initializeSearch();
+            setDefaultDateTime();
+        });
+
+        // Tab functionality
+        function initializeTabs() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.dataset.tab;
+                    
+                    // Update active button
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Update active content
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(targetTab + '-tab').classList.add('active');
+                });
+            });
+        }
+
+        // Duration presets
+        function initializeDurationPresets() {
+            const presets = document.querySelectorAll('.duration-preset');
+            const customInput = document.getElementById('customDuration');
+
+            presets.forEach(preset => {
+                preset.addEventListener('click', () => {
+                    presets.forEach(p => p.classList.remove('selected'));
+                    preset.classList.add('selected');
+                    
+                    const minutes = preset.dataset.minutes;
+                    if (minutes === 'custom') {
+                        customInput.style.display = 'block';
+                        customInput.focus();
+                    } else {
+                        customInput.style.display = 'none';
+                        meetingDuration = parseInt(minutes);
+                    }
+                });
+            });
+
+            customInput.addEventListener('input', () => {
+                meetingDuration = parseInt(customInput.value) || 60;
+            });
+        }
+
+        // Participant selection
+        function initializeParticipantSelection() {
+            // Team group selection
+            const teamGroups = document.querySelectorAll('.team-group');
+            teamGroups.forEach(group => {
+                group.addEventListener('click', () => {
+                    const groupId = group.dataset.group;
+                    
+                    if (selectedGroups.has(groupId)) {
+                        selectedGroups.delete(groupId);
+                        group.classList.remove('selected');
+                    } else {
+                        selectedGroups.add(groupId);
+                        group.classList.add('selected');
+                    }
+                    
+                    updateSelectedSummary();
+                });
+            });
+
+            // Individual participant selection
+            const participantItems = document.querySelectorAll('.participant-item');
+            participantItems.forEach(item => {
+                const checkbox = item.querySelector('.participant-checkbox');
+                
+                item.addEventListener('click', (e) => {
+                    if (e.target !== checkbox) {
+                        checkbox.checked = !checkbox.checked;
+                    }
+                    
+                    const participantId = item.dataset.id;
+                    const participantName = item.querySelector('.participant-name').textContent;
+                    
+                    if (checkbox.checked) {
+                        selectedParticipants.add(JSON.stringify({
+                            id: participantId,
+                            name: participantName
+                        }));
+                    } else {
+                        selectedParticipants.forEach(p => {
+                            if (JSON.parse(p).id === participantId) {
+                                selectedParticipants.delete(p);
+                            }
+                        });
+                    }
+                    
+                    updateSelectedSummary();
+                });
+            });
+        }
+
+        // Search functionality
+        function initializeSearch() {
+            const searchInput = document.getElementById('participantSearch');
+            const participantItems = document.querySelectorAll('.participant-item');
+
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                
+                participantItems.forEach(item => {
+                    const name = item.querySelector('.participant-name').textContent.toLowerCase();
+                    const role = item.querySelector('.participant-role').textContent.toLowerCase();
+                    const email = item.querySelector('.participant-email').textContent.toLowerCase();
+                    
+                    if (name.includes(searchTerm) || role.includes(searchTerm) || email.includes(searchTerm)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Update selected participants summary
+        function updateSelectedSummary() {
+            const summary = document.getElementById('selectedSummary');
+            const countElement = document.getElementById('participantCount');
+            const listElement = document.getElementById('selectedList');
+            
+            let totalCount = 0;
+            let displayItems = [];
+
+            // Add selected groups
+            selectedGroups.forEach(groupId => {
+                const groupElement = document.querySelector(`[data-group="${groupId}"]`);
+                if (groupElement) {
+                    const groupName = groupElement.querySelector('.group-name').textContent;
+                    const groupCount = parseInt(groupElement.querySelector('.group-count').textContent);
+                    totalCount += groupCount;
+                    displayItems.push({ name: groupName, type: 'group', id: groupId });
+                }
+            });
+
+            // Add individual participants
+            selectedParticipants.forEach(participantStr => {
+                const participant = JSON.parse(participantStr);
+                totalCount++;
+                displayItems.push({ name: participant.name, type: 'individual', id: participant.id });
+            });
+
+            // Update display
+            if (totalCount > 0) {
+                summary.style.display = 'block';
+                countElement.textContent = totalCount;
+                
+                listElement.innerHTML = displayItems.map(item => `
+                    <div class="selected-participant">
+                        ${item.type === 'group' ? '👥' : '👤'} ${item.name}
+                        <button type="button" class="remove-participant" onclick="removeSelection('${item.type}', '${item.id}')">×</button>
+                    </div>
+                `).join('');
+            } else {
+                summary.style.display = 'none';
+            }
+        }
+
+        // Remove selection
+        function removeSelection(type, id) {
+            if (type === 'group') {
+                selectedGroups.delete(id);
+                document.querySelector(`[data-group="${id}"]`).classList.remove('selected');
+            } else {
+                selectedParticipants.forEach(p => {
+                    if (JSON.parse(p).id === id) {
+                        selectedParticipants.delete(p);
+                        const checkbox = document.querySelector(`[data-id="${id}"] .participant-checkbox`);
+                        if (checkbox) checkbox.checked = false;
+                    }
+                });
+            }
+            updateSelectedSummary();
+        }
+
+        // Set default date/time
+        function setDefaultDateTime() {
+            const now = new Date();
+            now.setDate(now.getDate() + 1); // Tomorrow
+            now.setHours(14, 0, 0, 0); // 2:00 PM
+            
+            const dateTimeInput = document.getElementById('meetingDateTime');
+            dateTimeInput.value = now.toISOString().slice(0, 16);
+        }
+
+        // Form validation
+        function validateForm() {
+            const title = document.getElementById('meetingTitle').value.trim();
+            const dateTime = document.getElementById('meetingDateTime').value;
+            
+            let isValid = true;
+            
+            if (!title) {
+                showError('meetingTitle', 'Meeting title is required');
+                isValid = false;
+            }
+            
+            if (!dateTime) {
+                showError('meetingDateTime', 'Meeting date and time is required');
+                isValid = false;
+            }
+            
+            if (selectedGroups.size === 0 && selectedParticipants.size === 0) {
+                alert('Please select at least one participant or group');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        // Show error
+        function showError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            field.classList.add('error');
+            
+            // Remove existing error message
+            const existingError = field.parentNode.querySelector('.error-message');
+            if (existingError) existingError.remove();
+            
+            // Add error message
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            field.parentNode.appendChild(errorDiv);
+            
+            // Remove error styling after user starts typing
+            field.addEventListener('input', () => {
+                field.classList.remove('error');
+                if (errorDiv) errorDiv.remove();
+            });
+        }
+
+        // Save as draft
+        function saveDraft() {
+            const formData = collectFormData();
+            formData.status = 'draft';
+            
+            console.log('Saving draft:', formData);
+            alert('Meeting saved as draft!');
+            
+            // Redirect to dashboard
+            window.location.href = 'dashboard.html';
+        }
+
+        // Collect form data
+        function collectFormData() {
+            return {
+                title: document.getElementById('meetingTitle').value,
+                dateTime: document.getElementById('meetingDateTime').value,
+                type: document.getElementById('meetingType').value,
+                description: document.getElementById('meetingDescription').value,
+                duration: meetingDuration,
+                selectedGroups: Array.from(selectedGroups),
+                selectedParticipants: Array.from(selectedParticipants).map(p => JSON.parse(p)),
+                autoSendSurvey: document.getElementById('autoSendSurvey').checked,
+                allowAnonymous: document.getElementById('allowAnonymous').checked,
+                requireAllResponses: document.getElementById('requireAllResponses').checked,
+                sendFollowUp: document.getElementById('sendFollowUp').checked
+            };
+        }
+
+        // Form submission
+        document.getElementById('newMeetingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) return;
+            
+            const formData = collectFormData();
+            formData.status = 'scheduled';
+            
+            console.log('Creating meeting:', formData);
+            
+            // Show success message
+            alert('Meeting created successfully! Survey will be sent to participants.');
+            
+            // Redirect to dashboard
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>
