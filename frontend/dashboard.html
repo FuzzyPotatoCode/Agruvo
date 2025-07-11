@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agruvo Dashboard</title>
+    <title>Agrovo Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -431,76 +431,6 @@
             font-size: 0.9rem;
         }
 
-        /* Modals */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            display: none;
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        .modal-header {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            font-weight: 600;
-            color: #555;
-            margin-bottom: 8px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-        }
-
-        .form-textarea {
-            min-height: 100px;
-            resize: vertical;
-            font-family: inherit;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-            margin-top: 30px;
-        }
-
         /* Priority Pyramid Styles */
         .pyramid-overview {
             display: flex;
@@ -558,84 +488,6 @@
             color: #333;
         }
 
-        .completion-indicator {
-            position: absolute;
-            bottom: -8px;
-            right: -8px;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            border: 2px solid white;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .status-complete {
-            background: #27ae60;
-            color: white;
-        }
-
-        .status-alert {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .status-dont-know {
-            background: #f39c12;
-            color: white;
-        }
-
-        .pyramid-stats {
-            display: none;
-        }
-
-        .level-stat {
-            text-align: center;
-            padding: 20px;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .level-stat:hover {
-            transform: translateY(-2px);
-        }
-
-        .critical-stat {
-            background: linear-gradient(135deg, rgba(30,58,138,0.1), rgba(30,64,175,0.05));
-            border: 2px solid rgba(30,58,138,0.3);
-        }
-
-        .important-stat {
-            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(37,99,235,0.05));
-            border: 2px solid rgba(59,130,246,0.3);
-        }
-
-        .foundational-stat {
-            background: linear-gradient(135deg, rgba(147,197,253,0.1), rgba(96,165,250,0.05));
-            border: 2px solid rgba(147,197,253,0.3);
-        }
-
-        .level-stat h4 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
-
-        .level-stat .stat-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .stat-detail {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
         .pyramid-legend {
             display: flex;
             justify-content: center;
@@ -664,22 +516,6 @@
             border-radius: 4px;
         }
 
-        .legend-status {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .pyramid-item {
-                min-width: 140px;
-                font-size: 0.8rem;
-            }
-
-            .pyramid-legend {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-        }
         @media (max-width: 1200px) {
             .main-grid {
                 grid-template-columns: 1fr;
@@ -717,6 +553,11 @@
 
             .meeting-actions {
                 flex-wrap: wrap;
+            }
+
+            .pyramid-item {
+                min-width: 140px;
+                font-size: 0.8rem;
             }
         }
 
@@ -759,10 +600,10 @@
         <!-- Header -->
         <div class="header fade-in-up">
             <div class="header-left">
-                <div class="logo">Agruvo</div>
+                <div class="logo">Agrovo</div>
                 <div class="user-info">
-                    <div class="welcome-text">Welcome back, John</div>
-                    <div class="user-role">...</div>
+                    <div class="welcome-text">Welcome back, Dr. Sarah Chen</div>
+                    <div class="user-role">Research Team Lead</div>
                 </div>
             </div>
             <div class="header-actions">
@@ -873,7 +714,7 @@
                 <div class="card fade-in-up">
                     <div class="card-header">
                         <div class="card-title">📅 Upcoming Meetings</div>
-                        <button class="card-action" onclick="createNewMeeting()">Schedule New</button>
+                        <button class="card-action" data-page="create-meeting.html">Schedule New</button>
                     </div>
                     <div class="meeting-list">
                         <div class="meeting-item upcoming">
@@ -986,32 +827,37 @@
                         <div class="card-title">⚡ Quick Actions</div>
                     </div>
                     <div class="quick-actions">
-                        <div class="action-card" onclick="createNewMeeting()">
+                        <div class="action-card" data-page="create-meeting.html">
                             <div class="action-icon">➕</div>
                             <div class="action-title">New Meeting</div>
                             <div class="action-description">Create a new team meeting</div>
                         </div>
-                        <div class="action-card" onclick="openPyramidEditor()">
+                        
+                        <div class="action-card" data-page="pyramid-editor.html">
                             <div class="action-icon">🔺</div>
                             <div class="action-title">Edit Pyramid</div>
                             <div class="action-description">Configure priority levels</div>
                         </div>
-                        <div class="action-card" onclick="manageTeam()">
+                        
+                        <div class="action-card" data-page="team-management.html">
                             <div class="action-icon">👥</div>
                             <div class="action-title">Manage Team</div>
                             <div class="action-description">Add or remove members</div>
                         </div>
-                        <div class="action-card" onclick="openSettings()">
+                        
+                        <div class="action-card" data-page="settings.html">
                             <div class="action-icon">⚙️</div>
                             <div class="action-title">Settings</div>
                             <div class="action-description">Configure preferences</div>
                         </div>
-                        <div class="action-card" onclick="exportReports()">
+                        
+                        <div class="action-card" data-page="reports.html">
                             <div class="action-icon">📊</div>
                             <div class="action-title">Export Reports</div>
                             <div class="action-description">Download meeting data</div>
                         </div>
-                        <div class="action-card" onclick="viewAnalytics()">
+                        
+                        <div class="action-card" data-page="analytics.html">
                             <div class="action-icon">📈</div>
                             <div class="action-title">Analytics</div>
                             <div class="action-description">View team insights</div>
@@ -1023,7 +869,7 @@
                 <div class="card fade-in-up">
                     <div class="card-header">
                         <div class="card-title">👥 Team Overview</div>
-                        <button class="card-action" onclick="manageTeam()">Manage</button>
+                        <button class="card-action" data-page="team-management.html">Manage</button>
                     </div>
                     <div class="settings-item">
                         <div class="settings-label">Active Members</div>
@@ -1046,109 +892,70 @@
         </div>
     </div>
 
-    <!-- Create Meeting Modal -->
-    <div class="modal-overlay" id="createMeetingModal">
-        <div class="modal">
-            <div class="modal-header">➕ Create New Meeting</div>
-            <form id="createMeetingForm">
-                <div class="form-group">
-                    <label class="form-label">Meeting Title</label>
-                    <input type="text" class="form-input" placeholder="e.g., Weekly Team Check-in" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Date & Time</label>
-                    <input type="datetime-local" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Duration (minutes)</label>
-                    <input type="number" class="form-input" value="60" min="15" max="240">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Description</label>
-                    <textarea class="form-input form-textarea" placeholder="Meeting objectives and any special notes..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Participants</label>
-                    <textarea class="form-input" placeholder="Enter email addresses separated by commas"></textarea>
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-secondary" onclick="closeModal('createMeetingModal')">Cancel</button>
-                    <button type="submit" class="btn-primary">Create Meeting</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <script>
-        // Dashboard functionality
-        function createNewMeeting() {
-            document.getElementById('createMeetingModal').style.display = 'flex';
-        }
+        // Method 2: Clean navigation using data attributes
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
+        // Meeting-specific functions that still need IDs
         function viewResults(meetingId) {
-            // Navigate to results page
             window.location.href = `meeting-dashboard.html?meeting=${meetingId}`;
         }
 
         function buildAgenda(meetingId) {
-            // Navigate to agenda builder
             window.location.href = `meeting-agenda.html?meeting=${meetingId}`;
         }
 
         function editMeeting(meetingId) {
-            // Open edit modal or navigate to edit page
-            alert(`Edit meeting ${meetingId}`);
+            window.location.href = `create-meeting.html?edit=${meetingId}`;
         }
 
         function deleteMeeting(meetingId) {
             if (confirm('Are you sure you want to delete this meeting?')) {
-                // Delete meeting logic
                 alert(`Meeting ${meetingId} deleted`);
+                // Would typically refresh the page or remove the item
             }
         }
 
         function sendSurvey(meetingId) {
-            // Send survey to participants
-            alert(`Survey sent for meeting ${meetingId}`);
+            window.location.href = `survey-management.html?meeting=${meetingId}`;
         }
 
         function viewSummary(meetingId) {
-            // View meeting summary
-            alert(`View summary for ${meetingId}`);
+            window.location.href = `meeting-summary.html?meeting=${meetingId}`;
         }
 
         function exportSummary(meetingId) {
-            // Export meeting summary
-            alert(`Export summary for ${meetingId}`);
+            window.location.href = `export.html?meeting=${meetingId}&type=summary`;
         }
 
-        function openPyramidEditor() {
-            // Navigate to pyramid configuration
-            window.location.href = 'pyramid-editor.html';
+        function viewAllMeetings() {
+            window.location.href = 'meetings.html';
         }
 
-        function manageTeam() {
-            // Navigate to team management
-            alert('Team management page');
-        }
+        // Initialize navigation using data attributes
+        function initializeQuickActions() {
+            const actionCards = document.querySelectorAll('.action-card');
+            const cardActions = document.querySelectorAll('.card-action');
+            
+            // Handle action cards
+            actionCards.forEach(card => {
+                const page = card.dataset.page;
+                if (page) {
+                    card.addEventListener('click', () => {
+                        window.location.href = page;
+                    });
+                    card.style.cursor = 'pointer';
+                }
+            });
 
-        function exportReports() {
-            // Export all meeting reports
-            alert('Export reports functionality');
-        }
-
-        function openSettings() {
-            // Open settings panel
-            alert('Settings panel');
-        }
-
-        function viewAnalytics() {
-            // Navigate to analytics dashboard
-            alert('Analytics dashboard');
+            // Handle card action buttons
+            cardActions.forEach(button => {
+                const page = button.dataset.page;
+                if (page) {
+                    button.addEventListener('click', () => {
+                        window.location.href = page;
+                    });
+                }
+            });
         }
 
         function logout() {
@@ -1157,41 +964,11 @@
             }
         }
 
-        function viewAllMeetings() {
-            // Navigate to all meetings view
-            alert('View all meetings');
-        }
-
-        // Form handling
-        document.getElementById('createMeetingForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Collect form data
-            const formData = new FormData(this);
-            
-            // Process form submission
-            alert('Meeting created successfully!');
-            
-            // Close modal and refresh
-            closeModal('createMeetingModal');
-            
-            // Simulate adding new meeting to the list
-            setTimeout(() => {
-                location.reload();
-            }, 1000);
-        });
-
-        // Click outside modal to close
-        document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            overlay.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    this.style.display = 'none';
-                }
-            });
-        });
-
-        // Initialize dashboard
+        // Initialize everything when DOM loads
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize quick action navigation
+            initializeQuickActions();
+
             // Add entrance animations
             setTimeout(() => {
                 document.querySelectorAll('.fade-in-up').forEach((el, index) => {
@@ -1201,7 +978,6 @@
 
             // Simulate real-time updates
             setInterval(() => {
-                // Update response counts, time remaining, etc.
                 console.log('Updating dashboard data...');
             }, 30000);
         });
@@ -1212,11 +988,11 @@
                 switch(e.key) {
                     case 'n':
                         e.preventDefault();
-                        createNewMeeting();
+                        window.location.href = 'create-meeting.html';
                         break;
                     case 'p':
                         e.preventDefault();
-                        openPyramidEditor();
+                        window.location.href = 'pyramid-editor.html';
                         break;
                 }
             }
