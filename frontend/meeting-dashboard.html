@@ -183,31 +183,33 @@
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 25px;
-            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(41, 128, 185, 0.05));
+            border: 2px solid rgba(52, 152, 219, 0.2);
+            border-radius: 15px;
+            padding: 20px;
             text-align: center;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
             transition: all 0.3s ease;
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            border-color: rgba(52, 152, 219, 0.4);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.15);
         }
 
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3498db;
+            margin-bottom: 5px;
         }
 
         .stat-label {
             font-size: 0.9rem;
-            opacity: 0.9;
+            color: #666;
+            font-weight: 500;
         }
-
+        
         /* Pyramid Overview */
         .pyramid-dashboard {
             display: grid;
@@ -343,7 +345,7 @@
             font-weight: 700;
         }
 
-        .level-stat .stat-value {
+        .level-stat .stat-number {
             font-size: 2rem;
             font-weight: bold;
             color: #333;
@@ -839,27 +841,27 @@
             <h2>📈 Participation Statistics</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-value">87%</div>
+                    <div class="stat-number">87%</div>
                     <div class="stat-label">Response Rate</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">23</div>
+                    <div class="stat-number">23</div>
                     <div class="stat-label">Discussion Topics</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">15</div>
+                    <div class="stat-number">15</div>
                     <div class="stat-label">Team Shoutouts</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">4</div>
+                    <div class="stat-number">4</div>
                     <div class="stat-label">Emergency Items</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">6.8</div>
+                    <div class="stat-number">6.8</div>
                     <div class="stat-label">Avg Team Health</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">12%</div>
+                    <div class="stat-number">12%</div>
                     <div class="stat-label">"Don't Know" Rate</div>
                 </div>
             </div>
@@ -919,24 +921,6 @@
                     </div>
                 </div>
                 <div></div>
-            </div>
-
-            <div class="pyramid-stats">
-                <div class="level-stat critical-stat">
-                    <h3>Critical Projects</h3>
-                    <div class="stat-value">5.2</div>
-                    <div class="stat-detail">100% participation</div>
-                </div>
-                <div class="level-stat important-stat">
-                    <h3>Important Milestones</h3>
-                    <div class="stat-value">6.8</div>
-                    <div class="stat-detail">87% participation</div>
-                </div>
-                <div class="level-stat foundational-stat">
-                    <h3>Foundational Operations</h3>
-                    <div class="stat-value">6.9</div>
-                    <div class="stat-detail">75% participation</div>
-                </div>
             </div>
         </div>
 
