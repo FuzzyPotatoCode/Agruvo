@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agruvo - Transform Team Meetings</title>
+    <title>Transform Team Meetings - Agruvo</title>
     <style>
         * {
             margin: 0;
@@ -228,8 +228,62 @@
             border-color: rgba(255, 255, 255, 0.5);
         }
 
-        /* Features Section */
-        .features {
+        /* Problem Section - NEW */
+        .problem-section {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+        }
+
+        .problem-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .problem-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .problem-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: left;
+        }
+
+        .problem-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .problem-card h3 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .problem-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        /* How It Works Section - ENHANCED */
+        .how-it-works {
             padding: 100px 0;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
@@ -253,6 +307,95 @@
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.6;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .process-step {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .process-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+        }
+
+        .process-step:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .step-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .step-features {
+            list-style: none;
+            text-align: left;
+        }
+
+        .step-features li {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .step-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
         }
 
         .features-grid {
@@ -308,57 +451,38 @@
             line-height: 1.6;
         }
 
-        /* Problem/Solution Section */
-        .problem-solution {
-            padding: 100px 0;
-        }
-
-        .problem-solution-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .content-block {
-            background: rgba(255, 255, 255, 0.1);
+        /* Social Proof Section - NEW */
+        .social-proof {
+            padding: 80px 0;
+            background: rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 24px;
-            padding: 50px 40px;
+            text-align: center;
         }
 
-        .content-block h3 {
-            font-size: 2rem;
-            font-weight: 700;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .stat-item {
             color: white;
-            margin-bottom: 25px;
         }
 
-        .problem-list {
-            list-style: none;
-            margin-bottom: 30px;
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .problem-list li {
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 15px;
-            padding-left: 30px;
-            position: relative;
-            line-height: 1.5;
-        }
-
-        .problem-list li::before {
-            content: '✗';
-            position: absolute;
-            left: 0;
-            color: #ff6b6b;
-            font-weight: bold;
-        }
-
-        .solution-list li::before {
-            content: '✓';
-            color: #51cf66;
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
         }
 
         /* CTA Section */
@@ -450,9 +574,12 @@
                 align-items: center;
             }
 
-            .problem-solution-grid {
+            .problem-grid {
                 grid-template-columns: 1fr;
-                gap: 40px;
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr;
             }
 
             .features-grid {
@@ -461,6 +588,10 @@
 
             .section-title {
                 font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -475,6 +606,213 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Enhanced Contact Section Styles */
+        .cta-section {
+            padding: 100px 0;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cta-content {
+            text-align: left;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .cta-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Quick Contact Form */
+        .quick-contact-form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quick-contact-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(102, 126, 234, 0.8), 
+                rgba(118, 75, 162, 0.8), 
+                transparent
+            );
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        .contact-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contact-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .contact-form .form-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-family: inherit;
+        }
+
+        .contact-form .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .contact-form .form-input:focus {
+            outline: none;
+            border-color: rgba(102, 126, 234, 0.8);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .btn-contact {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .btn-contact:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-contact.loading {
+            pointer-events: none;
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.7), rgba(39, 174, 96, 0.7));
+        }
+
+        .btn-contact .loading-spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .btn-contact.loading .loading-spinner {
+            display: block;
+        }
+
+        .btn-contact.loading .btn-text {
+            display: none;
+        }
+
+        .response-time {
+            text-align: center;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .cta-content {
+                text-align: center;
+            }
+            
+            .contact-form .form-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .quick-contact-form {
+                padding: 30px 25px;
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -488,13 +826,14 @@
     <!-- Header -->
     <header class="header">
         <nav class="nav">
-            <a href="#" class="logo"> Agruvo
-            </a>
+            <a href="#" class="logo">Agruvo</a>
             <div class="nav-links">
-                <a href="#features" class="nav-link">Features</a>
+                <a href="#problem" class="nav-link">Problems</a>
                 <a href="#how-it-works" class="nav-link">How It Works</a>
-                <a href="#contact" class="nav-link">Contact Us</a>
-                <a href="dashboard.html" class="nav-link">Login</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="contact.html" class="nav-link">Contact Us</a>
+                <a href="signin.html" class="nav-link">Sign In</a>
+                <a href="signup.html" class="nav-link cta-nav">Start Free Trial</a>
             </div>
         </nav>
     </header>
@@ -516,6 +855,144 @@
                     <a href="#how-it-works" class="btn-secondary">
                         ▶ See How It Works
                     </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem-section" id="problem">
+        <div class="container">
+            <div class="problem-content scroll-reveal">
+                <h2 class="problem-title">Meeting Problems That Kill Productivity</h2>
+                <div class="problem-grid">
+                    <div class="problem-card">
+                        <div class="problem-icon">😶</div>
+                        <h3>Silent Team Members</h3>
+                        <p>Critical voices go unheard while important insights get lost in chaotic discussions.</p>
+                    </div>
+                    <div class="problem-card">
+                        <div class="problem-icon">⏰</div>
+                        <h3>Time Wasted</h3>
+                        <p>Unstructured agendas lead to rambling discussions that accomplish nothing concrete.</p>
+                    </div>
+                    <div class="problem-card">
+                        <div class="problem-icon">🕳️</div>
+                        <h3>Knowledge Gaps</h3>
+                        <p>Team members lack context on key issues but don't speak up, creating blind spots.</p>
+                    </div>
+                    <div class="problem-card">
+                        <div class="problem-icon">📝</div>
+                        <h3>Lost Context</h3>
+                        <p>Action items get forgotten and decisions disappear without proper documentation.</p>
+                    </div>
+                    <div class="problem-card">
+                        <div class="problem-icon">🎯</div>
+                        <h3>Strategic Drift</h3>
+                        <p>Teams lose focus on critical objectives amidst daily operational noise.</p>
+                    </div>
+                    <div class="problem-card">
+                        <div class="problem-icon">🔄</div>
+                        <h3>No Follow-Through</h3>
+                        <p>Meetings end without clear next steps or accountability for completion.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header scroll-reveal">
+                <h2 class="section-title">How Agruvo Works</h2>
+                <p class="section-subtitle">
+                    Transform chaotic check-ins into structured, productive discussions with clear outcomes and accountability.
+                </p>
+            </div>
+
+            <div class="process-steps">
+                <div class="process-step scroll-reveal">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">📋 Create Meeting</h3>
+                    <p class="step-description">
+                        Set up your meeting with smart defaults and invite your team members.
+                    </p>
+                    <ul class="step-features">
+                        <li>Smart agenda templates</li>
+                        <li>Team group selection</li>
+                        <li>Automated scheduling</li>
+                        <li>Notification preferences</li>
+                    </ul>
+                </div>
+
+                <div class="process-step scroll-reveal">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">📊 Team Input</h3>
+                    <p class="step-description">
+                        Team members rate strategic objectives and submit discussion topics.
+                    </p>
+                    <ul class="step-features">
+                        <li>Strategic Pyramid  ratings</li>
+                        <li>Knowledge gap identification</li>
+                        <li>Discussion topic submission</li>
+                        <li>Team achievements sharing</li>
+                    </ul>
+                </div>
+
+                <div class="process-step scroll-reveal">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">🎯 Smart Agenda</h3>
+                    <p class="step-description">
+                        AI-powered agenda generation prioritizes discussions and allocates time intelligently.
+                    </p>
+                    <ul class="step-features">
+                        <li>Emergency items first</li>
+                        <li>Low scores highlighted</li>
+                        <li>Similar topics grouped</li>
+                        <li>Time allocation optimization</li>
+                    </ul>
+                </div>
+
+                <div class="process-step scroll-reveal">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">⏱️ Live Meeting</h3>
+                    <p class="step-description">
+                        Run structured meetings with real-time notes and automatic summaries.
+                    </p>
+                    <ul class="step-features">
+                        <li>Dual timer system</li>
+                        <li>Real-time note taking</li>
+                        <li>Progress tracking</li>
+                        <li>Automatic email summaries</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof Section -->
+    <section class="social-proof">
+        <div class="container">
+            <div class="section-header scroll-reveal">
+                <h2 class="section-title">Proven Results</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item scroll-reveal">
+                    <div class="stat-number">Shorter</div>
+                    <div class="stat-label">Meeting Duration</div>
+                </div>
+                <div class="stat-item scroll-reveal">
+                    <div class="stat-number">Higher</div>
+                    <div class="stat-label">Team Participation</div>
+                </div>
+                <div class="stat-item scroll-reveal">
+                    <div class="stat-number">Better</div>
+                    <div class="stat-label">Follow-Through</div>
+                </div>
+                <div class="stat-item scroll-reveal">
+                    <div class="stat-number">Clearer</div>
+                    <div class="stat-label">Action Items</div>
                 </div>
             </div>
         </div>
@@ -583,50 +1060,77 @@
         </div>
     </section>
 
-    <!-- Problem/Solution Section -->
-    <section class="problem-solution" id="how-it-works">
-        <div class="container">
-            <div class="problem-solution-grid">
-                <div class="content-block scroll-reveal">
-                    <h3>❌ Meeting Problems We Solve</h3>
-                    <ul class="problem-list">
-                        <li>Chaotic, unstructured team check-ins</li>
-                        <li>Silent team members with no input</li>
-                        <li>Critical knowledge gaps going unnoticed</li>
-                        <li>Wasted time on low-priority discussions</li>
-                        <li>Lost context and missing follow-ups</li>
-                        <li>Strategic objectives losing focus</li>
-                    </ul>
-                </div>
-
-                <div class="content-block scroll-reveal">
-                    <h3>✅ Our Smart Solutions</h3>
-                    <ul class="problem-list solution-list">
-                        <li>Structured agenda with intelligent prioritization</li>
-                        <li>Mandatory input from every team member</li>
-                        <li>Knowledge gap identification for training</li>
-                        <li>Smart time allocation with progress tracking</li>
-                        <li>Comprehensive notes and automatic summaries</li>
-                        <li>Visual pyramid tracking for strategic focus</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
     <section class="cta-section" id="contact">
         <div class="container">
-            <div class="cta-content scroll-reveal">
-                <h2 class="cta-title">Ready to Transform Your Meetings?</h2>
-                <p class="cta-subtitle">
-                    Join innovative teams who value structured communication, data-driven decisions, and inclusive participation.
-                </p>
-                <div class="hero-buttons">
-                    <a href="#contact" class="btn-primary">
-                        Contact Us
-                        <span>→</span>
-                    </a>
+            <div class="contact-grid">
+                <!-- Left side - CTA -->
+                <div class="cta-content scroll-reveal">
+                    <h2 class="cta-title">Ready to Transform Your Meetings?</h2>
+                    <p class="cta-subtitle">
+                        Join innovative teams who value structured communication, data-driven decisions, and inclusive participation.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="signup.html" class="btn-primary">
+                            Start Free Trial
+                        </a>
+                        <a href="contact.html" class="btn-secondary">
+                            Contact Sales
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right side - Quick Contact Form -->
+                <div class="quick-contact-form scroll-reveal">
+                    <div class="form-header">
+                        <h3 class="form-title">Get in Touch</h3>
+                        <p class="form-subtitle">Questions? We'd love to hear from you.</p>
+                    </div>
+
+                    <form id="quickContactForm" class="contact-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input 
+                                    type="text" 
+                                    class="form-input" 
+                                    placeholder="Your Name"
+                                    required
+                                >
+                            </div>
+                            <div class="form-group">
+                                <input 
+                                    type="email" 
+                                    class="form-input" 
+                                    placeholder="Work Email"
+                                    required
+                                >
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input 
+                                type="text" 
+                                class="form-input" 
+                                placeholder="Company Name"
+                            >
+                        </div>
+                        
+                        <div class="form-group">
+                            <textarea 
+                                class="form-input form-textarea" 
+                                placeholder="How can we help you?"
+                                rows="3"
+                            ></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-contact">
+                            <span class="btn-text">Send Message</span>
+                            <div class="loading-spinner"></div>
+                        </button>
+                        
+                        <div class="response-time">
+                            We'll respond within 24 hours
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -703,7 +1207,7 @@
         });
 
         // Add floating animation to feature cards
-        document.querySelectorAll('.feature-card').forEach((card, index) => {
+        document.querySelectorAll('.feature-card, .process-step').forEach((card, index) => {
             card.style.animationDelay = `${index * 0.2}s`;
             card.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-15px) rotateY(5deg)';
@@ -712,6 +1216,40 @@
             card.addEventListener('mouseleave', function() {
                 this.style.transform = 'translateY(0) rotateY(0deg)';
             });
+        });
+
+        // Quick contact form handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const quickForm = document.getElementById('quickContactForm');
+            
+            if (quickForm) {
+                quickForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const button = this.querySelector('.btn-contact');
+                    const originalText = button.innerHTML;
+                    
+                    // Show loading state
+                    button.classList.add('loading');
+                    button.disabled = true;
+                    
+                    // Simulate form submission
+                    setTimeout(() => {
+                        button.classList.remove('loading');
+                        button.innerHTML = '<span>✓ Message Sent!</span>';
+                        button.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+                        
+                        // Reset form
+                        setTimeout(() => {
+                            this.reset();
+                            button.innerHTML = originalText;
+                            button.style.background = '';
+                            button.disabled = false;
+                        }, 3000);
+                        
+                    }, 2000);
+                });
+            }
         });
     </script>
 </body>
