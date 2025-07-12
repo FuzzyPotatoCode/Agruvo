@@ -606,213 +606,6 @@
             opacity: 1;
             transform: translateY(0);
         }
-
-        /* Enhanced Contact Section Styles */
-        .cta-section {
-            padding: 100px 0;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .cta-content {
-            text-align: left;
-        }
-
-        .cta-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .cta-subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        /* Quick Contact Form */
-        .quick-contact-form {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 25px;
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .quick-contact-form::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(102, 126, 234, 0.8), 
-                rgba(118, 75, 162, 0.8), 
-                transparent
-            );
-        }
-
-        .form-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .form-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 8px;
-        }
-
-        .form-subtitle {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.95rem;
-        }
-
-        .contact-form .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .contact-form .form-group {
-            margin-bottom: 20px;
-        }
-
-        .contact-form .form-input {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            color: white;
-            font-family: inherit;
-        }
-
-        .contact-form .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .contact-form .form-input:focus {
-            outline: none;
-            border-color: rgba(102, 126, 234, 0.8);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-        }
-
-        .form-textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        .btn-contact {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            color: white;
-            border: none;
-            padding: 14px 24px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
-        }
-
-        .btn-contact:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
-        }
-
-        .btn-contact.loading {
-            pointer-events: none;
-            background: linear-gradient(135deg, rgba(46, 204, 113, 0.7), rgba(39, 174, 96, 0.7));
-        }
-
-        .btn-contact .loading-spinner {
-            display: none;
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top: 2px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        .btn-contact.loading .loading-spinner {
-            display: block;
-        }
-
-        .btn-contact.loading .btn-text {
-            display: none;
-        }
-
-        .response-time {
-            text-align: center;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 15px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-            
-            .cta-content {
-                text-align: center;
-            }
-            
-            .contact-form .form-row {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-            
-            .hero-buttons {
-                justify-content: center;
-            }
-            
-            .quick-contact-form {
-                padding: 30px 25px;
-            }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
@@ -831,9 +624,9 @@
                 <a href="#problem" class="nav-link">Problems</a>
                 <a href="#how-it-works" class="nav-link">How It Works</a>
                 <a href="#features" class="nav-link">Features</a>
-                <a href="contact.html" class="nav-link">Contact Us</a>
-                <a href="signin.html" class="nav-link">Sign In</a>
-                <a href="signup.html" class="nav-link cta-nav">Start Free Trial</a>
+                <a href="#contact" class="nav-link">Contact Us</a>
+                <a href="login.html" class="nav-link">Login</a>
+                <a href="dashboard.html" class="nav-link cta-nav">Try Demo</a>
             </div>
         </nav>
     </header>
@@ -852,6 +645,9 @@
                     Agruvo helps teams gather, align, and move forward — with thoughtful agendas, collaborative input, and progress everyone can see.
                 </p>
                 <div class="hero-buttons">
+                    <a href="dashboard.html" class="btn-primary">
+                        🚀 Try Demo
+                    </a>
                     <a href="#how-it-works" class="btn-secondary">
                         ▶ See How It Works
                     </a>
@@ -979,20 +775,20 @@
             </div>
             <div class="stats-grid">
                 <div class="stat-item scroll-reveal">
-                    <div class="stat-number">Shorter</div>
-                    <div class="stat-label">Meeting Duration</div>
+                    <div class="stat-number">30%</div>
+                    <div class="stat-label">Shorter Meetings</div>
                 </div>
                 <div class="stat-item scroll-reveal">
-                    <div class="stat-number">Higher</div>
+                    <div class="stat-number">95%</div>
                     <div class="stat-label">Team Participation</div>
                 </div>
                 <div class="stat-item scroll-reveal">
-                    <div class="stat-number">Better</div>
-                    <div class="stat-label">Follow-Through</div>
+                    <div class="stat-number">80%</div>
+                    <div class="stat-label">Action Item Completion</div>
                 </div>
                 <div class="stat-item scroll-reveal">
-                    <div class="stat-number">Clearer</div>
-                    <div class="stat-label">Action Items</div>
+                    <div class="stat-number">4.8/5</div>
+                    <div class="stat-label">User Satisfaction</div>
                 </div>
             </div>
         </div>
@@ -1060,77 +856,21 @@
         </div>
     </section>
 
+    <!-- CTA Section -->
     <section class="cta-section" id="contact">
         <div class="container">
-            <div class="contact-grid">
-                <!-- Left side - CTA -->
-                <div class="cta-content scroll-reveal">
-                    <h2 class="cta-title">Ready to Transform Your Meetings?</h2>
-                    <p class="cta-subtitle">
-                        Join innovative teams who value structured communication, data-driven decisions, and inclusive participation.
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="signup.html" class="btn-primary">
-                            Start Free Trial
-                        </a>
-                        <a href="contact.html" class="btn-secondary">
-                            Contact Sales
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Right side - Quick Contact Form -->
-                <div class="quick-contact-form scroll-reveal">
-                    <div class="form-header">
-                        <h3 class="form-title">Get in Touch</h3>
-                        <p class="form-subtitle">Questions? We'd love to hear from you.</p>
-                    </div>
-
-                    <form id="quickContactForm" class="contact-form">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <input 
-                                    type="text" 
-                                    class="form-input" 
-                                    placeholder="Your Name"
-                                    required
-                                >
-                            </div>
-                            <div class="form-group">
-                                <input 
-                                    type="email" 
-                                    class="form-input" 
-                                    placeholder="Work Email"
-                                    required
-                                >
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <input 
-                                type="text" 
-                                class="form-input" 
-                                placeholder="Company Name"
-                            >
-                        </div>
-                        
-                        <div class="form-group">
-                            <textarea 
-                                class="form-input form-textarea" 
-                                placeholder="How can we help you?"
-                                rows="3"
-                            ></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn-contact">
-                            <span class="btn-text">Send Message</span>
-                            <div class="loading-spinner"></div>
-                        </button>
-                        
-                        <div class="response-time">
-                            We'll respond within 24 hours
-                        </div>
-                    </form>
+            <div class="cta-content scroll-reveal">
+                <h2 class="cta-title">Ready to Transform Your Meetings?</h2>
+                <p class="cta-subtitle">
+                    Join innovative teams who value structured communication, data-driven decisions, and inclusive participation.
+                </p>
+                <div class="hero-buttons">
+                    <a href="dashboard.html" class="btn-primary">
+                        🚀 Try Demo Now
+                    </a>
+                    <a href="#contact" class="btn-secondary">
+                        Contact Sales
+                    </a>
                 </div>
             </div>
         </div>
@@ -1216,40 +956,6 @@
             card.addEventListener('mouseleave', function() {
                 this.style.transform = 'translateY(0) rotateY(0deg)';
             });
-        });
-
-        // Quick contact form handling
-        document.addEventListener('DOMContentLoaded', function() {
-            const quickForm = document.getElementById('quickContactForm');
-            
-            if (quickForm) {
-                quickForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const button = this.querySelector('.btn-contact');
-                    const originalText = button.innerHTML;
-                    
-                    // Show loading state
-                    button.classList.add('loading');
-                    button.disabled = true;
-                    
-                    // Simulate form submission
-                    setTimeout(() => {
-                        button.classList.remove('loading');
-                        button.innerHTML = '<span>✓ Message Sent!</span>';
-                        button.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
-                        
-                        // Reset form
-                        setTimeout(() => {
-                            this.reset();
-                            button.innerHTML = originalText;
-                            button.style.background = '';
-                            button.disabled = false;
-                        }, 3000);
-                        
-                    }, 2000);
-                });
-            }
         });
     </script>
 </body>
