@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Agenda - Agruvo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background elements */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 70%;
+            right: -5%;
+            animation-delay: -7s;
+        }
+
+        .shape:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            top: 40%;
+            left: 80%;
+            animation-delay: -14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(20px) rotate(240deg); }
+        }
+
+        .agenda-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-right: 380px; /* Make room for sidebar */
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .meeting-info {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .info-item span:first-child {
+            font-size: 1.2rem;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Action Button Styles - Different from header button */
+        .action-buttons .btn-secondary {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .action-buttons .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Sticky Sidebar */
+        .sticky-sidebar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* Progress Section */
+        .progress-overview {
+            margin-bottom: 25px;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 12px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            width: 0%;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+        }
+
+        /* Timer Section */
+        .timer-section {
+            margin-bottom: 25px;
+        }
+
+        .timer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            text-align: center;
+            background: rgba(118, 75, 162, 0.1);
+            border-radius: 12px;
+            padding: 15px 10px;
+        }
+
+        .timer-block {
+            text-align: center;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            padding: 15px 10px;
+        }
+
+        .stat-value, .timer-display {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            color: #764ba2;
+        }
+
+        .timer-display {
+            color: #667eea;
+        }
+
+        .stat-label, .timer-label {
+            font-size: 0.7rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Controls */
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .controls-row2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .control-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+        }
+
+        .btn-pause {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+        }
+
+        .btn-add-time {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Chair Notes */
+        .chair-notes {
+            background: linear-gradient(135deg, rgba(155,89,182,0.1), rgba(142,68,173,0.05));
+            border: 2px solid rgba(155,89,182,0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .chair-notes h3 {
+            color: #9b59b6;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .chair-notes-input {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.5;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .chair-notes-input:focus {
+            outline: none;
+            border-color: #9b59b6;
+            box-shadow: 0 0 0 3px rgba(155,89,182,0.1);
+        }
+
+        .chair-notes-list {
+            margin-bottom: 15px;
+        }
+
+        .chair-note-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .chair-note-item:hover {
+            background: rgba(255,255,255,0.9);
+            transform: translateX(5px);
+        }
+
+        .bullet {
+            color: #9b59b6;
+            font-size: 1.2rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .note-text {
+            color: #333;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .add-note-btn {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .add-note-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(155,89,182,0.3);
+        }
+
+        /* General Notes */
+        .general-notes h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .general-notes-input {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .general-notes-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            gap: 12px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pyramid-section .section-title {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .discussion-section .section-title {
+            color: #f39c12;
+        }
+
+        .achievements-section .section-title {
+            color: #2ecc71;
+        }
+
+        /* Agenda Items */
+        .agenda-item {
+            background: rgba(255,255,255,0.8);
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .agenda-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-color: #3498db;
+        }
+
+        .agenda-item.current {
+            border-color: #f39c12;
+            background: linear-gradient(135deg, rgba(243,156,18,0.1), rgba(230,126,34,0.05));
+        }
+
+        .agenda-item.completed {
+            border-color: #2ecc71;
+            background: linear-gradient(135deg, rgba(46,204,113,0.1), rgba(39,174,96,0.05));
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            flex: 1;
+        }
+
+        .item-meta {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-left: 15px;
+        }
+
+        .time-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .priority-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .emergency-badge {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .low-score-badge {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+
+        .important-badge {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .foundational-badge {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+
+        .dont-know-badge {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+
+        .item-description {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-item {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-start-item {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+        }
+
+        .btn-complete {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .btn-skip {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            color: white;
+        }
+
+        .btn-strategic-meeting {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+        }
+
+        .btn-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Notes Section */
+        .notes-section {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .agenda-item.current .notes-section {
+            display: block;
+        }
+
+        .notes-input {
+            width: 100%;
+            min-height: 80px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            resize: vertical;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+            line-height: 1.5;
+        }
+
+        .notes-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+        }
+
+        /* Achievement Display */
+        .achievement-display {
+            background: rgba(255,255,255,0.8);
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .achievement-display:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .achievement-header {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .achievement-content {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .strength-tag {
+            display: inline-block;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 3px 6px 3px 0;
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* CliftonStrengths Color Themes */
+        .strength-1 { background: linear-gradient(135deg, #8B4A9C, #A569BD); } /* Purple - Strategic Thinking */
+        .strength-2 { background: linear-gradient(135deg, #E74C3C, #F1948A); } /* Red - Influencing */
+        .strength-3 { background: linear-gradient(135deg, #2E86AB, #5DADE2); } /* Blue - Relationship Building */
+        .strength-4 { background: linear-gradient(135deg, #F39C12, #F7DC6F); } /* Orange/Yellow - Executing */
+        .strength-5 { background: linear-gradient(135deg, #27AE60, #58D68D); } /* Green - Additional strengths */
+
+        .strength-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .strength-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .strength-tag:hover::before {
+            left: 100%;
+        }
+
+        /* Pyramid Overview Styles */
+        .card h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pyramid-dashboard {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .pyramid-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .pyramid-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pyramid-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .pyramid-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .pyramid-critical {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+        }
+
+        .pyramid-important {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .pyramid-foundational {
+            background: linear-gradient(135deg, #93c5fd, #60a5fa);
+            color: #333;
+        }
+
+        .completion-indicator {
+            position: absolute;
+            bottom: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 2px solid white;
+        }
+
+        .status-complete {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .status-dont-know {
+            background: #9b59b6;
+            color: white;
+        }
+
+        /* Meeting Summary Modal */
+        .meeting-summary {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 90%;
+            display: none;
+            z-index: 1000;
+        }
+
+        .summary-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .agenda-container {
+                padding-right: 20px;
+            }
+            
+            .sticky-sidebar {
+                position: relative;
+                top: auto;
+                right: auto;
+                width: 100%;
+                max-height: none;
+                margin-top: 30px;
+                order: -1;
+            }
+            
+            .timer-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .controls {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .controls-row2 {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .agenda-container {
+                padding: 15px;
+            }
+
+            .header {
+                padding: 20px;
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .header-left {
+                justify-content: center;
+            }
+
+            .meeting-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .timer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .item-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .item-actions {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease both;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Sticky Sidebar -->
+    <div class="sticky-sidebar">
+        <!-- Meeting Progress -->
+        <div class="sidebar-card fade-in-up">
+            <h3 style="margin-bottom: 20px; color: #333; display: flex; align-items: center; gap: 10px;">
+                📊 Meeting Progress
+            </h3>
+            
+            <div class="progress-overview">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%">0%</div>
+                </div>
+                <div class="progress-text">
+                    <span id="completedItems">0</span> of <span id="totalItems">12</span> items completed
+                </div>
+            </div>
+
+            <div class="timer-section">
+                <div class="timer-grid">
+                    <div class="stat-box">
+                        <div class="stat-value" id="timeRemaining">60</div>
+                        <div class="stat-label">Total Time</div>
+                    </div>
+                    <div class="timer-block">
+                        <div class="timer-display" id="mainTimer">60:00</div>
+                        <div class="timer-label">Total Remaining</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="currentItemTime">--</div>
+                        <div class="stat-label">Item Time</div>
+                    </div>
+                    <div class="timer-block">
+                        <div class="timer-display" id="itemTimer">--:--</div>
+                        <div class="timer-label">Item Remaining</div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="control-btn btn-start" onclick="startMeeting()">▶ Start</button>
+                    <button class="control-btn btn-pause" onclick="pauseTimers()">⏸ Pause</button>
+                </div>
+                <div class="controls-row2">
+                    <button class="control-btn btn-add-time" onclick="addTime(30)">+30s</button>
+                    <button class="control-btn btn-add-time" onclick="addTime(60)">+1m</button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- General Notes -->
+        <div class="sidebar-card fade-in-up">
+            <div class="general-notes">
+                <h3>📝 General Meeting Notes</h3>
+                <textarea class="general-notes-input" placeholder="General meeting notes, key decisions, follow-up items, action items..."></textarea>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="sidebar-card fade-in-up">
+            <div class="action-buttons">
+                <button class="btn-secondary" onclick="endMeeting()">
+                    🛑 End Meeting
+                </button>
+                <button class="btn-primary" onclick="generateSummary()">
+                    📧 Generate Summary
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="agenda-container">
+        <!-- Header -->
+        <div class="header fade-in-up">
+            <div class="header-left">
+                <div class="logo">Agruvo</div>
+                <div class="page-title">Meeting Agenda</div>
+            </div>
+            <div class="meeting-info">
+                <div class="info-item">
+                    <span>📅</span>
+                    <span id="meetingDate">12/07/2025 Team Check-in</span>
+                </div>
+                <div class="info-item">
+                    <span>👥</span>
+                    <span id="participantCount">8 participants</span>
+                </div>
+            </div>
+            <a href="dashboard.html" class="btn-secondary">← Back to Dashboard</a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content fade-in-up">
+            <!-- Chair Notes Section -->
+            <div class="chair-notes">
+                <h3>📋 Chair Notes & Announcements</h3>
+                <div class="chair-notes-list">
+                    <div class="chair-note-item">
+                        <span class="bullet">•</span>
+                        <span class="note-text">Meeting started on time with all 8 participants present</span>
+                    </div>
+                    <div class="chair-note-item">
+                        <span class="bullet">•</span>
+                        <span class="note-text">Emergency equipment issue requires immediate attention</span>
+                    </div>
+                    <div class="chair-note-item">
+                        <span class="bullet">•</span>
+                        <span class="note-text">Q2 budget discussions may need extended time allocation</span>
+                    </div>
+                    <div class="chair-note-item">
+                        <span class="bullet">•</span>
+                        <span class="note-text">Dr. Chen's statistical analysis ahead of schedule</span>
+                    </div>
+                    <div class="chair-note-item">
+                        <span class="bullet">•</span>
+                        <span class="note-text">Training needs identified for publication workflow</span>
+                    </div>
+                    <div class="chair-note-item">
+                        <span class="bullet">•</span>
+                        <span class="note-text">Next meeting scheduled for 19/07/2025 at same time</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pyramid Overview -->
+            <div class="card fade-in-up">
+                <h2>📊 Priority Pyramid Status</h2>
+                <div class="pyramid-dashboard">
+                    <div></div>
+                    <div class="pyramid-visual">
+                        <div class="pyramid-row">
+                            <div class="pyramid-item pyramid-critical" title="Research Vessel Deployment - Avg: 7.2">
+                                RV
+                                <div class="completion-indicator status-complete">7.2</div>
+                            </div>
+                            <div class="pyramid-item pyramid-critical" title="Stock Assessment - Avg: 3.1">
+                                SA
+                                <div class="completion-indicator status-complete">3.1</div>
+                            </div>
+                        </div>
+                        <div class="pyramid-row">
+                            <div class="pyramid-item pyramid-important" title="Q2 Survey - Avg: 5.8">
+                                Q2
+                                <div class="completion-indicator status-complete">5.8</div>
+                            </div>
+                            <div class="pyramid-item pyramid-important" title="Data Analysis - Avg: 8.1">
+                                DA
+                                <div class="completion-indicator status-complete">8.1</div>
+                            </div>
+                            <div class="pyramid-item pyramid-important" title="Publication - 3 Don't Know">
+                                PU
+                                <div class="completion-indicator status-dont-know">3</div>
+                            </div>
+                        </div>
+                        <div class="pyramid-row">
+                            <div class="pyramid-item pyramid-foundational" title="Equipment Maintenance - Avg: 7.9">
+                                EM
+                                <div class="completion-indicator status-complete">7.9</div>
+                            </div>
+                            <div class="pyramid-item pyramid-foundational" title="Data QC - Avg: 4.2">
+                                QC
+                                <div class="completion-indicator status-complete">4.2</div>
+                            </div>
+                            <div class="pyramid-item pyramid-foundational" title="Procurement - Avg: 6.1">
+                                PR
+                                <div class="completion-indicator status-complete">6.1</div>
+                            </div>
+                            <div class="pyramid-item pyramid-foundational" title="Training - 4 Don't Know">
+                                TR
+                                <div class="completion-indicator status-dont-know">4</div>
+                            </div>
+                            <div class="pyramid-item pyramid-foundational" title="Safety - Avg: 9.2">
+                                SF
+                                <div class="completion-indicator status-complete">9.2</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div></div>
+                </div>
+            </div>
+
+            <!-- Pyramid-based Items -->
+            <div class="agenda-section pyramid-section">
+                <div class="section-title">🔺 Strategic Pyramid Items</div>
+                
+                <!-- Emergency Level -->
+                <div class="agenda-item" data-time="5" data-item="emergency-equipment">
+                    <div class="item-header">
+                        <div class="item-title">🚨 Emergency Equipment Failure (Score: 2.1)</div>
+                        <div class="item-meta">
+                            <div class="time-badge">5 min</div>
+                            <div class="priority-badge emergency-badge">EMERGENCY</div>
+                        </div>
+                    </div>
+                    <div class="item-description">
+                        Critical sonar equipment malfunction affecting current survey operations. Immediate decision needed on replacement/repair.
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                        <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                        <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        <button class="btn-item btn-strategic-meeting" onclick="createStrategicMeeting(this)">📅 Create Strategic Meeting</button>
+                    </div>
+                    <div class="notes-section">
+                        <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Critical Level -->
+                <div class="agenda-item" data-time="15" data-item="critical-coordination">
+                    <div class="item-header">
+                        <div class="item-title">📊 Inter-team Coordination (Score: 4.8)</div>
+                        <div class="item-meta">
+                            <div class="time-badge">15 min</div>
+                            <div class="priority-badge low-score-badge">NEEDS ATTENTION</div>
+                        </div>
+                    </div>
+                    <div class="item-description">
+                        Team reports good progress but needs coordination updates.
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                        <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                        <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        <button class="btn-item btn-strategic-meeting" onclick="createStrategicMeeting(this)">📅 Create Strategic Meeting</button>
+                    </div>
+                    <div class="notes-section">
+                        <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                    </div>
+                </div>
+
+                <div class="agenda-item" data-time="20" data-item="critical-stock">
+                    <div class="item-header">
+                        <div class="item-title">📊 Annual Stock Assessment (Score: 3.1)</div>
+                        <div class="item-meta">
+                            <div class="time-badge">20 min</div>
+                            <div class="priority-badge low-score-badge">NEEDS ATTENTION</div>
+                        </div>
+                    </div>
+                    <div class="item-description">
+                        Complete comprehensive fisheries stock assessment for key commercial species. Multiple delays reported, needs immediate intervention.
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                        <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                        <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        <button class="btn-item btn-strategic-meeting" onclick="createStrategicMeeting(this)">📅 Create Strategic Meeting</button>
+                    </div>
+                    <div class="notes-section">
+                        <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Important Level -->
+                <div class="agenda-item" data-time="10" data-item="important-survey">
+                    <div class="item-header">
+                        <div class="item-title">🗓️ Q2 Field Survey (Score: 5.8)</div>
+                        <div class="item-meta">
+                            <div class="time-badge">10 min</div>
+                            <div class="priority-badge important-badge">IMPORTANT</div>
+                        </div>
+                    </div>
+                    <div class="item-description">
+                        Complete quarterly field data collection and sampling protocols. Moderate progress, need status update.
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                        <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                        <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        <button class="btn-item btn-strategic-meeting" onclick="createStrategicMeeting(this)">📅 Create Strategic Meeting</button>
+                    </div>
+                    <div class="notes-section">
+                        <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                    </div>
+                </div>
+
+                <div class="agenda-item" data-time="8" data-item="important-analysis">
+                    <div class="item-header">
+                        <div class="item-title">📈 Statistical Analysis (Score: 8.1)</div>
+                        <div class="item-meta">
+                            <div class="time-badge">8 min</div>
+                            <div class="priority-badge important-badge">IMPORTANT</div>
+                        </div>
+                    </div>
+                    <div class="item-description">
+                        Finalize statistical models and analysis for population dynamics study. Excellent progress, quick update needed.
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                        <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                        <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        <button class="btn-item btn-strategic-meeting" onclick="createStrategicMeeting(this)">📅 Create Strategic Meeting</button>
+                    </div>
+                    <div class="notes-section">
+                        <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                    </div>
+                </div>
+
+                <div class="agenda-item" data-time="12" data-item="important-publication">
+                    <div class="item-header">
+                        <div class="item-title">📄 Research Publication (3 Don't Know)</div>
+                        <div class="item-meta">
+                            <div class="time-badge">12 min</div>
+                            <div class="priority-badge dont-know-badge">KNOWLEDGE GAP</div>
+                        </div>
+                    </div>
+                    <div class="item-description">
+                        Submit peer-reviewed manuscript to Journal of Marine Science. Knowledge gap identified - training needed.
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                        <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                        <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        <button class="btn-item btn-strategic-meeting" onclick="createStrategicMeeting(this)">📅 Create Strategic Meeting</button>
+                    </div>
+                    <div class="notes-section">
+                        <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                    </div>
+                </div>
+
+                <div class="agenda-item" data-time="8" data-item="important-modeling">
+                    <div class="item-header">
+                        <div class="item-title">💻 Population Modeling (Score: 3.9)</div>
+                        <div class="item-meta">
+                            <div class="time-badge">8 min</div>
+                            <div class="priority-badge low-score-badge">NEEDS ATTENTION</div>
+                        </div>
+                    </div>
+                    <div class="item-description">
+                        Update predictive models with latest data and validate assumptions. Knowledge gap identified - training needed.
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                        <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                        <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        <button class="btn-item btn-strategic-meeting" onclick="createStrategicMeeting(this)">📅 Create Strategic Meeting</button>
+                    </div>
+                    <div class="notes-section">
+                        <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Foundational Level -->
+                <div class="agenda-item" data-time="6" data-item="foundational-qc">
+                    <div class="item-header">
+                        <div class="item-title">✅ Data Quality Control (Score: 4.2)</div>
+                        <div class="item-meta">
+                            <div class="time-badge">6 min</div>
+                            <div class="priority-badge low-score-badge">NEEDS ATTENTION</div>
+                        </div>
+                    </div>
+                    <div class="item-description">
+                        Ongoing data validation and quality assurance processes. Quality issues reported, needs improvement plan.
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                        <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                        <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        <button class="btn-item btn-strategic-meeting" onclick="createStrategicMeeting(this)">📅 Create Strategic Meeting</button>
+                    </div>
+                    <div class="notes-section">
+                        <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discussion Topics -->
+            <div class="agenda-section discussion-section">
+                <div class="section-title">💬 Ad Hoc Discussion Topics</div>
+                
+                <div class="agenda-item" data-time="15" data-item="discussion-1">
+                    <div class="item-header">
+                        <div class="item-title">💰 Q2 Budget Allocation for Equipment</div>
+                        <div class="item-meta">
+                            <div class="time-badge">15 min</div>
+                            <div class="priority-badge" style="background: linear-gradient(135deg, #f39c12, #e67e22);">Priority: 8</div>
+                        </div>
+                    </div>
+                    <div class="item-description">
+                        Need approval for equipment purchases and budget allocation discussions for Q2 operations.
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                        <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                        <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        <button class="btn-item btn-strategic-meeting" onclick="createStrategicMeeting(this)">📅 Create Strategic Meeting</button>
+                    </div>
+                    <div class="notes-section">
+                        <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                    </div>
+                </div>
+
+                <div class="agenda-item" data-time="12" data-item="discussion-2">
+                    <div class="item-header">
+                        <div class="item-title">🚢 Summer Survey Vessel Scheduling</div>
+                        <div class="item-meta">
+                            <div class="time-badge">12 min</div>
+                            <div class="priority-badge" style="background: linear-gradient(135deg, #3498db, #2980b9);">Priority: 7</div>
+                        </div>
+                    </div>
+                    <div class="item-description">
+                        Coordinate vessel schedules for upcoming summer surveys and logistics planning.
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                        <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                        <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        <button class="btn-item btn-strategic-meeting" onclick="createStrategicMeeting(this)">📅 Create Strategic Meeting</button>
+                    </div>
+                    <div class="notes-section">
+                        <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                    </div>
+                </div>
+
+                <div class="agenda-item" data-time="8" data-item="discussion-3">
+                    <div class="item-header">
+                        <div class="item-title">🎓 Staff Training Schedule Updates</div>
+                        <div class="item-meta">
+                            <div class="time-badge">8 min</div>
+                            <div class="priority-badge" style="background: linear-gradient(135deg, #3498db, #2980b9);">Priority: 6</div>
+                        </div>
+                    </div>
+                    <div class="item-description">
+                        Review and update staff training schedules and certification requirements.
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-item btn-start-item" onclick="startItem(this)">Start Discussion</button>
+                        <button class="btn-item btn-complete" onclick="completeItem(this)">Mark Complete</button>
+                        <button class="btn-item btn-skip" onclick="skipItem(this)">Skip</button>
+                        <button class="btn-item btn-strategic-meeting" onclick="createStrategicMeeting(this)">📅 Create Strategic Meeting</button>
+                    </div>
+                    <div class="notes-section">
+                        <textarea class="notes-input" placeholder="Meeting notes for this item..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Individual Achievements -->
+            <div class="agenda-section achievements-section">
+                <div class="section-title">🎯 Individual Tasks & Achievements</div>
+                
+                <div class="achievement-display">
+                    <div class="achievement-header">
+                        Dr. Sarah Chen - Lead Marine Biologist
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Completed:</strong> Statistical analysis for population dynamics study, sonar equipment calibration, stakeholder presentation
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Next Period:</strong> Manuscript preparation for Journal of Marine Science, vessel deployment coordination
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Top 5 CliftonStrengths:</strong> 
+                        <span class="strength-tag strength-1">Analytical</span>
+                        <span class="strength-tag strength-2">Strategic</span>
+                        <span class="strength-tag strength-3">Learner</span>
+                        <span class="strength-tag strength-4">Intellection</span>
+                        <span class="strength-tag strength-5">Focus</span>
+                    </div>
+                </div>
+
+                <div class="achievement-display">
+                    <div class="achievement-header">
+                        Alex Rodriguez - Data Systems Manager
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Completed:</strong> Resolved server outage, implemented backup protocols, upgraded processing pipeline efficiency by 40%
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Next Period:</strong> Data quality control system overhaul, automated validation implementation
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Top 5 CliftonStrengths:</strong> 
+                        <span class="strength-tag strength-1">Achiever</span>
+                        <span class="strength-tag strength-2">Restorative</span>
+                        <span class="strength-tag strength-3">Discipline</span>
+                        <span class="strength-tag strength-4">Responsibility</span>
+                        <span class="strength-tag strength-5">Consistency</span>
+                    </div>
+                </div>
+
+                <div class="achievement-display">
+                    <div class="achievement-header">
+                        Dr. Maria Santos - Field Operations Lead
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Completed:</strong> Survey vessel maintenance, crew safety training, equipment inventory audit
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Next Period:</strong> Summer field campaign planning, international collaboration setup
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Top 5 CliftonStrengths:</strong> 
+                        <span class="strength-tag strength-1">Command</span>
+                        <span class="strength-tag strength-2">Arranger</span>
+                        <span class="strength-tag strength-3">Activator</span>
+                        <span class="strength-tag strength-4">Communication</span>
+                        <span class="strength-tag strength-5">Maximizer</span>
+                    </div>
+                </div>
+
+                <div class="achievement-display">
+                    <div class="achievement-header">
+                        James Wilson - Research Coordinator
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Completed:</strong> Grant application submissions, partnership agreements with universities, research protocol reviews
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Next Period:</strong> Conference presentation preparation, stakeholder engagement meetings
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Top 5 CliftonStrengths:</strong> 
+                        <span class="strength-tag strength-1">Relator</span>
+                        <span class="strength-tag strength-2">Developer</span>
+                        <span class="strength-tag strength-3">Harmony</span>
+                        <span class="strength-tag strength-4">Includer</span>
+                        <span class="strength-tag strength-5">Empathy</span>
+                    </div>
+                </div>
+
+                <div class="achievement-display">
+                    <div class="achievement-header">
+                        Dr. Emma Thompson - Marine Ecology Specialist
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Completed:</strong> Ecosystem impact assessments, species identification protocols, environmental monitoring reports
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Next Period:</strong> Biodiversity survey planning, conservation strategy development
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Top 5 CliftonStrengths:</strong> 
+                        <span class="strength-tag strength-1">Ideation</span>
+                        <span class="strength-tag strength-2">Input</span>
+                        <span class="strength-tag strength-3">Connectedness</span>
+                        <span class="strength-tag strength-4">Context</span>
+                        <span class="strength-tag strength-5">Deliberative</span>
+                    </div>
+                </div>
+
+                <div class="achievement-display">
+                    <div class="achievement-header">
+                        Michael Chang - Technical Operations
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Completed:</strong> Equipment maintenance schedules, software updates, technical documentation updates
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Next Period:</strong> New equipment training, system integration testing
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Top 5 CliftonStrengths:</strong> 
+                        <span class="strength-tag strength-1">Competition</span>
+                        <span class="strength-tag strength-2">Significance</span>
+                        <span class="strength-tag strength-3">Self-Assurance</span>
+                        <span class="strength-tag strength-4">Futuristic</span>
+                        <span class="strength-tag strength-5">Strategic</span>
+                    </div>
+                </div>
+
+                <div class="achievement-display">
+                    <div class="achievement-header">
+                        Lisa Park - Administrative Coordinator
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Completed:</strong> Budget tracking and reporting, meeting coordination, compliance documentation
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Next Period:</strong> Q3 budget planning, policy updates implementation
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Top 5 CliftonStrengths:</strong> 
+                        <span class="strength-tag strength-1">Adaptability</span>
+                        <span class="strength-tag strength-2">Positivity</span>
+                        <span class="strength-tag strength-3">Woo</span>
+                        <span class="strength-tag strength-4">Individualization</span>
+                        <span class="strength-tag strength-5">Belief</span>
+                    </div>
+                </div>
+
+                <div class="achievement-display">
+                    <div class="achievement-header">
+                        Dr. Robert Kim - Senior Research Scientist
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Completed:</strong> Peer review processes, methodology validation, research mentoring activities
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Next Period:</strong> Publication strategy review, junior researcher development
+                    </div>
+                    <div class="achievement-content">
+                        <strong>Top 5 CliftonStrengths:</strong> 
+                        <span class="strength-tag strength-1">Deliberative</span>
+                        <span class="strength-tag strength-2">Prudence</span>
+                        <span class="strength-tag strength-3">Consistency</span>
+                        <span class="strength-tag strength-4">Restoration</span>
+                        <span class="strength-tag strength-5">Analytical</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Modal -->
+    <div class="summary-overlay" id="summaryOverlay"></div>
+    <div class="meeting-summary" id="meetingSummary">
+        <h2 style="margin-bottom: 20px; color: #333;">📧 Meeting Summary</h2>
+        <p style="margin-bottom: 20px; color: #666;">Meeting summary will be generated here with all notes and decisions.</p>
+        <div style="display: flex; gap: 15px; justify-content: flex-end;">
+            <button class="btn-secondary" onclick="closeSummary()">Close</button>
+            <button class="btn-primary" onclick="emailSummary()">Send Summary Email</button>
+        </div>
+    </div>
+
+    <script>
+        // Meeting data
+        const meetingData = {
+            totalItems: 12,
+            completedItems: 0,
+            isRunning: false,
+            isPaused: false,
+            timeRemaining: 60 * 60, // 60 minutes in seconds
+            currentItemTime: 0,
+            currentItem: null
+        };
+
+        const timers = {
+            main: null,
+            item: null
+        };
+
+        // Timer functions
+        function startMeeting() {
+            if (meetingData.isRunning) return;
+            
+            meetingData.isRunning = true;
+            
+            // Start main timer
+            timers.main = setInterval(() => {
+                if (!meetingData.isPaused && meetingData.timeRemaining > 0) {
+                    meetingData.timeRemaining--;
+                    updateTimerDisplay('mainTimer', meetingData.timeRemaining);
+                    updateTimeRemaining();
+                }
+            }, 1000);
+
+            // Update button
+            event.target.textContent = '✓ Started';
+            event.target.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+        }
+
+        function pauseTimers() {
+            meetingData.isPaused = !meetingData.isPaused;
+            const button = event.target;
+            
+            if (meetingData.isPaused) {
+                button.textContent = '▶ Resume';
+            } else {
+                button.textContent = '⏸ Pause';
+            }
+        }
+
+        function addTime(seconds) {
+            meetingData.currentItemTime += seconds;
+            updateTimerDisplay('itemTimer', meetingData.currentItemTime);
+            
+            // Show feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = `+${seconds}s`;
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 1000);
+        }
+
+        function updateTimerDisplay(elementId, timeInSeconds) {
+            const minutes = Math.floor(timeInSeconds / 60);
+            const seconds = timeInSeconds % 60;
+            const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById(elementId).textContent = display;
+        }
+
+        function updateTimeRemaining() {
+            const minutesLeft = Math.floor(meetingData.timeRemaining / 60);
+            document.getElementById('timeRemaining').textContent = minutesLeft;
+        }
+
+        // Item management
+        function startItem(button) {
+            // Clear current item
+            document.querySelectorAll('.agenda-item').forEach(item => {
+                item.classList.remove('current');
+            });
+
+            // Set new current item
+            const item = button.closest('.agenda-item');
+            item.classList.add('current');
+            meetingData.currentItem = item;
+
+            // Start item timer
+            const timeAllocated = parseInt(item.dataset.time) * 60; // Convert to seconds
+            meetingData.currentItemTime = timeAllocated;
+            
+            // Start item countdown
+            if (timers.item) clearInterval(timers.item);
+            timers.item = setInterval(() => {
+                if (!meetingData.isPaused && meetingData.currentItemTime > 0) {
+                    meetingData.currentItemTime--;
+                    updateTimerDisplay('itemTimer', meetingData.currentItemTime);
+                    document.getElementById('currentItemTime').textContent = Math.ceil(meetingData.currentItemTime / 60);
+                    
+                    // Alert when time is up
+                    if (meetingData.currentItemTime <= 0) {
+                        clearInterval(timers.item);
+                        document.getElementById('itemTimer').style.color = '#e74c3c';
+                        setTimeout(() => {
+                            document.getElementById('itemTimer').style.color = '';
+                        }, 3000);
+                    }
+                }
+            }, 1000);
+
+            // Update button
+            button.textContent = '⏳ In Progress';
+            button.style.background = 'linear-gradient(135deg, #f39c12, #e67e22)';
+        }
+
+        function completeItem(button) {
+            const item = button.closest('.agenda-item');
+            item.classList.add('completed');
+            item.classList.remove('current');
+            
+            meetingData.completedItems++;
+            updateProgress();
+            
+            // Clear item timer
+            if (timers.item) clearInterval(timers.item);
+            document.getElementById('itemTimer').textContent = '--:--';
+            
+            // Save notes
+            const notes = item.querySelector('.notes-input').value;
+            if (notes) {
+                console.log(`Notes for ${item.dataset.item}:`, notes);
+            }
+            
+            button.textContent = '✓ Completed';
+            button.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
+            button.disabled = true;
+        }
+
+        function skipItem(button) {
+            const item = button.closest('.agenda-item');
+            item.style.opacity = '0.5';
+            
+            meetingData.completedItems++;
+            updateProgress();
+            
+            button.textContent = '⏭ Skipped';
+            button.style.background = 'linear-gradient(135deg, #95a5a6, #7f8c8d)';
+            button.disabled = true;
+        }
+
+        function updateProgress() {
+            const percentage = (meetingData.completedItems / meetingData.totalItems) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressFill').textContent = Math.round(percentage) + '%';
+            document.getElementById('completedItems').textContent = meetingData.completedItems;
+        }
+
+        function generateSummary() {
+            // Collect all notes
+            const notes = [];
+            const chairNotes = document.querySelector('.chair-notes-input').value;
+            const generalNotes = document.querySelector('.general-notes-input').value;
+            
+            // Collect individual item notes
+            document.querySelectorAll('.agenda-item').forEach(item => {
+                const noteText = item.querySelector('.notes-input').value;
+                if (noteText) {
+                    const title = item.querySelector('.item-title').textContent;
+                    notes.push({ title, notes: noteText });
+                }
+            });
+
+            // Show summary modal
+            document.getElementById('summaryOverlay').style.display = 'block';
+            document.getElementById('meetingSummary').style.display = 'block';
+            
+            // Would generate actual email summary here
+            console.log('Meeting notes collected:', {
+                chairNotes,
+                generalNotes,
+                itemNotes: notes
+            });
+        }
+
+        function closeSummary() {
+            document.getElementById('summaryOverlay').style.display = 'none';
+            document.getElementById('meetingSummary').style.display = 'none';
+        }
+
+        function endMeeting() {
+            if (confirm('End the meeting and generate final summary?')) {
+                clearInterval(timers.main);
+                clearInterval(timers.item);
+                generateSummary();
+            }
+        }
+
+        function emailSummary() {
+            alert('Meeting summary would be emailed to all participants');
+            closeSummary();
+        }
+
+        function createStrategicMeeting(button) {
+            const item = button.closest('.agenda-item');
+            const itemTitle = item.querySelector('.item-title').textContent;
+            const itemTime = item.dataset.time;
+            
+            // Show confirmation dialog
+            const confirmed = confirm(`Create a dedicated strategic meeting for:\n\n"${itemTitle}"\n\nThis will create a new meeting with extended time allocation for deeper discussion. Continue?`);
+            
+            if (confirmed) {
+                // Create meeting data object
+                const meetingData = {
+                    title: `Strategic Discussion: ${itemTitle}`,
+                    originalItem: item.dataset.item,
+                    suggestedDuration: Math.max(60, parseInt(itemTime) * 3), // At least 60 minutes, or 3x original time
+                    description: item.querySelector('.item-description').textContent,
+                    priority: 'Strategic',
+                    createdFrom: 'Meeting Agenda',
+                    createdDate: new Date().toISOString()
+                };
+                
+                // In a real application, this would call your backend API
+                console.log('Creating strategic meeting:', meetingData);
+                
+                // Show success feedback
+                button.textContent = '✓ Meeting Created';
+                button.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+                button.disabled = true;
+                
+                // Show notification
+                alert(`Strategic meeting created successfully!\n\nTitle: ${meetingData.title}\nSuggested Duration: ${meetingData.suggestedDuration} minutes\n\nThe meeting has been added to your dashboard.`);
+                
+                // Optional: Redirect to meeting creation/scheduling page
+                // window.location.href = `create-meeting.html?template=${encodeURIComponent(JSON.stringify(meetingData))}`;
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case ' ':
+                    e.preventDefault();
+                    if (meetingData.isRunning) {
+                        pauseTimers();
+                    } else {
+                        startMeeting();
+                    }
+                    break;
+                case 'ArrowRight':
+                    // Next item
+                    break;
+                case 'Escape':
+                    pauseTimers();
+                    break;
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTimerDisplay('mainTimer', meetingData.timeRemaining);
+            document.getElementById('totalItems').textContent = meetingData.totalItems;
+            document.getElementById('currentItemTime').textContent = '--';
+            
+            // Set current date
+            document.getElementById('meetingDate').textContent = '12/07/2025 Team Check-in';
+            
+            // Add entrance animations
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in-up').forEach((el, index) => {
+                    el.style.animationDelay = `${index * 0.1}s`;
+                });
+            }, 100);
+        });
+
+        // Auto-save notes
+        setInterval(() => {
+            // Save all notes to localStorage or send to backend
+            const allNotes = {
+                chairNotes: document.querySelector('.chair-notes-input').value,
+                generalNotes: document.querySelector('.general-notes-input').value,
+                timestamp: new Date()
+            };
+            console.log('Auto-saving notes...', allNotes);
+        }, 30000); // Save every 30 seconds
+    </script>
+</body>
+</html>

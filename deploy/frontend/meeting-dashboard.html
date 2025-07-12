@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Dashboard - Agruvo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background elements */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 70%;
+            right: -5%;
+            animation-delay: -7s;
+        }
+
+        .shape:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            top: 40%;
+            left: 80%;
+            animation-delay: -14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(20px) rotate(240deg); }
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .meeting-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Card Styles */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            margin-bottom: 25px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        /* Statistics Overview */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(41, 128, 185, 0.05));
+            border: 2px solid rgba(52, 152, 219, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(52, 152, 219, 0.4);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.15);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        /* Pyramid Overview */
+        .pyramid-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .pyramid-visual {
+            grid-column: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pyramid-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .pyramid-item {
+            min-width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: white;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 5px;
+            text-align: center;
+        }
+
+        .pyramid-item:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .pyramid-critical {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            min-width: 80px;
+        }
+
+        .pyramid-important {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            min-width: 70px;
+        }
+
+        .pyramid-foundational {
+            background: linear-gradient(135deg, #93c5fd, #60a5fa);
+            color: #333;
+            min-width: 55px;
+        }
+
+        .completion-indicator {
+            position: absolute;
+            bottom: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 3px solid white;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .status-complete {
+            background: #27ae60;
+            color: white;
+        }
+
+        .status-dont-know {
+            background: #f39c12;
+            color: white;
+        }
+
+        .status-pending {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .pyramid-stats {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .level-stat {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .level-stat:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .critical-stat {
+            background: linear-gradient(135deg, rgba(30,58,138,0.1), rgba(30,64,175,0.05));
+            border: 2px solid rgba(30,58,138,0.3);
+        }
+
+        .important-stat {
+            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(37,99,235,0.05));
+            border: 2px solid rgba(59,130,246,0.3);
+        }
+
+        .foundational-stat {
+            background: linear-gradient(135deg, rgba(147,197,253,0.1), rgba(96,165,250,0.05));
+            border: 2px solid rgba(147,197,253,0.3);
+        }
+
+        .level-stat h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .level-stat .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .level-stat .stat-detail {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Pyramid Detail Breakdown */
+        .pyramid-detail-section {
+            margin-bottom: 35px;
+        }
+
+        .pyramid-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .pyramid-detail-item {
+            background: rgba(255,255,255,0.9);
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .pyramid-detail-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .pyramid-detail-item.alert-item {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, rgba(231,76,60,0.05), rgba(192,57,43,0.02));
+        }
+
+        .pyramid-detail-item.dont-know-item {
+            border-color: #f39c12;
+            background: linear-gradient(135deg, rgba(243,156,18,0.05), rgba(230,126,34,0.02));
+        }
+
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .detail-title {
+            font-weight: 700;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .score-badge-large {
+            color: white;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .dont-know-badge {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .detail-stats {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .detail-notes {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Topics Management */
+        .topics-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .topic-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .topic-item {
+            background: rgba(52,152,219,0.1);
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .topic-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+        }
+
+        .topic-item.emergency {
+            border-left-color: #e74c3c;
+            background: rgba(231,76,60,0.1);
+            animation: pulse 2s infinite;
+        }
+
+        .topic-item.grouped {
+            border-left-color: #f39c12;
+            background: rgba(243,156,18,0.1);
+        }
+
+        .topic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .topic-title {
+            font-weight: 700;
+            color: #333;
+            flex: 1;
+            font-size: 1rem;
+        }
+
+        .topic-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 0.85rem;
+        }
+
+        .topic-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .btn-group {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .btn-small:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Grouped Topics */
+        .topic-group {
+            background: rgba(243,156,18,0.15);
+            border: 2px solid #f39c12;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .group-header {
+            font-weight: 700;
+            color: #e67e22;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+        }
+
+        .group-topics {
+            margin-left: 15px;
+        }
+
+        .group-topic {
+            background: rgba(255,255,255,0.7);
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Achievements & Planning Summary */
+        .achievements-planning-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+        }
+
+        .person-summary {
+            background: linear-gradient(135deg, rgba(52,152,219,0.05), rgba(41,128,185,0.02));
+            border: 2px solid rgba(52,152,219,0.2);
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .person-summary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(52,152,219,0.15);
+            border-color: rgba(52,152,219,0.4);
+        }
+
+        .person-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(52,152,219,0.1);
+        }
+
+        .person-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .person-role {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .achievement-section,
+        .planning-section {
+            margin-bottom: 20px;
+        }
+
+        .achievement-section h4 {
+            color: #27ae60;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+
+        .planning-section h4 {
+            color: #3498db;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+
+        .achievement-section p,
+        .planning-section p {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Shoutouts Display */
+        .shoutouts-display {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .shoutout-item {
+            background: linear-gradient(135deg, rgba(46,204,113,0.1), rgba(39,174,96,0.05));
+            border-left: 4px solid #2ecc71;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .shoutout-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-alternate {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 32px rgba(46, 204, 113, 0.3);
+        }
+
+        .btn-alternate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-tertiary {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 32px rgba(243, 156, 18, 0.3);
+        }
+
+        .btn-tertiary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(243, 156, 18, 0.4);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease both;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .topics-section {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .pyramid-dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .pyramid-visual {
+                grid-column: 1;
+            }
+
+            .pyramid-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .pyramid-detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .achievements-planning-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-buttons .btn-primary,
+            .action-buttons .btn-alternate,
+            .action-buttons .btn-tertiary {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        
+
+                /* Matching the existing meeting-dashboard.html styling for shoutouts section */
+        .chair-notes-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .chair-notes-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-header {
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .add-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 15px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .notes-display {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .empty-state {
+            color: #888;
+            font-style: italic;
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(241, 245, 249, 0.5);
+            border-radius: 12px;
+            border: 2px dashed #cbd5e1;
+        }
+
+        .note-item {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.05));
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .note-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .note-content {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Input form (hidden by default) */
+        .add-form {
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .add-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .add-form textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-save {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e0e0e0;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Fade in animation to match existing cards */
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .chair-notes-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="header fade-in-up">
+            <div class="header-left">
+                <div class="logo">Agruvo</div>
+                <div class="page-title">Meeting Dashboard</div>
+            </div>
+            <div class="meeting-info">
+                <div class="info-item">
+                    <span>📅</span>
+                    <span id="meetingDate">Tactical Meeting</span>
+                </div>
+                <div class="info-item">
+                    <span>⏱️</span>
+                    <span id="meetingTime">60 minutes allocated</span>
+                </div>
+                <div class="info-item">
+                    <span>👥</span>
+                    <span id="participantCount">8 participants</span>
+                </div>
+                <a href="dashboard.html" class="btn-secondary">
+                    ← Back to Dashboard
+                </a>
+            </div>
+        </div>
+
+        <!-- Statistics Overview -->
+        <div class="card fade-in-up">
+            <h2>📈 Participation Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">87%</div>
+                    <div class="stat-label">Response Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">23</div>
+                    <div class="stat-label">Discussion Topics</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">Team Shoutouts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Emergency Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">6.8</div>
+                    <div class="stat-label">Avg Team Health</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12%</div>
+                    <div class="stat-label">"Don't Know" Rate</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pyramid Overview -->
+        <div class="card fade-in-up">
+            <h2>📊 Priority Pyramid Status</h2>
+            <div class="pyramid-dashboard">
+                <div></div>
+                <div class="pyramid-visual">
+                    <div class="pyramid-row">
+                        <div class="pyramid-item pyramid-critical" title="Research Vessel Deployment - Avg: 7.2">
+                            RV
+                            <div class="completion-indicator status-complete">7.2</div>
+                        </div>
+                        <div class="pyramid-item pyramid-critical" title="Stock Assessment - Avg: 3.1">
+                            SA
+                            <div class="completion-indicator status-complete">3.1</div>
+                        </div>
+                    </div>
+                    <div class="pyramid-row">
+                        <div class="pyramid-item pyramid-important" title="Q2 Survey - Avg: 5.8">
+                            Q2
+                            <div class="completion-indicator status-complete">5.8</div>
+                        </div>
+                        <div class="pyramid-item pyramid-important" title="Data Analysis - Avg: 8.1">
+                            DA
+                            <div class="completion-indicator status-complete">8.1</div>
+                        </div>
+                        <div class="pyramid-item pyramid-important" title="Publication - 3 Don't Know">
+                            PU
+                            <div class="completion-indicator status-dont-know">3</div>
+                        </div>
+                    </div>
+                    <div class="pyramid-row">
+                        <div class="pyramid-item pyramid-foundational" title="Equipment Maintenance - Avg: 7.9">
+                            EM
+                            <div class="completion-indicator status-complete">7.9</div>
+                        </div>
+                        <div class="pyramid-item pyramid-foundational" title="Data QC - Avg: 4.2">
+                            QC
+                            <div class="completion-indicator status-complete">4.2</div>
+                        </div>
+                        <div class="pyramid-item pyramid-foundational" title="Procurement - Avg: 6.1">
+                            PR
+                            <div class="completion-indicator status-complete">6.1</div>
+                        </div>
+                        <div class="pyramid-item pyramid-foundational" title="Training - 4 Don't Know">
+                            TR
+                            <div class="completion-indicator status-dont-know">4</div>
+                        </div>
+                        <div class="pyramid-item pyramid-foundational" title="Safety - Avg: 9.2">
+                            SF
+                            <div class="completion-indicator status-complete">9.2</div>
+                        </div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+        </div>
+
+        <!-- Detailed Pyramid Breakdown -->
+        <div class="card fade-in-up">
+            <h2>🔍 Detailed Priority Pyramid Breakdown</h2>
+            
+            <!-- Critical Level Details -->
+            <div class="pyramid-detail-section">
+                <h3 style="color: #1e3a8a; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-size: 1.3rem; font-weight: 700;">
+                    🔵 CRITICAL - Major Projects & Events
+                </h3>
+                
+                <div class="pyramid-detail-grid">
+                    <div class="pyramid-detail-item">
+                        <div class="detail-header">
+                            <span class="detail-title">🚢 Research Vessel Deployment</span>
+                            <span class="score-badge-large" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">7.2</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>8/8 participants</span> • <span>Progress: On Track</span>
+                        </div>
+                        <div class="detail-notes">Execute major oceanographic survey mission for fisheries assessment in the Southern Ocean region</div>
+                    </div>
+                    
+                    <div class="pyramid-detail-item alert-item">
+                        <div class="detail-header">
+                            <span class="detail-title">📊 Annual Stock Assessment</span>
+                            <span class="score-badge-large" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">3.1</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>8/8 participants</span> • <span style="color: #e74c3c;">Needs Attention</span>
+                        </div>
+                        <div class="detail-notes">Complete comprehensive fisheries stock assessment for key commercial species - <strong>Multiple delays reported</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important Level Details -->
+            <div class="pyramid-detail-section">
+                <h3 style="color: #3b82f6; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-size: 1.3rem; font-weight: 700;">
+                    🔵 IMPORTANT - Key Milestones
+                </h3>
+                
+                <div class="pyramid-detail-grid">
+                    <div class="pyramid-detail-item">
+                        <div class="detail-header">
+                            <span class="detail-title">🗓️ Q2 Field Survey</span>
+                            <span class="score-badge-large" style="background: linear-gradient(135deg, #f39c12, #e67e22);">5.8</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>7/8 participants</span> • <span>Progress: Moderate</span>
+                        </div>
+                        <div class="detail-notes">Complete quarterly field data collection and sampling protocols</div>
+                    </div>
+                    
+                    <div class="pyramid-detail-item">
+                        <div class="detail-header">
+                            <span class="detail-title">📈 Statistical Analysis</span>
+                            <span class="score-badge-large" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">8.1</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>6/8 participants</span> • <span>Progress: Excellent</span>
+                        </div>
+                        <div class="detail-notes">Finalize statistical models and analysis for population dynamics study</div>
+                    </div>
+                    
+                    <div class="pyramid-detail-item dont-know-item">
+                        <div class="detail-header">
+                            <span class="detail-title">📄 Research Publication</span>
+                            <span class="dont-know-badge">3 Don't Know</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>5/8 participants</span> • <span style="color: #f39c12;">Knowledge Gap</span>
+                        </div>
+                        <div class="detail-notes">Submit peer-reviewed manuscript to Journal of Marine Science - <strong>Training needed</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Foundational Level Details -->
+            <div class="pyramid-detail-section">
+                <h3 style="color: #93c5fd; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-size: 1.3rem; font-weight: 700;">
+                    🔵 FOUNDATIONAL - Operations & Support
+                </h3>
+                
+                <div class="pyramid-detail-grid">
+                    <div class="pyramid-detail-item">
+                        <div class="detail-header">
+                            <span class="detail-title">🔧 Equipment Maintenance</span>
+                            <span class="score-badge-large" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">7.9</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>6/8 participants</span> • <span>Progress: Good</span>
+                        </div>
+                        <div class="detail-notes">Regular calibration and maintenance of research instruments</div>
+                    </div>
+                    
+                    <div class="pyramid-detail-item alert-item">
+                        <div class="detail-header">
+                            <span class="detail-title">✅ Data Quality Control</span>
+                            <span class="score-badge-large" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">4.2</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>7/8 participants</span> • <span style="color: #e74c3c;">Needs Attention</span>
+                        </div>
+                        <div class="detail-notes">Ongoing data validation and quality assurance - <strong>Quality issues reported</strong></div>
+                    </div>
+                    
+                    <div class="pyramid-detail-item">
+                        <div class="detail-header">
+                            <span class="detail-title">📦 Procurement & Supplies</span>
+                            <span class="score-badge-large" style="background: linear-gradient(135deg, #f39c12, #e67e22);">6.1</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>5/8 participants</span> • <span>Progress: Fair</span>
+                        </div>
+                        <div class="detail-notes">Equipment procurement and vendor relationships</div>
+                    </div>
+                    
+                    <div class="pyramid-detail-item dont-know-item">
+                        <div class="detail-header">
+                            <span class="detail-title">🎓 Team Training</span>
+                            <span class="dont-know-badge">4 Don't Know</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>4/8 participants</span> • <span style="color: #f39c12;">Knowledge Gap</span>
+                        </div>
+                        <div class="detail-notes">Staff training and professional development - <strong>Coordination needed</strong></div>
+                    </div>
+                    
+                    <div class="pyramid-detail-item">
+                        <div class="detail-header">
+                            <span class="detail-title">⛑️ Safety & Compliance</span>
+                            <span class="score-badge-large" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">9.2</span>
+                        </div>
+                        <div class="detail-stats">
+                            <span>8/8 participants</span> • <span>Progress: Excellent</span>
+                        </div>
+                        <div class="detail-notes">Safety protocols and regulatory compliance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Topics Management -->
+        <div class="card fade-in-up">
+            <h2>💬 Discussion Topics Management</h2>
+            <div class="topics-section">
+                <div>
+                    <h3 style="margin-bottom: 20px; color: #333; font-size: 1.2rem; font-weight: 700;">Individual Topics (23)</h3>
+                    <div class="topic-list">
+                        <div class="topic-item emergency">
+                            <div class="topic-header">
+                                <div class="topic-title">Critical server outage affecting data pipeline</div>
+                                <div class="topic-meta">
+                                    <span style="background: #e74c3c; color: white; padding: 2px 8px; border-radius: 8px; font-weight: 600;">🚨 URGENT</span>
+                                    <span style="background: #3498db; color: white; padding: 2px 8px; border-radius: 8px;">10min</span>
+                                    <span style="color: #666;">Alex</span>
+                                </div>
+                            </div>
+                            <div class="topic-actions">
+                                <button class="btn-small btn-group" onclick="groupTopic(this)">Group</button>
+                                <button class="btn-small btn-delete" onclick="deleteTopic(this)">Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="topic-item">
+                            <div class="topic-header">
+                                <div class="topic-title">Q2 budget allocation for equipment purchases</div>
+                                <div class="topic-meta">
+                                    <span style="background: #3498db; color: white; padding: 2px 8px; border-radius: 8px;">15min</span>
+                                    <span style="color: #666;">Sarah</span>
+                                </div>
+                            </div>
+                            <div class="topic-actions">
+                                <button class="btn-small btn-group" onclick="groupTopic(this)">Group</button>
+                                <button class="btn-small btn-delete" onclick="deleteTopic(this)">Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="topic-item">
+                            <div class="topic-header">
+                                <div class="topic-title">Equipment budget for Q2 - need approval</div>
+                                <div class="topic-meta">
+                                    <span style="background: #3498db; color: white; padding: 2px 8px; border-radius: 8px;">8min</span>
+                                    <span style="color: #666;">Mike</span>
+                                </div>
+                            </div>
+                            <div class="topic-actions">
+                                <button class="btn-small btn-group" onclick="groupTopic(this)">Group</button>
+                                <button class="btn-small btn-delete" onclick="deleteTopic(this)">Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="topic-item">
+                            <div class="topic-header">
+                                <div class="topic-title">New vessel scheduling for summer surveys</div>
+                                <div class="topic-meta">
+                                    <span style="background: #3498db; color: white; padding: 2px 8px; border-radius: 8px;">12min</span>
+                                    <span style="color: #666;">Lisa</span>
+                                </div>
+                            </div>
+                            <div class="topic-actions">
+                                <button class="btn-small btn-group" onclick="groupTopic(this)">Group</button>
+                                <button class="btn-small btn-delete" onclick="deleteTopic(this)">Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="topic-item">
+                            <div class="topic-header">
+                                <div class="topic-title">Staff training schedule updates</div>
+                                <div class="topic-meta">
+                                    <span style="background: #3498db; color: white; padding: 2px 8px; border-radius: 8px;">5min</span>
+                                    <span style="color: #666;">David</span>
+                                </div>
+                            </div>
+                            <div class="topic-actions">
+                                <button class="btn-small btn-group" onclick="groupTopic(this)">Group</button>
+                                <button class="btn-small btn-delete" onclick="deleteTopic(this)">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="margin-bottom: 20px; color: #333; font-size: 1.2rem; font-weight: 700;">Grouped Topics (3 groups)</h3>
+                    <div class="topic-list">
+                        <div class="topic-group">
+                            <div class="group-header">
+                                <span>💰 Budget & Equipment (3 topics)</span>
+                                <button class="btn-small btn-delete" onclick="ungroupTopics(this)">Ungroup</button>
+                            </div>
+                            <div class="group-topics">
+                                <div class="group-topic">Q2 budget allocation for equipment purchases - Sarah</div>
+                                <div class="group-topic">Equipment budget for Q2 - need approval - Mike</div>
+                                <div class="group-topic">New sonar equipment procurement - Tom</div>
+                            </div>
+                        </div>
+
+                        <div class="topic-group">
+                            <div class="group-header">
+                                <span>📊 Data Processing Issues (2 topics)</span>
+                                <button class="btn-small btn-delete" onclick="ungroupTopics(this)">Ungroup</button>
+                            </div>
+                            <div class="group-topics">
+                                <div class="group-topic">Data validation pipeline errors - Alex</div>
+                                <div class="group-topic">Quality control process improvements - Jenny</div>
+                            </div>
+                        </div>
+
+                        <div class="topic-group">
+                            <div class="group-header">
+                                <span>🚢 Survey Planning (4 topics)</span>
+                                <button class="btn-small btn-delete" onclick="ungroupTopics(this)">Ungroup</button>
+                            </div>
+                            <div class="group-topics">
+                                <div class="group-topic">Summer survey vessel scheduling - Lisa</div>
+                                <div class="group-topic">Survey route optimization - Mark</div>
+                                <div class="group-topic">Equipment preparation timeline - Sarah</div>
+                                <div class="group-topic">Weather contingency planning - David</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Shoutouts Summary -->
+        <div class="card fade-in-up">
+            <h2>🎉 Team Shoutouts Summary</h2>
+            <div class="shoutouts-display">
+                <div class="shoutout-item">
+                    <strong>Sarah crushed the data analysis presentation!</strong> - Really impressed the stakeholders with clear visualizations and compelling insights
+                </div>
+                <div class="shoutout-item">
+                    <strong>Huge props to the field team</strong> - Collected samples ahead of schedule despite rough weather conditions
+                </div>
+                <div class="shoutout-item">
+                    <strong>Alex solved the server issue in record time</strong> - Prevented major data loss with quick thinking and 24/7 dedication
+                </div>
+                <div class="shoutout-item">
+                    <strong>Equipment maintenance team excellence</strong> - All instruments calibrated and ready for deployment, zero downtime
+                </div>
+                <div class="shoutout-item">
+                    <strong>Lisa's coordination skills</strong> - Seamlessly managed vessel logistics for 3 concurrent surveys
+                </div>
+                <div class="shoutout-item">
+                    <strong>Jennifer's quality focus is paying off</strong> - Caught critical data inconsistencies that could have affected results
+                </div>
+                <div class="shoutout-item">
+                    <strong>David's procurement efficiency</strong> - Got us the best equipment deals and saved 15% on Q1 budget
+                </div>
+                <div class="shoutout-item">
+                    <strong>Mark's innovative survey routes</strong> - New optimization reduced vessel time by 20% while improving data coverage
+                </div>
+            </div>
+        </div>
+
+        <!-- Individual Achievements & Planning Summary -->
+        <div class="card fade-in-up">
+            <h2>🎯 Individual Achievements & Planning Summary</h2>
+            
+            <div class="achievements-planning-grid">
+                <div class="person-summary">
+                    <div class="person-header">
+                        <span class="person-name">Dr. Sarah Chen</span>
+                        <span class="person-role">Lead Marine Biologist</span>
+                    </div>
+                    <div class="achievement-section">
+                        <h4>✅ Last Period Achievements</h4>
+                        <p>Completed statistical analysis for population dynamics study, successfully calibrated new sonar equipment, and presented findings to stakeholder committee with excellent feedback.</p>
+                    </div>
+                    <div class="planning-section">
+                        <h4>🎯 This Period Goals</h4>
+                        <p>Focus on manuscript preparation for Journal of Marine Science, coordinate vessel deployment logistics, and mentor junior researchers on data analysis techniques.</p>
+                    </div>
+                </div>
+
+                <div class="person-summary">
+                    <div class="person-header">
+                        <span class="person-name">Alex Rodriguez</span>
+                        <span class="person-role">Data Systems Manager</span>
+                    </div>
+                    <div class="achievement-section">
+                        <h4>✅ Last Period Achievements</h4>
+                        <p>Resolved critical server outage in record time, implemented new data backup protocols, and upgraded processing pipeline efficiency by 40%.</p>
+                    </div>
+                    <div class="planning-section">
+                        <h4>🎯 This Period Goals</h4>
+                        <p>Complete data quality control system overhaul, implement automated validation checks, and provide training on new QC procedures to field teams.</p>
+                    </div>
+                </div>
+
+                <div class="person-summary">
+                    <div class="person-header">
+                        <span class="person-name">Dr. Michael Torres</span>
+                        <span class="person-role">Field Operations Coordinator</span>
+                    </div>
+                    <div class="achievement-section">
+                        <h4>✅ Last Period Achievements</h4>
+                        <p>Led successful field survey despite challenging weather conditions, collected 120% of target samples, and maintained perfect safety record across all deployments.</p>
+                    </div>
+                    <div class="planning-section">
+                        <h4>🎯 This Period Goals</h4>
+                        <p>Coordinate summer vessel scheduling, develop weather contingency protocols, and optimize survey route efficiency for Q2 operations.</p>
+                    </div>
+                </div>
+
+                <div class="person-summary">
+                    <div class="person-header">
+                        <span class="person-name">Lisa Park</span>
+                        <span class="person-role">Research Vessel Captain</span>
+                    </div>
+                    <div class="achievement-section">
+                        <h4>✅ Last Period Achievements</h4>
+                        <p>Successfully managed three concurrent vessel deployments, achieved 98% equipment uptime, and completed advanced navigation certification program.</p>
+                    </div>
+                    <div class="planning-section">
+                        <h4>🎯 This Period Goals</h4>
+                        <p>Lead research vessel deployment preparation, coordinate with international maritime authorities, and implement new positioning system upgrades.</p>
+                    </div>
+                </div>
+
+                <div class="person-summary">
+                    <div class="person-header">
+                        <span class="person-name">Dr. Jennifer Walsh</span>
+                        <span class="person-role">Quality Assurance Specialist</span>
+                    </div>
+                    <div class="achievement-section">
+                        <h4>✅ Last Period Achievements</h4>
+                        <p>Identified and resolved data inconsistencies in historical datasets, developed new validation protocols, and trained laboratory staff on quality standards.</p>
+                    </div>
+                    <div class="planning-section">
+                        <h4>🎯 This Period Goals</h4>
+                        <p>Address ongoing quality control issues, implement automated error detection systems, and establish cross-validation procedures with partner institutions.</p>
+                    </div>
+                </div>
+
+                <div class="person-summary">
+                    <div class="person-header">
+                        <span class="person-name">David Kim</span>
+                        <span class="person-role">Logistics & Procurement Manager</span>
+                    </div>
+                    <div class="achievement-section">
+                        <h4>✅ Last Period Achievements</h4>
+                        <p>Secured funding approval for new sonar equipment, negotiated favorable contracts with three key vendors, and streamlined procurement workflows by 25%.</p>
+                    </div>
+                    <div class="planning-section">
+                        <h4>🎯 This Period Goals</h4>
+                        <p>Finalize Q2 budget allocations, coordinate equipment deliveries for summer surveys, and establish backup supplier relationships for critical components.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Chair Notes & Announcements Section -->
+        <div class="chair-notes-section fade-in-up">
+            <div class="section-header">
+                <div class="section-title">📝 Chair Notes & Announcements</div>
+            </div>
+            
+            <!-- Add form (always visible) -->
+            <div class="add-form" style="display: block;">
+                <textarea id="noteInput" placeholder="Enter your note or announcement..."></textarea>
+                <div class="form-buttons">
+                    <button class="btn-save" onclick="addNote()">Add Note/Announcement</button>
+                </div>
+            </div>
+            
+            <div class="notes-display" id="notesDisplay">
+                <div class="empty-state">
+                    <em>No chair notes or announcements yet - add important items to share with your team!</em>
+                </div>
+            </div>
+        </div>        
+
+        <!-- Action Buttons -->
+        <div class="action-buttons fade-in-up">
+            <button class="btn-primary" onclick="generateAgenda()">
+                📋 Prceed To Meeting Agenda
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Sample data - would come from backend
+        let meetingData = {
+            participants: 8,
+            responseRate: 87,
+            totalTopics: 23,
+            emergencyTopics: 4,
+            shoutouts: 15,
+            averageHealth: 6.8,
+            dontKnowRate: 12
+        };
+
+        // Topic management functions
+        function groupTopic(button) {
+            const topicItem = button.closest('.topic-item');
+            const topicTitle = topicItem.querySelector('.topic-title').textContent;
+            
+            // Show grouping interface
+            const groupName = prompt('Enter group name for: ' + topicTitle);
+            if (groupName) {
+                // Move to grouped section (simulate)
+                topicItem.style.background = 'rgba(243,156,18,0.2)';
+                topicItem.style.borderLeftColor = '#f39c12';
+                
+                // Show success feedback
+                button.textContent = 'Grouped!';
+                button.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
+                setTimeout(() => {
+                    topicItem.style.display = 'none';
+                }, 1000);
+            }
+        }
+
+        function deleteTopic(button) {
+            if (confirm('Are you sure you want to delete this topic?')) {
+                const topicItem = button.closest('.topic-item');
+                topicItem.style.opacity = '0.5';
+                topicItem.style.transform = 'translateX(-20px)';
+                setTimeout(() => {
+                    topicItem.remove();
+                    updateTopicCount();
+                }, 300);
+            }
+        }
+
+        function ungroupTopics(button) {
+            if (confirm('Ungroup these topics back to individual items?')) {
+                const group = button.closest('.topic-group');
+                group.style.opacity = '0.5';
+                setTimeout(() => {
+                    group.remove();
+                }, 300);
+            }
+        }
+
+        function updateTopicCount() {
+            // Update topic counter
+            const remainingTopics = document.querySelectorAll('.topic-item').length;
+            document.querySelector('h3').textContent = `Individual Topics (${remainingTopics})`;
+        }
+
+        // Main action functions
+        function generateAgenda() {
+            // Show loading state
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '⏳ Generating Agenda...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                // Redirect to agenda page
+                window.location.href = 'meeting-agenda.html';
+            }, 2000);
+        }
+
+        function exportData() {
+            // Simulate data export
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '⏳ Exporting...';
+            
+            setTimeout(() => {
+                button.textContent = '✓ Exported!';
+                button.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                }, 2000);
+            }, 1500);
+        }
+
+        function viewDetailedStats() {
+            alert('Detailed analytics would open in a new window with comprehensive breakdowns, charts, and insights.');
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date/time
+            document.getElementById('meetingDate').textContent = new Date().toLocaleDateString() + ' Team Check-in';
+            
+            // Add entrance animations
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in-up').forEach((el, index) => {
+                    el.style.animationDelay = `${index * 0.1}s`;
+                });
+            }, 100);
+
+            // Animate stats on load
+            setTimeout(() => {
+                document.querySelectorAll('.stat-card').forEach((card, index) => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.5s ease';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 100);
+                });
+            }, 500);
+        });
+
+        // Auto-refresh data every 30 seconds
+        setInterval(() => {
+            console.log('Refreshing dashboard data...');
+            // Would fetch latest data from backend
+        }, 30000);
+
+
+                function addNote() {
+            const input = document.getElementById('noteInput');
+            const text = input.value.trim();
+            
+            if (!text) return;
+
+            const notesDisplay = document.getElementById('notesDisplay');
+            
+            // Remove empty state if it exists
+            const emptyState = notesDisplay.querySelector('.empty-state');
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            // Add new note
+            const noteDiv = document.createElement('div');
+            noteDiv.className = 'note-item';
+            noteDiv.innerHTML = `<div class="note-content">${text}</div>`;
+            
+            notesDisplay.appendChild(noteDiv);
+            
+            // Clear the input
+            input.value = '';
+        }
+    </script>
+</body>
+</html>

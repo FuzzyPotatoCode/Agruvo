@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Agrovo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .welcome-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .user-role {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Strategic Pyramid  Overview */
+        .pyramid-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pyramid-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .dropdown-toggle:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .dropdown-item.active {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.05));
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .pyramid-overview {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .pyramid-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .pyramid-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .pyramid-item {
+            min-width: 180px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: white;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 8px 12px;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .pyramid-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .pyramid-critical {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+        }
+
+        .pyramid-important {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .pyramid-foundational {
+            background: linear-gradient(135deg, #93c5fd, #60a5fa);
+            color: #333;
+        }
+
+        .pyramid-legend {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .legend-levels {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        /* Quick Stats */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Card Styles */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .card-action {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card-action:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* Meeting Lists */
+        .meeting-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .meeting-item {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .meeting-item:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .meeting-item.upcoming {
+            border-left: 5px solid #3498db;
+        }
+
+        .meeting-item.completed {
+            border-left: 5px solid #2ecc71;
+        }
+
+        .meeting-item.draft {
+            border-left: 5px solid #f39c12;
+        }
+
+        .meeting-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .meeting-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .meeting-status {
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-upcoming {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+        }
+
+        .status-completed {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+
+        .status-draft {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+        }
+
+        .meeting-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .meeting-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .meeting-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .action-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.02));
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .action-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .action-description {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Recent Meetings */
+        .meetings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .meeting-item {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.02));
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .meeting-item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        .meeting-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .meeting-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .meeting-date {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .meeting-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-upcoming {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-draft {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .meeting-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-view {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-results {
+            background: #9b59b6;
+            color: white;
+        }
+
+        .btn-agenda {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-small:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .empty-description {
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .meeting-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .meeting-actions {
+                flex-wrap: wrap;
+            }
+
+            .pyramid-item {
+                min-width: 140px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease both;
+        }
+
+        /* Notification Badge */
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="header fade-in-up">
+            <div class="header-left">
+                <div class="logo">Agrovo</div>
+                <div class="user-info">
+                    <div class="welcome-text">Welcome back, Dr. Sarah Chen</div>
+                    <div class="user-role">Research Team Lead</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="#" class="btn-secondary" onclick="logout()">
+                    🚪 Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Strategic Pyramid  Overview -->
+        <div class="pyramid-card fade-in-up">
+            <div class="card-header">
+                <div class="card-title">📊 Strategic Pyramid  Overview</div>
+                <div class="pyramid-dropdown">
+                    <button class="dropdown-toggle" onclick="toggleDropdown()">
+                        AAD Fisheries Purpose ▼
+                    </button>
+                    <div class="dropdown-menu" id="pyramidDropdown">
+                        <div class="dropdown-item active" onclick="selectPyramid('q1')">AAD Fisheries Purpose</div>
+                        <div class="dropdown-item" onclick="selectPyramid('q4')">Other Project Example</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pyramid-overview">
+                <div class="pyramid-visual">
+                    <div class="pyramid-row">
+                        <div class="pyramid-item pyramid-critical" title="Research Vessel Deployment">
+                            Research Vessel Deployment
+                        </div>
+                        <div class="pyramid-item pyramid-critical" title="Annual Stock Assessment">
+                            Annual Stock Assessment
+                        </div>
+                    </div>
+                    <div class="pyramid-row">
+                        <div class="pyramid-item pyramid-important" title="Q2 Field Survey">
+                            Q2 Field Survey
+                        </div>
+                        <div class="pyramid-item pyramid-important" title="Data Analysis Completion">
+                            Data Analysis Completion
+                        </div>
+                        <div class="pyramid-item pyramid-important" title="Research Publication">
+                            Research Publication
+                        </div>
+                    </div>
+                    <div class="pyramid-row">
+                        <div class="pyramid-item pyramid-foundational" title="Equipment Maintenance">
+                            Equipment Maintenance
+                        </div>
+                        <div class="pyramid-item pyramid-foundational" title="Data Quality Control">
+                            Data Quality Control
+                        </div>
+                        <div class="pyramid-item pyramid-foundational" title="Procurement & Supplies">
+                            Procurement & Supplies
+                        </div>
+                        <div class="pyramid-item pyramid-foundational" title="Team Training & Development">
+                            Team Training & Development
+                        </div>
+                        <div class="pyramid-item pyramid-foundational" title="Safety & Compliance">
+                            Safety & Compliance
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pyramid-legend">
+                <div class="legend-levels">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #1e3a8a;"></div>
+                        <span>Dark Blue = Critical Projects</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #3b82f6;"></div>
+                        <span>Medium Blue = Important Milestones</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #93c5fd;"></div>
+                        <span>Light Blue = Foundational Operations</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="quick-stats fade-in-up">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value">12</div>
+                <div class="stat-label">Total Meetings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-value">3</div>
+                <div class="stat-label">Upcoming</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-value">8</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📝</div>
+                <div class="stat-value">1</div>
+                <div class="stat-label">Draft</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value">24</div>
+                <div class="stat-label">Team Members</div>
+            </div>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Upcoming Meetings -->
+                <div class="card fade-in-up">
+                    <div class="card-header">
+                        <div class="card-title">📅 Upcoming Meetings</div>
+                        <button class="card-action" data-page="create-meeting.html">Schedule New</button>
+                    </div>
+                    <div class="meeting-list">
+                        <div class="meeting-item upcoming">
+                            <div class="meeting-header">
+                                <div class="meeting-title">Weekly Research Team Tactical</div>
+                                <div class="meeting-status status-upcoming">Survey Closed</div>
+                            </div>
+                            <div class="meeting-meta">
+                                <span>📅 Today, 2:00 PM</span>
+                                <span>⏱️ 60 minutes</span>
+                                <span>👥 8 participants</span>
+                                <span>📊 8/8 responses</span>
+                            </div>
+                            <div class="meeting-actions">
+                                <button class="btn-small btn-view" onclick="viewMeetingDashboard('meeting-past-2')">📄 Prepare Agenda</button>
+                                <button class="btn-small btn-delete" onclick="deleteMeeting('meeting-1')">🗑️ Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="meeting-item upcoming">
+                            <div class="meeting-header">
+                                <div class="meeting-title">Weekly Research Team Tactical</div>
+                                <div class="meeting-status status-upcoming">Survey Open</div>
+                            </div>
+                            <div class="meeting-meta">
+                                <span>📅 Tomorrow, 2:00 PM</span>
+                                <span>⏱️ 60 minutes</span>
+                                <span>👥 8 participants</span>
+                                <span>📊 6/8 responses</span>
+                            </div>
+                            <div class="meeting-actions">
+                                <button class="btn-small btn-delete" onclick="deleteMeeting('meeting-1')">🗑️ Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="meeting-item upcoming">
+                            <div class="meeting-header">
+                                <div class="meeting-title">Strategic Planning Session</div>
+                                <div class="meeting-status status-upcoming">Scheduled</div>
+                            </div>
+                            <div class="meeting-meta">
+                                <span>📅 Friday, 10:00 AM</span>
+                                <span>⏱️ 120 minutes</span>
+                                <span>👥 12 participants</span>
+                                <span>📧 Survey pending</span>
+                            </div>
+                            <div class="meeting-actions">
+                                <button class="btn-small btn-edit" onclick="editMeeting('meeting-2')">✏️ Edit</button>
+                                <button class="btn-small btn-view" onclick="sendSurvey('meeting-2')">📧 Send Survey</button>
+                                <button class="btn-small btn-delete" onclick="deleteMeeting('meeting-2')">🗑️ Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="meeting-item draft">
+                            <div class="meeting-header">
+                                <div class="meeting-title">Budget Review Meeting</div>
+                                <div class="meeting-status status-draft">Draft</div>
+                            </div>
+                            <div class="meeting-meta">
+                                <span>📅 Not scheduled</span>
+                                <span>⏱️ Not set</span>
+                                <span>👥 Not selected</span>
+                                <span>📝 Incomplete</span>
+                            </div>
+                            <div class="meeting-actions">
+                                <button class="btn-small btn-edit" onclick="editMeeting('meeting-3')">✏️ Complete Setup</button>
+                                <button class="btn-small btn-delete" onclick="deleteMeeting('meeting-3')">🗑️ Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Meetings -->
+                <div class="card fade-in-up">
+                    <div class="card-header">
+                        <div class="card-title">📋 Recent Meetings</div>
+                        <button class="card-action" onclick="viewAllMeetings()">View All</button>
+                    </div>
+                    <div class="meeting-list">
+                        <div class="meeting-item completed">
+                            <div class="meeting-header">
+                                <div class="meeting-title">Weekly Research Team Check-in</div>
+                                <div class="meeting-status status-completed">Completed</div>
+                            </div>
+                            <div class="meeting-meta">
+                                <span>📅 Last Monday, 2:00 PM</span>
+                                <span>⏱️ 58 minutes</span>
+                                <span>👥 8 participants</span>
+                                <span>✅ 12 action items</span>
+                            </div>
+                            <div class="meeting-actions">
+                                <button class="btn-small btn-view" onclick="viewMeetingDashboard('meeting-past-1')">📄 View Agenda Dashboard</button>
+                                <button class="btn-small btn-results" onclick="viewAgenda('meeting-past-1')">📊 View Agenda</button>
+                                <button class="btn-small btn-edit" onclick="exportSummary('meeting-past-1')">📧 Export Summary</button>
+                            </div>
+                        </div>
+
+                        <div class="meeting-item completed">
+                            <div class="meeting-header">
+                                <div class="meeting-title">Equipment Procurement Review</div>
+                                <div class="meeting-status status-completed">Completed</div>
+                            </div>
+                            <div class="meeting-meta">
+                                <span>📅 Last Friday, 3:30 PM</span>
+                                <span>⏱️ 45 minutes</span>
+                                <span>👥 5 participants</span>
+                                <span>✅ 8 action items</span>
+                            </div>
+                            <div class="meeting-actions">
+                                <button class="btn-small btn-view" onclick="viewMeetingDashboard('meeting-past-2')">📄 View Agenda Dashboard</button>
+                                <button class="btn-small btn-results" onclick="viewAgenda('meeting-past-2')">📊 View Agenda</button>
+                                <button class="btn-small btn-edit" onclick="exportSummary('meeting-past-2')">📧 Export Summary</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Quick Actions -->
+                <div class="card fade-in-up">
+                    <div class="card-header">
+                        <div class="card-title">⚡ Quick Actions</div>
+                    </div>
+                    <div class="quick-actions">
+                        <div class="action-card" data-page="create-meeting.html">
+                            <div class="action-icon">➕</div>
+                            <div class="action-title">New Meeting</div>
+                            <div class="action-description">Create a new team meeting</div>
+                        </div>
+                        
+                        <div class="action-card" data-page="pyramid-editor.html">
+                            <div class="action-icon">🔺</div>
+                            <div class="action-title">Edit Pyramid</div>
+                            <div class="action-description">Configure priority levels</div>
+                        </div>
+                        
+                        <div class="action-card" data-page="team-management.html">
+                            <div class="action-icon">👥</div>
+                            <div class="action-title">Manage Team</div>
+                            <div class="action-description">Add or remove members</div>
+                        </div>
+                        
+                        <div class="action-card" data-page="settings.html">
+                            <div class="action-icon">⚙️</div>
+                            <div class="action-title">Settings</div>
+                            <div class="action-description">Configure preferences (NO PAGE YET!!!) </div>
+                        </div>
+                        
+                        <div class="action-card" data-page="reports.html">
+                            <div class="action-icon">📊</div>
+                            <div class="action-title">Export Reports</div>
+                            <div class="action-description">Download meeting data (NO PAGE YET!!!)</div>
+                        </div>
+                        
+                        <div class="action-card" data-page="analytics.html">
+                            <div class="action-icon">📈</div>
+                            <div class="action-title">Analytics</div>
+                            <div class="action-description">View team insights (NO PAGE YET!!!)</div>
+                        </div>
+                        <div class="action-card" data-page="meeting-survey-tactical.html">
+                            <div class="action-icon">📝</div>
+                            <div class="action-title">View Tactical Survey</div>
+                            <div class="action-description">Complete team objectives survey</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Pyramid dropdown functionality
+        function toggleDropdown() {
+            const dropdown = document.getElementById('pyramidDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        function selectPyramid(type) {
+            const dropdown = document.getElementById('pyramidDropdown');
+            const toggle = document.querySelector('.dropdown-toggle');
+            const items = dropdown.querySelectorAll('.dropdown-item');
+            
+            // Remove active class from all items
+            items.forEach(item => item.classList.remove('active'));
+            
+            // Find and activate the selected item
+            const selectedItem = Array.from(items).find(item => 
+                item.getAttribute('onclick').includes(type)
+            );
+            if (selectedItem) {
+                selectedItem.classList.add('active');
+                toggle.textContent = selectedItem.textContent + ' ▼';
+            }
+            
+            // Close dropdown
+            dropdown.classList.remove('active');
+            
+            console.log('Loading pyramid:', type);
+            // Here you would load the selected pyramid data
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('pyramidDropdown');
+            const toggle = document.querySelector('.dropdown-toggle');
+            
+            if (!dropdown.contains(event.target) && !toggle.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Clean navigation using data attributes
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle action card clicks
+            document.querySelectorAll('.action-card[data-page]').forEach(card => {
+                card.addEventListener('click', function() {
+                    const page = this.getAttribute('data-page');
+                    window.location.href = page;
+                });
+            });
+
+            // Handle card action buttons
+            document.querySelectorAll('.card-action[data-page]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const page = this.getAttribute('data-page');
+                    window.location.href = page;
+                });
+            });
+        });
+
+        // Meeting-specific functions that still need IDs
+        function viewMeetingDashboard(meetingId) {
+            window.location.href = `meeting-dashboard.html?meeting=${meetingId}`;
+        }
+
+        function buildAgenda(meetingId) {
+            window.location.href = `meeting-agenda.html?meeting=${meetingId}`;
+        }
+
+        function editMeeting(meetingId) {
+            window.location.href = `create-meeting.html?edit=${meetingId}`;
+        }
+
+        function deleteMeeting(meetingId) {
+            if (confirm('Are you sure you want to delete this meeting?')) {
+                console.log('Deleting meeting:', meetingId);
+                // Would call backend to delete meeting
+                // Then refresh the meeting list
+            }
+        }
+
+        function sendSurvey(meetingId) {
+            console.log('Sending survey for meeting:', meetingId);
+            alert('Survey sent to all participants!');
+        }
+
+        function viewAgenda(meetingId) {
+            window.location.href = `meeting-agenda.html?meeting=${meetingId}`;
+        }
+
+        function exportSummary(meetingId) {
+            console.log('Exporting summary for meeting:', meetingId);
+            alert('Meeting summary exported successfully!');
+        }
+
+        function viewAllMeetings() {
+            console.log('Viewing all meetings');
+            // Would navigate to meetings list page
+        }
+
+        function exportMeeting(meetingId) {
+            console.log('Exporting meeting:', meetingId);
+            // Would generate and download meeting export
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
