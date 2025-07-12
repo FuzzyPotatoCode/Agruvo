@@ -14,7 +14,7 @@ This system was designed specifically for fisheries research teams conducting **
 - **Lost Context** → Comprehensive note-taking and automatic meeting summaries
 - **Strategic Drift** → Visual pyramid tracking keeps focus on critical objectives
 
-## 📊 Strategic Framework: The Priority Pyramid
+## 📊 Strategic Framework: The Strategic Pyramid 
 
 The system organizes work across three hierarchical levels:
 

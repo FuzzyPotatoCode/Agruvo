@@ -803,6 +803,172 @@
                 max-width: 300px;
             }
         }
+        
+
+                /* Matching the existing meeting-dashboard.html styling for shoutouts section */
+        .chair-notes-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .chair-notes-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-header {
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .add-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 15px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .notes-display {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .empty-state {
+            color: #888;
+            font-style: italic;
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(241, 245, 249, 0.5);
+            border-radius: 12px;
+            border: 2px dashed #cbd5e1;
+        }
+
+        .note-item {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.05));
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .note-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .note-content {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Input form (hidden by default) */
+        .add-form {
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .add-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .add-form textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-save {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e0e0e0;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Fade in animation to match existing cards */
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .chair-notes-section {
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -872,7 +1038,7 @@
 
         <!-- Pyramid Overview -->
         <div class="card fade-in-up">
-            <h2>🔺 Strategic Objectives Status</h2>
+            <h2>📊 Priority Pyramid Status</h2>
             <div class="pyramid-dashboard">
                 <div></div>
                 <div class="pyramid-visual">
@@ -1320,6 +1486,28 @@
             </div>
         </div>
 
+
+        <!-- Chair Notes & Announcements Section -->
+        <div class="chair-notes-section fade-in-up">
+            <div class="section-header">
+                <div class="section-title">📝 Chair Notes & Announcements</div>
+            </div>
+            
+            <!-- Add form (always visible) -->
+            <div class="add-form" style="display: block;">
+                <textarea id="noteInput" placeholder="Enter your note or announcement..."></textarea>
+                <div class="form-buttons">
+                    <button class="btn-save" onclick="addNote()">Add Note/Announcement</button>
+                </div>
+            </div>
+            
+            <div class="notes-display" id="notesDisplay">
+                <div class="empty-state">
+                    <em>No chair notes or announcements yet - add important items to share with your team!</em>
+                </div>
+            </div>
+        </div>        
+
         <!-- Action Buttons -->
         <div class="action-buttons fade-in-up">
             <button class="btn-primary" onclick="generateAgenda()">
@@ -1455,6 +1643,32 @@
             console.log('Refreshing dashboard data...');
             // Would fetch latest data from backend
         }, 30000);
+
+
+                function addNote() {
+            const input = document.getElementById('noteInput');
+            const text = input.value.trim();
+            
+            if (!text) return;
+
+            const notesDisplay = document.getElementById('notesDisplay');
+            
+            // Remove empty state if it exists
+            const emptyState = notesDisplay.querySelector('.empty-state');
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            // Add new note
+            const noteDiv = document.createElement('div');
+            noteDiv.className = 'note-item';
+            noteDiv.innerHTML = `<div class="note-content">${text}</div>`;
+            
+            notesDisplay.appendChild(noteDiv);
+            
+            // Clear the input
+            input.value = '';
+        }
     </script>
 </body>
 </html>

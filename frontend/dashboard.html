@@ -116,7 +116,7 @@
             transform: translateY(-2px);
         }
 
-        /* Priority Pyramid Overview */
+        /* Strategic Pyramid  Overview */
         .pyramid-card {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -758,10 +758,10 @@
             </div>
         </div>
 
-        <!-- Priority Pyramid Overview -->
+        <!-- Strategic Pyramid  Overview -->
         <div class="pyramid-card fade-in-up">
             <div class="card-header">
-                <div class="card-title">📊 Priority Pyramid Overview</div>
+                <div class="card-title">📊 Strategic Pyramid  Overview</div>
                 <div class="pyramid-dropdown">
                     <button class="dropdown-toggle" onclick="toggleDropdown()">
                         AAD Fisheries Purpose ▼
@@ -874,7 +874,24 @@
                     <div class="meeting-list">
                         <div class="meeting-item upcoming">
                             <div class="meeting-header">
-                                <div class="meeting-title">Weekly Research Team Check-in</div>
+                                <div class="meeting-title">Weekly Research Team Tactical</div>
+                                <div class="meeting-status status-upcoming">Survey Closed</div>
+                            </div>
+                            <div class="meeting-meta">
+                                <span>📅 Today, 2:00 PM</span>
+                                <span>⏱️ 60 minutes</span>
+                                <span>👥 8 participants</span>
+                                <span>📊 8/8 responses</span>
+                            </div>
+                            <div class="meeting-actions">
+                                <button class="btn-small btn-view" onclick="viewMeetingDashboard('meeting-past-2')">📄 Prepare Agenda</button>
+                                <button class="btn-small btn-delete" onclick="deleteMeeting('meeting-1')">🗑️ Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="meeting-item upcoming">
+                            <div class="meeting-header">
+                                <div class="meeting-title">Weekly Research Team Tactical</div>
                                 <div class="meeting-status status-upcoming">Survey Open</div>
                             </div>
                             <div class="meeting-meta">
@@ -890,7 +907,7 @@
 
                         <div class="meeting-item upcoming">
                             <div class="meeting-header">
-                                <div class="meeting-title">Q2 Strategic Planning Session</div>
+                                <div class="meeting-title">Strategic Planning Session</div>
                                 <div class="meeting-status status-upcoming">Scheduled</div>
                             </div>
                             <div class="meeting-meta">
@@ -944,7 +961,7 @@
                                 <span>✅ 12 action items</span>
                             </div>
                             <div class="meeting-actions">
-                                <button class="btn-small btn-view" onclick="viewMeetingDashboard('meeting-past-1')">📄 View Meeting Dashboard</button>
+                                <button class="btn-small btn-view" onclick="viewMeetingDashboard('meeting-past-1')">📄 View Agenda Dashboard</button>
                                 <button class="btn-small btn-results" onclick="viewAgenda('meeting-past-1')">📊 View Agenda</button>
                                 <button class="btn-small btn-edit" onclick="exportSummary('meeting-past-1')">📧 Export Summary</button>
                             </div>
@@ -962,7 +979,7 @@
                                 <span>✅ 8 action items</span>
                             </div>
                             <div class="meeting-actions">
-                                <button class="btn-small btn-view" onclick="viewMeetingDashboard('meeting-past-2')">📄 View Meeting Dashboard</button>
+                                <button class="btn-small btn-view" onclick="viewMeetingDashboard('meeting-past-2')">📄 View Agenda Dashboard</button>
                                 <button class="btn-small btn-results" onclick="viewAgenda('meeting-past-2')">📊 View Agenda</button>
                                 <button class="btn-small btn-edit" onclick="exportSummary('meeting-past-2')">📧 Export Summary</button>
                             </div>
@@ -1000,23 +1017,23 @@
                         <div class="action-card" data-page="settings.html">
                             <div class="action-icon">⚙️</div>
                             <div class="action-title">Settings</div>
-                            <div class="action-description">Configure preferences</div>
+                            <div class="action-description">Configure preferences (NO PAGE YET!!!) </div>
                         </div>
                         
                         <div class="action-card" data-page="reports.html">
                             <div class="action-icon">📊</div>
                             <div class="action-title">Export Reports</div>
-                            <div class="action-description">Download meeting data</div>
+                            <div class="action-description">Download meeting data (NO PAGE YET!!!)</div>
                         </div>
                         
                         <div class="action-card" data-page="analytics.html">
                             <div class="action-icon">📈</div>
                             <div class="action-title">Analytics</div>
-                            <div class="action-description">View team insights</div>
+                            <div class="action-description">View team insights (NO PAGE YET!!!)</div>
                         </div>
-                        <div class="action-card" data-page="meeting-survey.html">
+                        <div class="action-card" data-page="meeting-survey-tactical.html">
                             <div class="action-icon">📝</div>
-                            <div class="action-title">View Survey</div>
+                            <div class="action-title">View Tactical Survey</div>
                             <div class="action-description">Complete team objectives survey</div>
                         </div>
                     </div>
